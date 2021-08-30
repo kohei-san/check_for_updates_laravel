@@ -37,6 +37,20 @@
                         {{ __('ブログ無し') }}
                     </x-nav-link>
                 </div>
+
+                <!-- ブログあり -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('haseccube.index')" :active="request()->routeIs('haseccube.index')">
+                        {{ __('ECキューブ有り') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- ブログなし -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('noeccube.index')" :active="request()->routeIs('noeccube.index')">
+                        {{ __('ECキューブ無し') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

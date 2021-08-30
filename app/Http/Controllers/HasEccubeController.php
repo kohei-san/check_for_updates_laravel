@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
-class HasBlogController extends Controller
+class HasEccubeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,9 @@ class HasBlogController extends Controller
      */
     public function index()
     {
-        $customers = Customer::where('blog_flg', 1)->paginate(50);
+        $customers = Customer::where('eccube_flg', 1)->paginate(50);
 
-        return view('has-blog')->with('customers', $customers);
+        return view('has-eccube')->with('customers', $customers);
     }
 
     /**
