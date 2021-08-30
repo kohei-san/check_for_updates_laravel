@@ -19,7 +19,7 @@
 
                 <!-- Cervn画面 -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('cervn')" :active="request()->routeIs('cervn')">
+                    <x-nav-link :href="route('customer.index')" :active="request()->routeIs('customer')">
                         {{ __('cervn') }}
                     </x-nav-link>
                 </div>

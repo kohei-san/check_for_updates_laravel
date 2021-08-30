@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +22,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/cervn', function () {
-    return view('cervn');
-})->middleware(['auth'])->name('cervn');
+Route::resource('customer', CustomerController::class)
+    ->middleware(['auth'])
+    ->only(['index', 'show']);
 
 require __DIR__.'/auth.php';

@@ -28,21 +28,24 @@
         </thead>
         <tbody>
           </tr>
+          <!-- 顧客情報表示 -->
+          @foreach($customers as $customer)
           <tr>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">Exclusive</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">48 Mb/s</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">120 GB</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">$72</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">Exclusive</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">48 Mb/s</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">120 GB</td>
-            <td class="border-t-2 border-b-2 border-gray-200 w-10 text-center">
-              <input name="plan" type="radio">
-            </td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->customer_id }}</td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->support_id }}</td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ $customer->customer_name }}</td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->customer_toppage_url }}</td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->blog_flg }}</td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->eccube_flg }}</td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->active_flg }}</td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->del_flg }}</td>
           </tr>
+          @endforeach
         </tbody>
+        {{ $customers->links() }}
       </table>
     </div>
+
     <div class="flex pl-4 mt-4 lg:w-2/3 w-full mx-auto">
       <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More
         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
