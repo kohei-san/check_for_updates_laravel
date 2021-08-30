@@ -19,8 +19,22 @@
 
                 <!-- Cervn画面 -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('customer.index')" :active="request()->routeIs('customer')">
+                    <x-nav-link :href="route('customer.index')" :active="request()->routeIs('customer.index')">
                         {{ __('cervn') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- ブログあり -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('hasblog.index')" :active="request()->routeIs('hasblog.index')">
+                        {{ __('ブログ有り') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- ブログなし -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('noblog.index')" :active="request()->routeIs('noblog.index')">
+                        {{ __('ブログ無し') }}
                     </x-nav-link>
                 </div>
             </div>

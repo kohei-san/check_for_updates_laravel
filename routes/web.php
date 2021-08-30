@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HasBlogController;
+use App\Http\Controllers\NoBlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,14 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::resource('customer', CustomerController::class)
+    ->middleware(['auth'])
+    ->only(['index', 'show']);
+
+Route::resource('hasblog', HasBlogController::class)
+    ->middleware(['auth'])
+    ->only(['index', 'show']);
+
+Route::resource('noblog', NoBlogController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 
