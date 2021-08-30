@@ -21,4 +21,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/cervn', function () {
+    return view('cervn');
+})->middleware(['auth'])->name('cervn');
+
 require __DIR__.'/auth.php';
