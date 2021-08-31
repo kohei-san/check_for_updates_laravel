@@ -10,7 +10,7 @@
     <div class="lg:w-11/12 w-full mx-auto overflow-auto">
       <table class="table-auto w-full text-left whitespace-no-wrap">
         <thead>
-        <tr>
+          <tr>
             <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">No.</th>
             <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">ID</th>
             <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">名前</th>
@@ -22,10 +22,10 @@
             <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
           </tr>
         </thead>
+        <!-- 顧客情報表示 -->
+        @foreach($customers as $customer)
         <tbody>
           </tr>
-          <!-- 顧客情報表示 -->
-          @foreach($customers as $customer)
           <tr>
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->id }}</td>
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->support_id }}</td>
@@ -36,15 +36,16 @@
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"><a href="{{ $customer->customer_toppage_url }}">{{ $customer->customer_toppage_url }}</td>
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->blog_flg }}</td>
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->eccube_flg }}</td>
-            @foreach($pageHtmls as $pageHTML)
-              @if($pageHTML->customer_id == $customer->id)
-                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $pageHTML->time_stamp_htmlsrc }}</td>
-                @break
-              @endif
+            @php
+              $htmls = $customer->html;
+            @endphp
+            @foreach($htmls as $html)
+              <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $html->time_stamp_htmlsrc }}</td>
+              @break
             @endforeach
           </tr>
-          @endforeach
         </tbody>
+        @endforeach
         {{ $customers->links() }}
       </table>
     </div>

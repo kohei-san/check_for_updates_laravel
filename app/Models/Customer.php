@@ -34,6 +34,6 @@ class Customer extends Model
     }
 
     public function html(){
-        return $this->hasMany(Html::class);
+        return $this->hasManyThrough(Html::class, Page::class);
     }
 }
