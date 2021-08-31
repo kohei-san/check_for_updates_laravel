@@ -13,14 +13,14 @@ class CustomerPage extends Model
      *
      * @var string
      */
-    protected $table = 'customer_page';
+    protected $table = 'customer_pages';
 
     /**
      * テーブルに関連付ける主キー
      *
      * @var string
      */
-    protected $primaryKey = 'page_id';
+    protected $primaryKey = 'id';
 
     /**
      * モデルにタイムスタンプを付けるか
@@ -33,7 +33,7 @@ class CustomerPage extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function pageHtml() {
+    public function page_html() {
         return $this->hasOne(PageHtml::class);
     }
 }

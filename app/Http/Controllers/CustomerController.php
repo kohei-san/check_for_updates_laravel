@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use Illuminate\Http\Request;
+use App\Models\CustomePage;
 use App\Models\PageHtml;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
@@ -15,9 +16,16 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::paginate(50);
+        // $customers = Customer::paginate(50);
+        $customers = Customer::find(1);
+        dd($customers);
 
-        return view('customer')->with('customers', $customers);
+        // $pageHtmls = PageHtml::all();
+        // $pageHtmls = PageHtml::find(1)->customer();
+        // dd($pageHtmls);
+
+        return view('customer')->with('customers', $customers)
+            ->with('pageHtmls', $pageHtmls);
     }
 
     /**

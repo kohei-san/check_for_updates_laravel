@@ -15,14 +15,14 @@ class PageHtml extends Model
      *
      * @var string
      */
-    protected $table = 'page_html';
+    protected $table = 'page_htmls';
 
     /**
      * テーブルに関連付ける主キー
      *
      * @var string
      */
-    protected $primaryKey = 'html_id';
+    protected $primaryKey = 'id';
 
     /**
      * モデルにタイムスタンプを付けるか
@@ -33,5 +33,9 @@ class PageHtml extends Model
 
     public function customer_page() {
         return $this->belongsTo(CustomerPage::class);
+    }
+
+    public function customer() {
+        return $this->belongsTo(Customer::class);
     }
 }

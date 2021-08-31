@@ -27,7 +27,7 @@
           <!-- 顧客情報表示 -->
           @foreach($customers as $customer)
           <tr>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->customer_id }}</td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->id }}</td>
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->support_id }}</td>
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ $customer->customer_name }}</td>
             <!-- 担当者名 -->
@@ -36,11 +36,11 @@
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"><a href="{{ $customer->customer_toppage_url }}">{{ $customer->customer_toppage_url }}</td>
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->blog_flg }}</td>
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->eccube_flg }}</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->del_flg }}</td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->time_stamp_htmlsrc }}</td>
           </tr>
           @endforeach
         </tbody>
-        {{ $customers->links() }}
+        <!-- ページネーション -->
       </table>
     </div>
 
