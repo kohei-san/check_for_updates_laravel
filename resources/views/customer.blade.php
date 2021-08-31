@@ -36,11 +36,16 @@
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"><a href="{{ $customer->customer_toppage_url }}">{{ $customer->customer_toppage_url }}</td>
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->blog_flg }}</td>
             <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->eccube_flg }}</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->time_stamp_htmlsrc }}</td>
+            @foreach($pageHtmls as $pageHTML)
+              @if($pageHTML->customer_id == $customer->id)
+                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $pageHTML->time_stamp_htmlsrc }}</td>
+                @break
+              @endif
+            @endforeach
           </tr>
           @endforeach
         </tbody>
-        <!-- ページネーション -->
+        {{ $customers->links() }}
       </table>
     </div>
 

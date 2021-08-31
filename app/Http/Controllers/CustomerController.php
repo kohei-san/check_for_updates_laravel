@@ -16,13 +16,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        // $customers = Customer::paginate(50);
-        $customers = Customer::find(1);
-        dd($customers);
+        $customers = Customer::paginate(50);
 
-        // $pageHtmls = PageHtml::all();
-        // $pageHtmls = PageHtml::find(1)->customer();
-        // dd($pageHtmls);
+        $pageHtmls = PageHtml::all();
 
         return view('customer')->with('customers', $customers)
             ->with('pageHtmls', $pageHtmls);
