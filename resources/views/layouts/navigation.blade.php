@@ -31,24 +31,31 @@
                     </x-nav-link>
                 </div>
 
-                <!-- ブログなし -->
+                <!-- ブログ無し -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('noblog.index')" :active="request()->routeIs('noblog.index')">
                         {{ __('ブログ無し') }}
                     </x-nav-link>
                 </div>
 
-                <!-- ブログあり -->
+                <!-- ECキューブ有り -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('haseccube.index')" :active="request()->routeIs('haseccube.index')">
                         {{ __('ECキューブ有り') }}
                     </x-nav-link>
                 </div>
 
-                <!-- ブログなし -->
+                <!-- ECキューブ無し -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('noeccube.index')" :active="request()->routeIs('noeccube.index')">
                         {{ __('ECキューブ無し') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- 取得日 -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('timestamp.index')" :active="request()->routeIs('timestamp.index')">
+                        {{ __('取得日') }}
                     </x-nav-link>
                 </div>
             </div>

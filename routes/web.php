@@ -6,6 +6,7 @@ use App\Http\Controllers\HasBlogController;
 use App\Http\Controllers\NoBlogController;
 use App\Http\Controllers\HasEccubeController;
 use App\Http\Controllers\NoEccubeController;
+use App\Http\Controllers\HtmlController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,10 @@ Route::resource('haseccube', HasEccubeController::class)
     ->only(['index', 'show']);
 
 Route::resource('noeccube', NoEccubeController::class)
+    ->middleware(['auth'])
+    ->only(['index', 'show']);
+
+Route::resource('timestamp', HtmlController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 

@@ -29,11 +29,11 @@ class Customer extends Model
      */
     public $timestamps = false;
 
-    public function customer_page() {
-        return $this->hasMany(CustomerPage::class);
+    public function page() {
+        return $this->hasMany(Page::class);
     }
 
-    public function page_html(){
-        return $this->hasMany(PageHtml::class);
+    public function html(){
+        return $this->hasMany(Html::class);
     }
 }
