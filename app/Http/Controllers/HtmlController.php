@@ -15,9 +15,7 @@ class HtmlController extends Controller
     public function index()
     {
         // $timestamps = Html::paginate(50);
-        $timestamps = Html::with(['page', 'customer'])->find(1);
-
-        dd($timestamps->customer());
+        $timestamps = Html::with(['page', 'customer'])->paginate(50);
 
         return view('timestamp')->with('timestamps', $timestamps);
     }
