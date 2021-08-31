@@ -5,22 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class PageHtml extends Model
 {
+    use HasFactory;
+
     use HasFactory;
     /**
      * モデルに関連付けるテーブル
      *
      * @var string
      */
-    protected $table = 'customer';
+    protected $table = 'page_html';
 
     /**
      * テーブルに関連付ける主キー
      *
      * @var string
      */
-    protected $primaryKey = 'customer_id';
+    protected $primaryKey = 'html_id';
 
     /**
      * モデルにタイムスタンプを付けるか
@@ -30,10 +32,6 @@ class Customer extends Model
     public $timestamps = false;
 
     public function customer_page() {
-        return $this->hasMany(CustomerPage::class);
-    }
-
-    public function page_html(){
-        return $this->hasManyThrough(PageHtml::class, CustomerPage::class);
+        return $this->belongsTo(CustomerPage::class);
     }
 }
