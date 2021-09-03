@@ -7,6 +7,7 @@ use App\Http\Controllers\NoBlogController;
 use App\Http\Controllers\HasEccubeController;
 use App\Http\Controllers\NoEccubeController;
 use App\Http\Controllers\HtmlController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,10 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::resource('user', UserController::class)
+    ->middleware(['auth'])
+    ->only(['edit', 'destroy']);
 
 Route::resource('customer', CustomerController::class)
     ->middleware(['auth'])
