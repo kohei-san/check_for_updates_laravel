@@ -30,7 +30,7 @@ Route::get('/dashboard', function () {
 
 Route::resource('user', UserController::class)
     ->middleware(['auth'])
-    ->only(['edit', 'destroy']);
+    ->only(['edit', 'update']);
 
 Route::resource('customer', CustomerController::class)
     ->middleware(['auth'])
