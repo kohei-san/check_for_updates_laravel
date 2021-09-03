@@ -16,6 +16,34 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+
+                <!-- Cervn画面 -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('customer.index')" :active="request()->routeIs('customer.index')">
+                        {{ __('cervn') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- ブログあり -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('hasblog.index')" :active="request()->routeIs('hasblog.index')">
+                        {{ __('ブログ有り') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- ブログ無し -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('noblog.index')" :active="request()->routeIs('noblog.index')">
+                        {{ __('ブログ無し') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- 取得日 -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('timestamp.index')" :active="request()->routeIs('timestamp.index')">
+                        {{ __('取得日') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -34,6 +62,11 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        {{-- 登録情報編集 --}}
+                        <x-dropdown-link :href="route('user.edit', [Auth::user()])">
+                            {{ __('登録情報編集') }}
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -45,6 +78,7 @@
                             </x-dropdown-link>
                         </form>
                     </x-slot>
+
                 </x-dropdown>
             </div>
 
@@ -73,6 +107,41 @@
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <!-- Dashboard -->
+                <x-responsive-nav-link :href="route('dashboard')">
+                    {{ __('dashboard') }}
+                </x-responsive-nav-link>
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <!-- cervn -->
+                <x-responsive-nav-link :href="route('customer.index')">
+                    {{ __('cervn') }}
+                </x-responsive-nav-link>
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <!-- ブログ有り　-->
+                <x-responsive-nav-link :href="route('hasblog.index')">
+                    {{ __('ブログ有り') }}
+                </x-responsive-nav-link>
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <!-- ブログ無し -->
+                <x-responsive-nav-link :href="route('noblog.index')">
+                    {{ __('ブログ無し') }}
+                </x-responsive-nav-link>
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <!-- 登録画面編集 -->
+                <x-responsive-nav-link :href="route('user.edit', [Auth::user()])">
+                    {{ __('登録画面編集') }}
+                </x-responsive-nav-link>
             </div>
 
             <div class="mt-3 space-y-1">
