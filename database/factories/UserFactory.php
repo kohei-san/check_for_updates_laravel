@@ -23,6 +23,8 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
+            'rm_id' => $this->faker->randomNumber(8),
+            'is_admin' => '0',
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
