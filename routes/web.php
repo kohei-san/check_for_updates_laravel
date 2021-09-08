@@ -8,6 +8,7 @@ use App\Http\Controllers\HasEccubeController;
 use App\Http\Controllers\NoEccubeController;
 use App\Http\Controllers\HtmlController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PythonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,5 +56,9 @@ Route::resource('noeccube', NoEccubeController::class)
 Route::resource('timestamp', HtmlController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
+
+Route::get('python', [PythonController::class, 'exec'])
+    ->middleware(['auth'])
+    ->name('python');
 
 require __DIR__.'/auth.php';
