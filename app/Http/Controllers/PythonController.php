@@ -9,18 +9,18 @@ class PythonController extends Controller
 {
     public function exec() {
         $dir = __DIR__;
-        $py_file = $dir.'\python\test.py';
+        $py_file = $dir.'/python/test.py';
 
         exec($py_file, $output);
 
         // dd($output);
 
-        return redirect()->intended(RouteServiceProvider::HOME)
-            ->with(['message' => $py_file,
-            'status' => 'info']);
-
         // return redirect()->intended(RouteServiceProvider::HOME)
-        // ->with(['message' => $output[0],
-        // 'status' => 'info']);
+        //     ->with(['message' => $py_file,
+        //     'status' => 'info']);
+
+        return redirect()->intended(RouteServiceProvider::HOME)
+        ->with(['message' => $output[0],
+        'status' => 'info']);
     }
 }
