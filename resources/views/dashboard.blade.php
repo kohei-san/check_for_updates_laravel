@@ -12,6 +12,11 @@
                     <x-flash-message status="session('status')" />
                     You're logged in!
                 </div>
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <a href="{{ route('python') }}" class="ml-3">
+                        {{ __('python') }}
+                    </a>
+                </div>
             </div>
         </div>
     </div>
