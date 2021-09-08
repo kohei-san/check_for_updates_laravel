@@ -15,6 +15,13 @@ class PythonController extends Controller
 
         // dd($output);
 
+<<<<<<< Updated upstream
+=======
+        return redirect()->intended(RouteServiceProvider::HOME)
+        ->with(['message' => $py_file,
+        'status' => 'info']);
+
+>>>>>>> Stashed changes
         // return redirect()->intended(RouteServiceProvider::HOME)
         // ->with(['message' => 'pythonファイルを実行しました。',
         // 'status' => 'info']);
