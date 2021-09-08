@@ -9,7 +9,7 @@ class PythonController extends Controller
 {
     public function exec() {
         $dir = __DIR__;
-        $py_file = $dir.'/python/test.py';
+        $py_file = 'python'. ' '. $dir.'/python/test.py';
 
         exec($py_file, $output);
 
