@@ -13,7 +13,7 @@ class PythonController extends Controller
         if($env == 'production'){
             $dir = __DIR__;
             $python_dir = '/home/xs330114/anaconda3/bin/python3.8.exe';
-            $py_file = $python_dir.' '.$dir.'/python/linkurlget_test1.py';
+            $py_file = $python_dir.' '.$dir.'/python/linkurlget_prod.py 2>&1';
 
             exec($py_file, $output, $result);
 
@@ -25,7 +25,7 @@ class PythonController extends Controller
         // 開発環境のpythonディレクトリ
         $dir = __DIR__;
         $python_dir = 'C:\Users\miyatake\anaconda3\python.exe';
-        $py_file = $python_dir.' '.$dir.'/python/linkurlget_test1.py';
+        $py_file = $python_dir.' '.$dir.'/python/linkurlget_test1.py 2>&1';
 
         exec($py_file, $output, $result);
 
