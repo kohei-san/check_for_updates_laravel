@@ -13,14 +13,14 @@ class Html extends Model
      *
      * @var string
      */
-    protected $table = 'htmls';
+    protected $table = 'page_html';
 
     /**
      * テーブルに関連付ける主キー
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'html_id';
 
     /**
      * モデルにタイムスタンプを付けるか
@@ -30,10 +30,10 @@ class Html extends Model
     public $timestamps = false;
 
     public function page() {
-        return $this->belongsTo(Page::class);
+        return $this->belongsTo(Page::class, 'page_id', 'page_id');
     }
 
     public function customer() {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
 }

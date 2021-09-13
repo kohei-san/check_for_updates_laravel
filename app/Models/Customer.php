@@ -13,14 +13,14 @@ class Customer extends Model
      *
      * @var string
      */
-    protected $table = 'customers';
+    protected $table = 'customer';
 
     /**
      * テーブルに関連付ける主キー
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'customer_id';
 
     /**
      * モデルにタイムスタンプを付けるか
@@ -30,10 +30,10 @@ class Customer extends Model
     public $timestamps = false;
 
     public function page() {
-        return $this->hasMany(Page::class);
+        return $this->hasMany(Page::class, 'page_id');
     }
 
     public function html(){
-        return $this->hasManyThrough(Html::class, Page::class);
+        return $this->hasMany(Html::class, 'html_id', 'html_id');
     }
 }
