@@ -7,7 +7,7 @@
 
 <section class="text-gray-600 body-font">
   <div class="container px-5 py-24 mx-auto">
-    <div class="lg:w-11/12 w-full mx-auto overflow-auto">
+    <div class="w-full mx-auto overflow-auto">
       <table class="table-auto w-full text-left whitespace-no-wrap">
         {{-- テーブルヘッダー --}}
         <thead>
@@ -28,10 +28,14 @@
           <tbody>
             <tr>
               <x-table-td :active="$loop->iteration % 2 == 1">{{ __($loop->iteration) }}</x-table-td>
-              <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer->support_id) }}</x-table-td>
-              <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer->customer_name) }}</x-table-td>
+              <x-table-td :active="$loop->iteration % 2 == 1"><a href="{{route('customer.show', [$customer->customer_id])}}">{{ __($customer->support_id) }}</a></x-table-td>
+              <x-table-td :active="$loop->iteration % 2 == 1"><a href="{{route('customer.show', [$customer->customer_id])}}">{{ __($customer->customer_name) }}</a></x-table-td>
               <x-table-td :active="$loop->iteration % 2 == 1">{{ __('担当者名') }}</x-table-td>
-              <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer->customer_toppage_url) }}</x-table-td>
+              <x-table-td :active="$loop->iteration % 2 == 1">
+                <a href="{{ $customer->customer_toppage_url }}"class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+                  {{ __("開く") }}
+                </a>
+              </x-table-td>
               <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
               <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
               @php

@@ -30,7 +30,11 @@
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer_page->customer->support_id) }}</x-table-td>
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer_page->customer->customer_name) }}</x-table-td>
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __('担当者名') }}</x-table-td>
-                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer_page->page_url) }}</x-table-td>
+                        <x-table-td :active="$loop->iteration % 2 == 1">
+                            <a href="{{ $customer_page->page_url }}">    
+                                {{ __($customer_page->page_url) }}
+                            </a>
+                        </x-table-td>
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer_page->page_html->time_stamp_htmlsrc) }}</x-table-td>
