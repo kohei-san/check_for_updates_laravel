@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\CustomePage;
+use App\Models\CustomerPage;
 use App\Models\PageHtml;
 use Illuminate\Http\Request;
 
@@ -20,15 +20,21 @@ class CustomerController extends Controller
 
         return view('customer')->with('customers', $customers);
     }
-    
+
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
+    public function show($id)
     {
-        //
+        $customer_id = $id;
+        // $customer_pages = CustomerPage::where('customer_id', $customer_id)->get();
+        $customer_pages = CustomerPage::with(['customer', 'page_html'])
+                            ->where('customer_id', $customer_id)
+                            ->get();
+
+        return view('show-customer')->with('customer_pages', $customer_pages);
     }
 }

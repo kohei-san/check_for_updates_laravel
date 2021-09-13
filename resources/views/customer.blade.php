@@ -29,8 +29,8 @@
             </tr>
             <tr>
               <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $loop->iteration }}</td>
-              <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->support_id }}</td>
-              <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ $customer->customer_name }}</td>
+              <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"><a href="{{route('customer.show', [$customer->customer_id])}}">{{ $customer->support_id }}</a></td>
+              <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900"><a href="{{route('customer.show', [$customer->customer_id])}}">{{ $customer->customer_name }}</a></td>
               <!-- 担当者名 -->
               <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">担当者名</td>
               <!-- URL -->

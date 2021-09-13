@@ -29,29 +29,33 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+// user編集ページ
 Route::resource('user', UserController::class)
     ->middleware(['auth'])
     ->only(['edit', 'update']);
 
+// 顧客一覧表示
 Route::resource('customer', CustomerController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 
+// ブログあり
 Route::resource('hasblog', HasBlogController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 
+// ブログなし
 Route::resource('noblog', NoBlogController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 
-Route::resource('haseccube', HasEccubeController::class)
-    ->middleware(['auth'])
-    ->only(['index', 'show']);
+// Route::resource('haseccube', HasEccubeController::class)
+//     ->middleware(['auth'])
+//     ->only(['index', 'show']);
 
-Route::resource('noeccube', NoEccubeController::class)
-    ->middleware(['auth'])
-    ->only(['index', 'show']);
+// Route::resource('noeccube', NoEccubeController::class)
+//     ->middleware(['auth'])
+//     ->only(['index', 'show']);
 
 Route::resource('timestamp', PageHtmlController::class)
     ->middleware(['auth'])
