@@ -6,7 +6,7 @@ use App\Http\Controllers\HasBlogController;
 use App\Http\Controllers\NoBlogController;
 use App\Http\Controllers\HasEccubeController;
 use App\Http\Controllers\NoEccubeController;
-use App\Http\Controllers\HtmlController;
+use App\Http\Controllers\PageHtmlController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PythonController;
 
@@ -53,7 +53,7 @@ Route::resource('noeccube', NoEccubeController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 
-Route::resource('timestamp', HtmlController::class)
+Route::resource('timestamp', PageHtmlController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 

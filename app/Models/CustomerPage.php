@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Html extends Model
+class CustomerPage extends Model
 {
     use HasFactory;
     /**
@@ -13,14 +13,14 @@ class Html extends Model
      *
      * @var string
      */
-    protected $table = 'page_html';
+    protected $table = 'customer_page';
 
     /**
      * テーブルに関連付ける主キー
      *
      * @var string
      */
-    protected $primaryKey = 'html_id';
+    protected $primaryKey = 'page_id';
 
     /**
      * モデルにタイムスタンプを付けるか
@@ -29,11 +29,11 @@ class Html extends Model
      */
     public $timestamps = false;
 
-    public function page() {
-        return $this->belongsTo(Page::class, 'page_id', 'page_id');
-    }
-
     public function customer() {
         return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
+    }
+
+    public function page_html() {
+        return $this->hasOne(PageHtml::class, 'html_id', 'page_id');
     }
 }

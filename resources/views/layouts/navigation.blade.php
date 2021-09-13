@@ -17,10 +17,10 @@
                     </x-nav-link>
                 </div>
 
-                <!-- Cervn画面 -->
+                <!-- corsin画面 -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('customer.index')" :active="request()->routeIs('customer.index')">
-                        {{ __('cervn') }}
+                        {{ __('corsin') }}
                     </x-nav-link>
                 </div>
 
@@ -117,9 +117,9 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <!-- cervn -->
+                <!-- corsin -->
                 <x-responsive-nav-link :href="route('customer.index')">
-                    {{ __('cervn') }}
+                    {{ __('corsin') }}
                 </x-responsive-nav-link>
             </div>
 
