@@ -24,18 +24,18 @@
             <!-- 顧客情報表示 -->
             
             @foreach($customer_pages as $customer_page)
-            <tbody>
-                <tr>
-                    <x-table-td>{{ __($loop->iteration) }}</x-table-td>
-                    <x-table-td>{{ __($customer_page->customer->support_id) }}</x-table-td>
-                    <x-table-td>{{ __($customer_page->customer->customer_name) }}</x-table-td>
-                    <x-table-td>{{ __('担当者名') }}</x-table-td>
-                    <x-table-td>{{ __($customer_page->page_url) }}</x-table-td>
-                    <x-table-td>{{ __('') }}</x-table-td>
-                    <x-table-td>{{ __('') }}</x-table-td>
-                    <x-table-td>{{ __($customer_page->page_html->time_stamp_htmlsrc) }}</x-table-td>
-                </tr>
-            </tbody>
+                <tbody>
+                    <tr>
+                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __($loop->iteration) }}</x-table-td>
+                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer_page->customer->support_id) }}</x-table-td>
+                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer_page->customer->customer_name) }}</x-table-td>
+                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __('担当者名') }}</x-table-td>
+                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer_page->page_url) }}</x-table-td>
+                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
+                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
+                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer_page->page_html->time_stamp_htmlsrc) }}</x-table-td>
+                    </tr>
+                </tbody>
             @endforeach
         </table>
         </div>
