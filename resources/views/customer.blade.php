@@ -6,7 +6,7 @@
     </x-slot>
 
 <section class="text-gray-600 body-font">
-  <div class="container px-5 py-24 mx-auto">
+  <div class="xl:container px-5 py-24 mx-auto">
     <div class="w-full mx-auto overflow-auto">
       <table class="table-auto w-full text-left whitespace-no-wrap">
         {{-- テーブルヘッダー --}}
@@ -31,6 +31,10 @@
 
         <!-- 顧客情報表示 -->
         @foreach($customers as $customer)
+          {{-- 停止中ユーザー非表示 --}}
+          @if($customer->active_flg == 0 || $customer->del_flg ==1)
+            @continue
+          @endif
           <tbody>
             <tr>
               <x-table-td :active="$loop->iteration % 2 == 1">{{ __($loop->iteration) }}</x-table-td>
