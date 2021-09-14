@@ -1,63 +1,65 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('cervn') }}
+            {{ __('corsin') }}
         </h2>
     </x-slot>
 
-    <section class="text-gray-600 body-font">
+<section class="text-gray-600 body-font">
   <div class="container px-5 py-24 mx-auto">
-    <div class="lg:w-11/12 w-full mx-auto overflow-auto">
+    <div class="w-full mx-auto overflow-auto">
       <table class="table-auto w-full text-left whitespace-no-wrap">
+        {{-- テーブルヘッダー --}}
         <thead>
           <tr>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">No.</th>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">ID</th>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">名前</th>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">担当者名</th>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">URL</th>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">has_blog?</th>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">has_eccube?</th>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">ファイル取得日時</th>
-            <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
+            <x-table-th>{{ __('No.') }}</x-table-th>
+            <x-table-th>{{ __('サポートID') }}</x-table-th>
+            <x-table-th>{{ __('顧客名') }}</x-table-th>
+            <x-table-th>{{ __('担当者名') }}</x-table-th>
+            <x-table-th>{{ __('URL') }}</x-table-th>
+            <x-table-th>{{ __('〇〇') }}</x-table-th>
+            <x-table-th>{{ __('〇〇') }}</x-table-th>
+            <x-table-th>{{ __('ファイル取得日') }}</x-table-th>
           </tr>
         </thead>
+
         <!-- 顧客情報表示 -->
         @foreach($customers as $customer)
-        <tbody>
-          </tr>
-          <tr>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->id }}</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->support_id }}</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ $customer->customer_name }}</td>
-            <!-- 担当者名 -->
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">担当者名</td>
-            <!-- URL -->
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"><a href="{{ $customer->customer_toppage_url }}">{{ $customer->customer_toppage_url }}</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->blog_flg }}</td>
-            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $customer->eccube_flg }}</td>
-            @php
-              $htmls = $customer->html;
-            @endphp
-            @foreach($htmls as $html)
-              <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $html->time_stamp_htmlsrc }}</td>
-              @break
-            @endforeach
-          </tr>
-        </tbody>
+          <tbody>
+            <tr>
+              <x-table-td :active="$loop->iteration % 2 == 1">{{ __($loop->iteration) }}</x-table-td>
+              <x-table-td :active="$loop->iteration % 2 == 1"><a href="{{route('customer.show', [$customer->customer_id])}}">{{ __($customer->support_id) }}</a></x-table-td>
+              <x-table-td :active="$loop->iteration % 2 == 1"><a href="{{route('customer.show', [$customer->customer_id])}}">{{ __($customer->customer_name) }}</a></x-table-td>
+              <x-table-td :active="$loop->iteration % 2 == 1">{{ __('担当者名') }}</x-table-td>
+              <x-table-td :active="$loop->iteration % 2 == 1">
+                <a href="{{ $customer->customer_toppage_url }}"class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+                  {{ __("開く") }}
+                </a>
+              </x-table-td>
+              <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
+              <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
+              @php
+                // page_htmlsの内容は配列のため、->では取得できない
+                $page_htmls = $customer->page_html;
+                // 下記配列で$loop->iterationが狂うので変数に格納
+                $odd_even = $loop->iteration;
+              @endphp
+              @foreach($page_htmls as $page_html)
+                <x-table-td :active="$odd_even % 2 == 1">{{ __($page_html->time_stamp_htmlsrc) }}</x-table-td>
+                @break
+              @endforeach
+            </tr>
+          </tbody>
         @endforeach
-        {{ $customers->links() }}
+        <div class="container p-2">
+          {{ $customers->links() }}
+        </div>
       </table>
+      <div class="container p-2">
+        {{ $customers->links() }}
+      </div>
     </div>
 
-    <div class="flex pl-4 mt-4 lg:w-2/3 w-full mx-auto">
-      <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More
-        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
-          <path d="M5 12h14M12 5l7 7-7 7"></path>
-        </svg>
-      </a>
-      <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Button</button>
-    </div>
   </div>
 </section>
 </x-app-layout>

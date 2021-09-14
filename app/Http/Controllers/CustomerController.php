@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\CustomePage;
+use App\Models\CustomerPage;
 use App\Models\PageHtml;
 use Illuminate\Http\Request;
 
@@ -16,30 +16,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::with(['page', 'html'])->paginate(50);
+        $customers = Customer::with(['customer_page', 'page_html'])->paginate(50);
 
         return view('customer')->with('customers', $customers);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -48,42 +27,14 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
+    public function show($id)
     {
-        //
-    }
+        $customer_id = $id;
+        // $customer_pages = CustomerPage::where('customer_id', $customer_id)->get();
+        $customer_pages = CustomerPage::with(['customer', 'page_html'])
+                            ->where('customer_id', $customer_id)
+                            ->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Customer $customer)
-    {
-        //
+        return view('show-customer')->with('customer_pages', $customer_pages);
     }
 }

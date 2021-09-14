@@ -22,29 +22,29 @@
         <tbody>
           </tr>
           <!-- 顧客情報表示 -->
-          @foreach($timestamps as $timestamp)
+          @foreach($pageHtmls as $pageHtml)
             <!-- urlで/が３つ以上はbreak, 顧客ID重複でbreakではドメイン２つ以上表示できないため -->
             <?php
-              $count = substr_count($timestamp->page->page_url, '/'); 
+              $count = substr_count($pageHtml->customer_page->page_url, '/'); 
             ?>
             @if($count > 3)
               @continue
             @endif
               <tr>
-                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $timestamp->id }}</td>
-                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $timestamp->customer->id }}</td>
-                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ $timestamp->customer->customer_name }}</td>
+                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $pageHtml->html_id }}</td>
+                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $pageHtml->customer->customer_id }}</td>
+                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ $pageHtml->customer->customer_name }}</td>
                 <!-- 担当者名 -->
                 <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">担当者名</td>
                 <!-- URL -->
-                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"><a href="{{ $timestamp->page->page_url }}">{{ $timestamp->page->page_url }}</td>
+                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"><a href="{{ $pageHtml->customer_page->page_url }}">{{ $pageHtml->customer_page->page_url }}</td>
                 <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
                 <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
-                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $timestamp->time_stamp_htmlsrc }}</td>
+                <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $pageHtml->time_stamp_htmlsrc }}</td>
               </tr>
           @endforeach
         </tbody>
-        {{ $timestamps->links() }}
+        {{ $pageHtmls->links() }}
       </table>
     </div>
 

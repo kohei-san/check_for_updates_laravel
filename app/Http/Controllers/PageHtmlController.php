@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Html;
+use App\Models\PageHtml;
 use Illuminate\Http\Request;
 
-class HtmlController extends Controller
+class PageHtmlController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,11 @@ class HtmlController extends Controller
     public function index()
     {
         // $timestamps = Html::paginate(50);
-        $timestamps = Html::with(['page', 'customer'])->paginate(50);
+        $pageHtmls = PageHtml::with(['customer_page', 'customer'])->paginate(50);
 
-        return view('timestamp')->with('timestamps', $timestamps);
+        // dd($pageHtmls);
+
+        return view('timestamp')->with('pageHtmls', $pageHtmls);
     }
 
     /**
