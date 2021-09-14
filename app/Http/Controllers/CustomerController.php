@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\CustomerPage;
 use App\Models\PageHtml;
 use Illuminate\Http\Request;
+use Kyslik\ColumnSortable\Sortable;
 
 class CustomerController extends Controller
 {
@@ -16,7 +17,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::with(['customer_page', 'page_html'])->paginate(50);
+        $customers = Customer::with(['customer_page', 'page_html'])->sortable()->paginate(50);
 
         return view('customer')->with('customers', $customers);
     }

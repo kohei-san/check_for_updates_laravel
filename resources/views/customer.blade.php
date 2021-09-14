@@ -13,8 +13,14 @@
         <thead>
           <tr>
             <x-table-th>{{ __('No.') }}</x-table-th>
-            <x-table-th>{{ __('サポートID') }}</x-table-th>
-            <x-table-th>{{ __('顧客名') }}</x-table-th>
+            <x-table-th>
+              @sortablelink('support_id', 'サポートID')
+              {{ __('') }}
+            </x-table-th>
+            <x-table-th>
+              @sortablelink('customer_name', '顧客名')
+              {{ __('') }}
+            </x-table-th>
             <x-table-th>{{ __('担当者名') }}</x-table-th>
             <x-table-th>{{ __('URL') }}</x-table-th>
             <x-table-th>{{ __('〇〇') }}</x-table-th>
@@ -52,11 +58,11 @@
           </tbody>
         @endforeach
         <div class="container p-2">
-          {{ $customers->links() }}
+          {!! $customers->appends(\Request::except('page'))->render() !!}
         </div>
       </table>
       <div class="container p-2">
-        {{ $customers->links() }}
+        {!! $customers->appends(\Request::except('page'))->render() !!}
       </div>
     </div>
 
