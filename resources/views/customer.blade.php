@@ -33,10 +33,6 @@
         <?php $count = 1; ?>
         <!-- 顧客情報表示 -->
         @foreach($customers as $customer)
-          {{-- 停止中ユーザー非表示 --}}
-          @if($customer->active_flg == 0 || $customer->del_flg ==1)
-            @continue
-          @endif
           <tbody>
             <tr>
               <x-table-td :active="$count % 2 == 1">{{ __($count) }}</x-table-td>

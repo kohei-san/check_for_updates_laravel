@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Kyslik\ColumnSortable\Sortable;
 
 class NotActiveCustomerController extends Controller
 {
@@ -14,7 +15,10 @@ class NotActiveCustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::with(['customer_page', 'page_html'])->sortable()->get();
+        $customers = Customer::with('page_html')
+                                ->where('active_flg', 0)
+                                ->where('del_flg', 0)
+                                ->sortable()->get();
 
         return view('not-active-customer')->with('customers', $customers);
     }

@@ -14,8 +14,12 @@ class NoBlogController extends Controller
      */
     public function index()
     {
-        $customers = Customer::where('blog_flg', 0)->paginate(50);
-
+        $customers = Customer::with('page_html')
+                                ->where('blog_flg', 0)
+                                ->where('active_flg', 1)
+                                ->where('del_flg', 0)
+                                ->sortable()->paginate(50);
+                                
         return view('no-blog')->with('customers', $customers);
     }
 
