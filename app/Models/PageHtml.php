@@ -39,7 +39,7 @@ class PageHtml extends Model
     }
 
     public function create_html() {
-        return $this->belongsTo(CreateHtml::class, 'html_id', 'page_id');
+        return $this->belongsTo(CreateHtml::class, 'create_html_id', 'page_id');
     }
 
     public $sortable = [
