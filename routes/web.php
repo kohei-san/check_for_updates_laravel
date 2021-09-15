@@ -9,6 +9,7 @@ use App\Http\Controllers\NoEccubeController;
 use App\Http\Controllers\PageHtmlController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PythonController;
+use App\Http\Controllers\NotActiveCustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,11 @@ Route::resource('hasblog', HasBlogController::class)
 
 // ブログなし
 Route::resource('noblog', NoBlogController::class)
+    ->middleware(['auth'])
+    ->only(['index', 'show']);
+
+// 顧客一覧表示
+Route::resource('not-active', NotActiveCustomerController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 

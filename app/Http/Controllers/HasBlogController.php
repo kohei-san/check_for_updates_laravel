@@ -14,7 +14,7 @@ class HasBlogController extends Controller
      */
     public function index()
     {
-        $customers = Customer::where('blog_flg', 1)->paginate(50);
+        $customers = Customer::where('blog_flg', 1)->sortable()->paginate(50);
 
         return view('has-blog')->with('customers', $customers);
     }

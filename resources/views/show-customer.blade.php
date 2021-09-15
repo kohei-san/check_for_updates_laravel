@@ -6,7 +6,7 @@
     </x-slot>
 
     <section class="text-gray-600 body-font">
-    <div class="lg:container py-24 mx-auto">
+    <div class="xl:container px-5 py-24 mx-auto">
         <div class="w-full mx-auto overflow-auto">
         <table class="table-auto border-separate border w-full text-left whitespace-no-wrap">
             <thead>

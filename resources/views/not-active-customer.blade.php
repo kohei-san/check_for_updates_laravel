@@ -33,8 +33,8 @@
         <?php $count = 1; ?>
         <!-- 顧客情報表示 -->
         @foreach($customers as $customer)
-          {{-- 停止中ユーザー非表示 --}}
-          @if($customer->active_flg == 0 || $customer->del_flg ==1)
+          {{-- 停止中ユーザー表示 --}}
+          @if($customer->active_flg == 1 && $customer->del_flg == 0)
             @continue
           @endif
           <tbody>
@@ -53,6 +53,8 @@
               @php
                 // page_htmlsの内容は配列のため、->では取得できない
                 $page_htmls = $customer->page_html;
+                // 下記配列で$loop->iterationが狂うので変数に格納
+                $odd_even = $loop->iteration;
               @endphp
               @foreach($page_htmls as $page_html)
                 <x-table-td :active="$count % 2 == 1">{{ __($page_html->time_stamp_htmlsrc) }}</x-table-td>
@@ -62,13 +64,7 @@
           </tbody>
           <?php $count += 1; ?>
         @endforeach
-        <div class="container p-2">
-          {!! $customers->appends(\Request::except('page'))->render() !!}
-        </div>
       </table>
-      <div class="container p-2">
-        {!! $customers->appends(\Request::except('page'))->render() !!}
-      </div>
     </div>
 
   </div>

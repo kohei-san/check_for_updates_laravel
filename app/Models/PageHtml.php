@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class PageHtml extends Model
 {
-    use HasFactory;
+    use HasFactory, sortable;
     /**
      * モデルに関連付けるテーブル
      *
@@ -40,4 +41,7 @@ class PageHtml extends Model
     public function create_html() {
         return $this->belongsTo(CreateHtml::class, 'html_id', 'page_id');
     }
+
+    public $sortable = [
+        'time_stamp_htmlsrc'];
 }
