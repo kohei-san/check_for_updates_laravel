@@ -17,7 +17,11 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::where('active_flg', 1)->sortable()->paginate(50);
+        $customers = Customer::with('page_html')
+                            ->where('active_flg', 1)
+                            ->where('del_flg', 0)
+                            ->sortable()
+                            ->paginate(50);
 
         return view('customer')->with('customers', $customers);
     }
