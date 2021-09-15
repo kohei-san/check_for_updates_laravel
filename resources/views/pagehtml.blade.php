@@ -25,25 +25,32 @@
                 </x-table-th>
               </tr>
             </thead>
-    
+
+            {{-- 配色が交互になるようカウント --}}
+            <?php $count = 1; ?>
             <!-- 顧客情報表示 -->
             @foreach($pageHtmls as $pageHtml)
+              {{-- 停止中ユーザー非表示 --}}
+              @if($pageHtml->customer->active_flg == 0 || $pageHtml->customer->del_flg ==1)
+                @continue
+              @endif
               <tbody>
                 <tr>
-                  <x-table-td :active="$loop->iteration % 2 == 1">{{ __($loop->iteration) }}</x-table-td>
-                  <x-table-td :active="$loop->iteration % 2 == 1"><a href="{{route('customer.show', [$pageHtml->customer->customer_id])}}">{{ __($pageHtml->customer->customer_name) }}</a></x-table-td>
-                  <x-table-td :active="$loop->iteration % 2 == 1"><a href="{{route('customer.show', [$pageHtml->customer->customer_id])}}">{{ __($pageHtml->customer->customer_name) }}</a></x-table-td>
-                  <x-table-td :active="$loop->iteration % 2 == 1">{{ __('担当者名') }}</x-table-td>
-                  <x-table-td :active="$loop->iteration % 2 == 1">
+                  <x-table-td :active="$count % 2 == 1">{{ __($count) }}</x-table-td>
+                  <x-table-td :active="$count % 2 == 1"><a href="{{route('customer.show', [$pageHtml->customer->customer_id])}}">{{ __($pageHtml->customer->customer_name) }}</a></x-table-td>
+                  <x-table-td :active="$count % 2 == 1"><a href="{{route('customer.show', [$pageHtml->customer->customer_id])}}">{{ __($pageHtml->customer->customer_name) }}</a></x-table-td>
+                  <x-table-td :active="$count % 2 == 1">{{ __('担当者名') }}</x-table-td>
+                  <x-table-td :active="$count % 2 == 1">
                     <a href="{{ $pageHtml->customer_page->page_url }}"class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
                       {{ __("開く") }}
                     </a>
                   </x-table-td>
-                  <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
-                  <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
-                  <x-table-td :active="$loop->iteration % 2 == 1">{{ __($pageHtml->time_stamp_htmlsrc) }}</x-table-td>
+                  <x-table-td :active="$count % 2 == 1">{{ __('') }}</x-table-td>
+                  <x-table-td :active="$count % 2 == 1">{{ __('') }}</x-table-td>
+                  <x-table-td :active="$count % 2 == 1">{{ __($pageHtml->time_stamp_htmlsrc) }}</x-table-td>
                 </tr>
               </tbody>
+              <?php $count += 1; ?>
             @endforeach
             <div class="container p-2">
               {!! $pageHtmls->appends(\Request::except('page'))->render() !!}
