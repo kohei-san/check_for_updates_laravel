@@ -37,6 +37,13 @@
                         {{ __('ブログ無し') }}
                     </x-nav-link>
                 </div>
+
+                <!-- 検索 -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('search.index')" :active="request()->routeIs('search.index')">
+                        {{ __('検索') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

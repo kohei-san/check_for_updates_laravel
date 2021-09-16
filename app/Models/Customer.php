@@ -67,4 +67,15 @@ class Customer extends Model
 
         return $array;
     }
+
+        /**
+     * 全モデルを検索可能にするときの、モデル取得に使用するクエリを変更
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function makeAllSearchableUsing($query)
+    {
+        return $query->with('customer_page');
+    }
 }
