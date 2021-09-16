@@ -69,9 +69,9 @@ Route::resource('not-active', NotActiveCustomerController::class)
 //     ->middleware(['auth'])
 //     ->only(['index', 'show']);
 
-Route::resource('timestamp', PageHtmlController::class)
-    ->middleware(['auth'])
-    ->only(['index', 'show']);
+// Route::resource('timestamp', PageHtmlController::class)
+//     ->middleware(['auth'])
+//     ->only(['index', 'show']);
 
 Route::get('python', [PythonController::class, 'exec'])
     ->middleware(['auth'])

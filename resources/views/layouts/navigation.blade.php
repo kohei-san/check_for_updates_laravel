@@ -37,13 +37,6 @@
                         {{ __('ブログ無し') }}
                     </x-nav-link>
                 </div>
-
-                <!-- 取得日 -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('timestamp.index')" :active="request()->routeIs('timestamp.index')">
-                        {{ __('取得日') }}
-                    </x-nav-link>
-                </div>
             </div>
 
             <!-- Settings Dropdown -->

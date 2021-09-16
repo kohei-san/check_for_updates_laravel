@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Models\CustomerPage;
 
 class HasBlogController extends Controller
 {
@@ -14,14 +15,16 @@ class HasBlogController extends Controller
      */
     public function index()
     {
-        // $customers = Customer::where('blog_flg', 1)->sortable()->paginate(50);
-        $customers = Customer::with('page_html')
-                            ->where('blog_flg', 1)
-                            ->where('active_flg', 1)
-                            ->where('del_flg', 0)
-                            ->sortable()->paginate(50);
+        $customerPages = CustomerPage::with(['customer', 'page_html'])
+                                    ->whereHas('Customer', function($query){
+                                        $query->where('blog_flg', 1)
+                                            ->where('active_flg', 1)
+                                            ->where('del_flg', 0);
+                                    })
+                                    ->where('top_page_flg', 1)
+                                    ->sortable()->paginate(50);
 
-        return view('has-blog')->with('customers', $customers);
+        return view('has-blog')->with('customerPages', $customerPages);
     }
 
     /**
