@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use Laravel\Scout\Searchable;
 
 class Customer extends Model
 {
-    use HasFactory, sortable;
+    use HasFactory, sortable, searchable;
     /**
      * モデルに関連付けるテーブル
      *
@@ -38,9 +39,32 @@ class Customer extends Model
         return $this->hasMany(PageHtml::class, 'html_id', 'customer_id');
     }
 
+    // ソート可能なカラム
     public $sortable = [
         'support_id',
-        'customer_name',
-        'created_at',
-        'updated_at'];
+        'customer_name'];
+
+     /**
+     * モデルに関連付けられているインデックスの名前を取得
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'customers_index';
+    }
+
+        /**
+     * モデルのインデックス可能なデータ配列の取得
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        // データ配列をカスタマイズ
+
+        return $array;
+    }
 }

@@ -19,7 +19,7 @@
 
                 <!-- corsin画面 -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('customer.index')" :active="request()->routeIs('customer.index')">
+                    <x-nav-link :href="route('customer-page.index')" :active="request()->routeIs('customer-page.index')">
                         {{ __('corsin') }}
                     </x-nav-link>
                 </div>
@@ -35,13 +35,6 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('noblog.index')" :active="request()->routeIs('noblog.index')">
                         {{ __('ブログ無し') }}
-                    </x-nav-link>
-                </div>
-
-                <!-- 取得日 -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('timestamp.index')" :active="request()->routeIs('timestamp.index')">
-                        {{ __('取得日') }}
                     </x-nav-link>
                 </div>
             </div>

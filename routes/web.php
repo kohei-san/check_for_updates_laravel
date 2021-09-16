@@ -10,6 +10,7 @@ use App\Http\Controllers\PageHtmlController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PythonController;
 use App\Http\Controllers\NotActiveCustomerController;
+use App\Http\Controllers\CustomerPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,11 @@ Route::resource('customer', CustomerController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 
+// 顧客ページ一覧
+Route::resource('customer-page', CustomerPageController::class)
+    ->middleware(['auth'])
+    ->only(['index', 'show']);
+
 // ブログあり
 Route::resource('hasblog', HasBlogController::class)
     ->middleware(['auth'])
@@ -50,7 +56,7 @@ Route::resource('noblog', NoBlogController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 
-// 顧客一覧表示
+// 非アクティブ顧客一覧表示
 Route::resource('not-active', NotActiveCustomerController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
@@ -63,9 +69,9 @@ Route::resource('not-active', NotActiveCustomerController::class)
 //     ->middleware(['auth'])
 //     ->only(['index', 'show']);
 
-Route::resource('timestamp', PageHtmlController::class)
-    ->middleware(['auth'])
-    ->only(['index', 'show']);
+// Route::resource('timestamp', PageHtmlController::class)
+//     ->middleware(['auth'])
+//     ->only(['index', 'show']);
 
 Route::get('python', [PythonController::class, 'exec'])
     ->middleware(['auth'])
