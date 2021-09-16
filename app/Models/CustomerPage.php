@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class CustomerPage extends Model
 {
-    use HasFactory;
+    use HasFactory, sortable;
     /**
      * モデルに関連付けるテーブル
      *
@@ -36,4 +37,9 @@ class CustomerPage extends Model
     public function page_html() {
         return $this->hasOne(PageHtml::class, 'html_id', 'page_id');
     }
+
+    public $sortable = [
+        'page_id',
+        'customer_id'
+    ];
 }

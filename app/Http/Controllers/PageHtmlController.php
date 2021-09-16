@@ -16,7 +16,9 @@ class PageHtmlController extends Controller
     public function index()
     {
         // $timestamps = Html::paginate(50);
-        $pageHtmls = PageHtml::with(['customer_page', 'customer'])->sortable()->paginate(50);
+        $pageHtmls = PageHtml::with(['customer_page', 'customer'])
+                            ->where('page_html.top_page_flg', 1)
+                            ->sortable()->paginate(50);
 
         // dd($pageHtmls);
 
