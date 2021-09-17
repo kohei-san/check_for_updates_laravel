@@ -61,9 +61,13 @@ Route::resource('not-active', NotActiveCustomerController::class)
     ->only(['index', 'show']);
 
 // 検索機能
-Route::resource('search', SearchController::class)
+Route::get('/search', [SearchController::class, 'index'])
     ->middleware(['auth'])
-    ->only(['index', 'show']);
+    ->name('search.index');
+
+Route::post('/search/result', [SearchController::class, 'result'])
+    ->middleware(['auth'])
+    ->name('search.result');
 
 // Pythonコントローラー
 Route::get('python', [PythonController::class, 'exec'])
