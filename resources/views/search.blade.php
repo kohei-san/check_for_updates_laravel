@@ -7,7 +7,7 @@
       <div>
         <form action="{{ route('search.result') }}" method="POST" >
           @csrf
-          <input type="text" name="searchword" value="{{ old('searchword') }}" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+          <input id="searchForm" type="text" name="searchword" value="{{ old('searchword') }}" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
           <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">検索</button>
         </form>
       </div>
@@ -84,4 +84,36 @@
       </div>
     @endif
   @endif
+
+  <script>
+    const allCustomers = @json($allCustomers);
+    
+    // 配列で顧客と検索ワードの一致を見る
+    function searchCustomer(input, allCustomers) {
+      allCustomers.forEach(customer => {
+
+        // サポートIDの部分一致確認
+        // 'supportId'.find
+
+        var supportId = String(customer.support_id)
+        if(supportId.indexOf(String(input)) > -1){
+          console.log(supportId)
+        }
+        
+      
+        
+        // サポートIDの部分一致確認
+        var customerName = customer.customer_name;
+
+      });
+    }
+
+    var searchForm = document.getElementById('searchForm');
+    var input = 
+
+    searchForm.addEventListener('keyup', function(){
+      var input = searchForm.value;
+      searchCustomer(input, allCustomers);
+    });
+  </script>
 </x-app-layout>
