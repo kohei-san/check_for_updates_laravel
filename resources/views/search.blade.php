@@ -4,14 +4,17 @@
       <h2 class="font-semibold text-xl text-gray-800 leading-tight align-middle">
           {{ __('') }}
       </h2>
-      <div>
-        <form action="{{ route('search.result') }}" method="POST" >
+      <form action="{{ route('search.result') }}" method="POST" >
+        <div class="flex">
           @csrf
-          <input id="searchForm" type="text" name="searchword" value="{{ old('searchword') }}" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+          <div>
+            <input id="searchForm" type="text" name="searchword" value="{{ old('searchword') }}" class="relative rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+
+          </div>
           <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">検索</button>
-        </form>
-      </div>
-    </div>
+        </div>
+      </form>
+    </div>  
   </x-slot>
 
   {{-- 検索結果一覧表示 --}}
@@ -87,29 +90,45 @@
 
   <script>
     const allCustomers = @json($allCustomers);
+
+    // search-list
+    function makeSearchList(lists){
+      console.log(lists);
+    }
     
-    // 配列で顧客と検索ワードの一致を見る
+    // 10件まで、配列で顧客と検索ワードの一致を見る
     function searchCustomer(input, allCustomers) {
-      allCustomers.forEach(customer => {
+      var searchResults = [];
 
-        // サポートIDの部分一致確認
-        // 'supportId'.find
-
-        var supportId = String(customer.support_id)
+      var count = 0
+      for(const customer of allCustomers){
+        // ▼サポートID、顧客名、URLの部分一致確認
+        var supportId = String(customer.support_id);
+        var customerName = String(customer.customer_name);
+        var customerUrl = String(customer.customer_toppage_url);
+                
         if(supportId.indexOf(String(input)) > -1){
-          console.log(supportId)
+          searchResults.push(supportId);
+          count++;
         }
-        
-      
-        
-        // サポートIDの部分一致確認
-        var customerName = customer.customer_name;
+        else if(customerName.indexOf(String(input)) > -1) {
+          searchResults.push(customerName);
+          count++;
+        }
+        else if(customerUrl.indexOf(String(input)) > -1) {
+          searchResults.push(customerUrl);
+          count++;
+        }
+        // ▲サポートID、顧客名、URLの部分一致確認
 
-      });
+        if(count > 9){
+          break;
+        }
+      }
+      makeSearchList(searchResults);
     }
 
     var searchForm = document.getElementById('searchForm');
-    var input = 
 
     searchForm.addEventListener('keyup', function(){
       var input = searchForm.value;

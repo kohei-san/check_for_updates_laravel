@@ -33,7 +33,10 @@ class SearchController extends Controller
                             ->where('active_flg', 1)
                             ->where('del_flg', 0)
                             ->paginate(50);
+        
+        $allCustomers = Customer::all();
 
-        return view('search')->with('customers', $customers);
+        return view('search')->with('customers', $customers)
+                            ->with('allCustomers', $allCustomers);
     }
 }
