@@ -33,7 +33,7 @@
       <main>
         <section class="text-gray-600 body-font">
           <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
-            <x-application-logo class="lg:w-1/2 md:w-3/4 w-5/6 mb-10 object-cover object-center rounded" />
+            <x-application-logo class="xl:w-1/3 lg:w-1/2 md:w-1/2 w-3/4 mb-10 object-cover object-center rounded" />
             <div class="flex justify-center">
               @auth
                 <a href="{{ url('/dashboard') }}" class="inline-flex text-white border-0 py-2 px-6 focus:outline-none rounded text-lg bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500">Dashboardへ</a>
