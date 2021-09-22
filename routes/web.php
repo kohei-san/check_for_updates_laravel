@@ -23,7 +23,7 @@ use App\Http\Controllers\SearchController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('top-page');
 });
 
 Route::get('/dashboard', function () {
