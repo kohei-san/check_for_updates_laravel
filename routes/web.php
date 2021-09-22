@@ -4,13 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HasBlogController;
 use App\Http\Controllers\NoBlogController;
-use App\Http\Controllers\HasEccubeController;
-use App\Http\Controllers\NoEccubeController;
 use App\Http\Controllers\PageHtmlController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PythonController;
 use App\Http\Controllers\NotActiveCustomerController;
 use App\Http\Controllers\CustomerPageController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,18 +60,16 @@ Route::resource('not-active', NotActiveCustomerController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
 
-// Route::resource('haseccube', HasEccubeController::class)
-//     ->middleware(['auth'])
-//     ->only(['index', 'show']);
+// 検索機能
+Route::get('/search', [SearchController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('search.index');
 
-// Route::resource('noeccube', NoEccubeController::class)
-//     ->middleware(['auth'])
-//     ->only(['index', 'show']);
+Route::post('/search/result', [SearchController::class, 'result'])
+    ->middleware(['auth'])
+    ->name('search.result');
 
-// Route::resource('timestamp', PageHtmlController::class)
-//     ->middleware(['auth'])
-//     ->only(['index', 'show']);
-
+// Pythonコントローラー
 Route::get('python', [PythonController::class, 'exec'])
     ->middleware(['auth'])
     ->name('python');
