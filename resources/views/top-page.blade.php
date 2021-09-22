@@ -38,7 +38,7 @@
               @auth
                 <a href="{{ url('/dashboard') }}" class="inline-flex text-white border-0 py-2 px-6 focus:outline-none rounded text-lg bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500">Dashboardへ</a>
               @else
-                <a href="{{ url('/dashboard') }}" class="inline-flex text-white border-0 py-2 px-6 focus:outline-none rounded text-lg bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500">新規登録</a>
+                <a href="{{ url('register') }}" class="inline-flex text-white border-0 py-2 px-6 focus:outline-none rounded text-lg bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500">新規登録</a>
                 <a href="{{ route('login') }}" class="ml-4 inline-flex text-white border-0 py-2 px-6 focus:outline-none rounded text-lg bg-gradient-to-l from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500">ログイン</a>
               @endauth
             </div>
