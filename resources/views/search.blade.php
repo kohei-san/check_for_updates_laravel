@@ -9,13 +9,49 @@
           @csrf
           <div>
             <input id="searchForm" type="text" name="searchword" value="{{ old('searchword') }}" class="relative rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-
           </div>
           <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">検索</button>
         </div>
       </form>
     </div>  
   </x-slot>
+
+  <div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div id="div1" class="p-6 bg-white border-b border-gray-200 hidden">
+                ここに検索候補を表示
+            </div>
+            <div id="div2" class="p-6 bg-white border-b border-gray-200 hidden">
+                ここに検索候補を表示
+            </div>
+            <div id="div3" class="p-6 bg-white border-b border-gray-200 hidden">
+                ここに検索候補を表示
+            </div>
+            <div id="div4" class="p-6 bg-white border-b border-gray-200 hidden">
+                ここに検索候補を表示
+            </div>
+            <div id="div5" class="p-6 bg-white border-b border-gray-200 hidden">
+                ここに検索候補を表示
+            </div>
+            <div id="div6" class="p-6 bg-white border-b border-gray-200 hidden">
+                ここに検索候補を表示
+            </div>
+            <div id="div7" class="p-6 bg-white border-b border-gray-200 hidden">
+                ここに検索候補を表示
+            </div>
+            <div id="div8" class="p-6 bg-white border-b border-gray-200 hidden">
+                ここに検索候補を表示
+            </div>
+            <div id="div9" class="p-6 bg-white border-b border-gray-200 hidden">
+                ここに検索候補を表示
+            </div>
+            <div id="div10" class="p-6 bg-white border-b border-gray-200 hidden">
+                ここに検索候補を表示
+            </div>
+        </div>
+    </div>
+  </div>
 
   {{-- 検索結果一覧表示 --}}
   @if(Request::is('search/result'))
@@ -90,48 +126,80 @@
 
   <script>
     const allCustomers = @json($allCustomers);
-
-    // search-list
-    function makeSearchList(lists){
-      console.log(lists);
+    // 
+    function doSearch(list){
+      console.log(list);
     }
+
+
+    // ▽makeSearchList関数
+    function makeSearchList(lists, allCustomers){
+      var i = 1;
+      for(const customer of allCustomers){
+        for(const list of lists){
+          if(customer.customer_id === list[0]){
+            // クラスhiddenを除去、aタグ内に要素追加
+            var div = document.getElementById("div" + i);
+            div.classList.remove("hidden");
+            div.innerHTML = "<a href='customer/" + list[0] + "'>" + "<span class='font-bold text-blue-500'" + ">" + list[1] + "</span><br>" + customer.support_id + " " + customer.customer_name + " " + customer.customer_toppage_url + "</a>";
+
+            i++;
+          }
+        }
+        if(i > 10){
+          break;
+        }
+      }
+    }
+    // △makeSearchList
     
-    // 10件まで、配列で顧客と検索ワードの一致を見る
+    // ▼searchCustomer関数
+    // 10件まで、配列でcustomerテーブルからサポートID、顧客名、URL顧客と検索ワードの一致を見る
     function searchCustomer(input, allCustomers) {
+      // 空欄時は検索しない
+      if(input == "" | input == " " | input == "　"){
+          return
+        }
+
       var searchResults = [];
 
       var count = 0
       for(const customer of allCustomers){
-        // ▼サポートID、顧客名、URLの部分一致確認
-        var supportId = String(customer.support_id);
-        var customerName = String(customer.customer_name);
-        var customerUrl = String(customer.customer_toppage_url);
+        var supportId = [customer.customer_id, String(customer.support_id)];
+        var customerName = [customer.customer_id, String(customer.customer_name)];
+        var customerUrl = [customer.customer_id, String(customer.customer_toppage_url)];
                 
-        if(supportId.indexOf(String(input)) > -1){
+        if(supportId[1].indexOf(String(input)) > -1){
           searchResults.push(supportId);
           count++;
         }
-        else if(customerName.indexOf(String(input)) > -1) {
+        else if(customerName[1].indexOf(String(input)) > -1) {
           searchResults.push(customerName);
           count++;
         }
-        else if(customerUrl.indexOf(String(input)) > -1) {
+        else if(customerUrl[1].indexOf(String(input)) > -1) {
           searchResults.push(customerUrl);
           count++;
         }
-        // ▲サポートID、顧客名、URLの部分一致確認
 
         if(count > 9){
           break;
         }
       }
-      makeSearchList(searchResults);
+      makeSearchList(searchResults, allCustomers);
     }
+    // ▲searchCustomer関数
 
     var searchForm = document.getElementById('searchForm');
 
     searchForm.addEventListener('keyup', function(){
       var input = searchForm.value;
+
+      for(let i = 1; i < 11; i++){
+        var div = document.getElementById("div" + i);
+        div.classList.add("hidden");
+      }
+
       searchCustomer(input, allCustomers);
     });
   </script>

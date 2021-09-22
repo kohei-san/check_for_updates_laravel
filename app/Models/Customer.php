@@ -35,6 +35,7 @@ class Customer extends Model
         return $this->hasMany(CustomerPage::class, 'page_id');
     }
 
+    
     public function page_html(){
         return $this->hasMany(PageHtml::class, 'html_id', 'customer_id');
     }
