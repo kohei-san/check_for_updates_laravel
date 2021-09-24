@@ -15,7 +15,7 @@ class HasBlogController extends Controller
      */
     public function index()
     {
-        $customerPages = CustomerPage::with(['customer', 'page_html'])
+        $customerPages = CustomerPage::with(['customer', 'page_html', 'line_register'])
                                     ->whereHas('Customer', function($query){
                                         $query->where('blog_flg', 1)
                                             ->where('active_flg', 1)

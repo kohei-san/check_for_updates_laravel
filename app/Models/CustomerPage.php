@@ -38,6 +38,11 @@ class CustomerPage extends Model
         return $this->hasOne(PageHtml::class, 'html_id', 'page_id');
     }
 
+    public function line_register(){
+        return $this->belongsTo(LineRegister::class, 'customer_id', 'customer_id');
+    }
+
+
     public $sortable = [
         'page_id',
         'customer_id'
