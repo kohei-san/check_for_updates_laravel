@@ -55,23 +55,23 @@
             {{-- LINE登録有無 --}}
             @if($customerPage->customer->line_register != null)
               @if($customerPage->customer->line_register->line_flg == 1)
-                <x-table-td :active="$count % 2 == 1">
-                  <a href="#" class="bg-transparent bg-green-400 font-semibold text-white py-2 px-4 rounded">
+                <x-table-td :active="$count % 2 == 1" id="td{{$customerPage->customer->customer_id}}">
+                  <span class="cursor-pointer bg-transparent bg-green-400 font-semibold text-white py-2 px-4 rounded lineregister">
                     {{ __('登録済み') }}
-                  </a>
+                  </span>
                 </x-table-td>
               @else
-                <x-table-td :active="$count % 2 == 1">
-                  <a href="#">
+                <x-table-td :active="$count % 2 == 1" id="td{{$customerPage->customer->customer_id}}">
+                  <span class="cursor-pointer lineregister">
                     {{ __('未登録') }}
-                  </a>
+                  </span>
                 </x-table-td>
               @endif
             @else
-              <x-table-td :active="$count % 2 == 1">
-                <a href="#">
+              <x-table-td :active="$count % 2 == 1" id="td{{$customerPage->customer->customer_id}}">
+                <span class="cursor-pointer lineregister">
                   {{ __('未登録') }}
-                </a>
+                </span>
               </x-table-td>
             @endif
             <x-table-td :active="$count % 2 == 1">{{ __('') }}</x-table-td>
