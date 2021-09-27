@@ -17,7 +17,10 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::with('page_html')
+        $customers = Customer::with('page_html', 'line_register')
+                            // ->whereHas('page_html', function($query){
+                            //     $query->where('line_flg', 1);
+                            // })
                             ->where('active_flg', 1)
                             ->where('del_flg', 0)
                             ->sortable()

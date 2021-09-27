@@ -15,7 +15,7 @@ class NoBlogController extends Controller
      */
     public function index()
     {
-        $customerPages = CustomerPage::with(['customer', 'page_html'])
+        $customerPages = CustomerPage::with(['customer', 'page_html', 'line_register'])
                                     ->whereHas('Customer', function($query){
                                         $query->where('blog_flg', 0)
                                             ->where('active_flg', 1)

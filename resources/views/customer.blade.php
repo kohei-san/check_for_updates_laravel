@@ -23,7 +23,10 @@
             </x-table-th>
             <x-table-th>{{ __('担当者名') }}</x-table-th>
             <x-table-th>{{ __('URL') }}</x-table-th>
-            <x-table-th>{{ __('〇〇') }}</x-table-th>
+            <x-table-th>
+              @sortablelink('line_register.line_flg', 'LINE登録')
+              {{ __('') }}
+            </x-table-th>
             <x-table-th>{{ __('〇〇') }}</x-table-th>
             <x-table-th>{{ __('ファイル取得日') }}</x-table-th>
           </tr>
@@ -44,16 +47,32 @@
                   {{ __("開く") }}
                 </a>
               </x-table-td>
+              {{-- JS編集用customer_id --}}
+              <div class="hidden">{{ $customer->customer_id }}</div>
+              {{-- LINE登録有無 --}}
+              @if($customer->line_register != null)
+                @if($customer->line_register->line_flg == 1)
+                  <x-table-td :active="$count % 2 == 1">
+                    <a href="#" class="bg-transparent bg-green-400 font-semibold text-white py-2 px-4 rounded">
+                      {{ __('登録済み') }}
+                    </a>
+                  </x-table-td>
+                @else
+                  <x-table-td :active="$count % 2 == 1">
+                    <a href="#">
+                      {{ __('未登録') }}
+                    </a>
+                  </x-table-td>
+                @endif
+              @else
+                <x-table-td :active="$count % 2 == 1">
+                  <a href="#">
+                    {{ __('未登録') }}
+                  </a>
+                </x-table-td>
+              @endif
               <x-table-td :active="$count % 2 == 1">{{ __('') }}</x-table-td>
               <x-table-td :active="$count % 2 == 1">{{ __('') }}</x-table-td>
-              @php
-                // page_htmlsの内容は配列のため、->では取得できない
-                $page_htmls = $customer->page_html;
-              @endphp
-              @foreach($page_htmls as $page_html)
-                <x-table-td :active="$count % 2 == 1">{{ __($page_html->time_stamp_htmlsrc) }}</x-table-td>
-                @break
-              @endforeach
             </tr>
           </tbody>
           <?php $count += 1; ?>

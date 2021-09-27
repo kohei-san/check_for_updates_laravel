@@ -23,11 +23,15 @@
             </x-table-th>
             <x-table-th>{{ __('担当者名') }}</x-table-th>
             <x-table-th>{{ __('URL') }}</x-table-th>
-            <x-table-th>{{ __('〇〇') }}</x-table-th>
+            <x-table-th>
+              @sortablelink('line_register.line_flg', 'LINE登録')
+              {{ __('') }}
+            </x-table-th>
             <x-table-th>{{ __('〇〇') }}</x-table-th>
             <x-table-th>
               @sortablelink('page_html.time_stamp_htmlsrc', 'ファイル取得日')
-              {{ __('') }}</x-table-th>
+              {{ __('') }}
+            </x-table-th>
           </tr>
         </thead>
 
@@ -46,7 +50,31 @@
                   {{ __("開く") }}
               </a>
               </x-table-td>
-              <x-table-td :active="$count % 2 == 1">{{ __('') }}</x-table-td>
+
+              {{-- JS編集用customer_id --}}
+              <div class="hidden">{{ $customerPage->customer->customer_id }}</div>
+              {{-- LINE登録有無 --}}
+              @if($customerPage->customer->line_register != null)
+                @if($customerPage->customer->line_register->line_flg == 1)
+                  <x-table-td :active="$count % 2 == 1">
+                    <a href="#" class="bg-transparent bg-green-400 font-semibold text-white py-2 px-4 rounded">
+                      {{ __('登録済み') }}
+                    </a>
+                  </x-table-td>
+                @else
+                  <x-table-td :active="$count % 2 == 1">
+                    <a href="#">
+                      {{ __('未登録') }}
+                    </a>
+                  </x-table-td>
+                @endif
+              @else
+                <x-table-td :active="$count % 2 == 1">
+                  <a href="#">
+                    {{ __('未登録') }}
+                  </a>
+                </x-table-td>
+              @endif
               <x-table-td :active="$count % 2 == 1">{{ __('') }}</x-table-td>
               <x-table-td :active="$count % 2 == 1">{{ __($customerPage->page_html->time_stamp_htmlsrc) }}</x-table-td>
             </tr>

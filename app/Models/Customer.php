@@ -40,6 +40,10 @@ class Customer extends Model
         return $this->hasMany(PageHtml::class, 'html_id', 'customer_id');
     }
 
+    public function line_register(){
+        return $this->hasOne(LineRegister::class, 'customer_id', 'customer_id');
+    }
+
     // ソート可能なカラム
     public $sortable = [
         'support_id',
