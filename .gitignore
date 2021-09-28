@@ -15,3 +15,7 @@ storage/*.key
 Homestead.yaml
 Homestead.json
 /.vagrant
+
+# python html作成ファイル
+app/Http/Controllers/python/acquired_data/
+app/Http/Controllers/python/different/
