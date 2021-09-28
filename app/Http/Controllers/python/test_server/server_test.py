@@ -13,8 +13,6 @@ from os import path
 from urllib.parse import urljoin
 import platform
 
-
-
 def functionDBconfig():
     pf = platform.system()
     # ローカル環境
@@ -91,13 +89,6 @@ def adjustment_tag(htmlData):
     except:
         pass
 
-    try:
-        while(True):
-            tag = htmlData.get_element_by_id("jquery_slider_pc").getchildren()[0]
-            tag.getparent().remove(tag)
-    except:
-        pass
-    
     try:
         while(True):
             tag = htmlData.get_element_by_id("calendar_wrap")
