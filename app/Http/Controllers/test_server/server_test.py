@@ -1,14 +1,38 @@
 # -*- coding: utf-8 -*-# -*- coding: utf-8 -*-
 import mysql.connector as mc
+from bs4 import BeautifulSoup
+import lxml.html
+from lxml.html.clean import Cleaner
+import difflib
+from chardet import detect
+import requests
+import pandas.io.sql as pdsql
+import datetime
+import os
+from os import path
+from urllib.parse import urljoin
+import platform
+
+
 
 def functionDBconfig():
-    db = mc.connect(
-        user='root',
-        passwd='',
-        host='localhost',
-        db='check_for_updates',
-        charset='utf8')
-
+    pf = platform.system()
+    # ローカル環境
+    if pf == 'Windows' or pf == 'Darwin':
+        db = mc.connect(
+            user='root',
+            passwd='',
+            host='localhost',
+            db='check_for_updates',
+            charset='utf8')
+    # 本番環境
+    else:
+        db = mc.connect(
+            user='xs330114_root',
+            passwd='Dn9ERS24k8KV.Qy',
+            host='127.0.0.1',
+            db='xs330114_rmcervn',
+            charset='utf8')
     return db
 
 def adjustment_tag(htmlData):
@@ -115,19 +139,6 @@ def adjustment_tag(htmlData):
 
 db = functionDBconfig()
 mycursor = db.cursor()
-
-from bs4 import BeautifulSoup
-import lxml.html
-from lxml.html.clean import Cleaner
-import difflib
-from chardet import detect
-import requests
-import pandas.io.sql as pdsql
-import datetime
-import os
-from os import path
-from urllib.parse import urljoin
-
 
 
 time_stamp = datetime.datetime.now()
