@@ -50,110 +50,62 @@ sql_create_short_difference_insert = """
     VALUES(%s,%s)
 """
 
+sql_tag_to_exclude_select = '''
+    SELECT * FROM tag_to_exclude 
+    WHERE del_flg=0 
+'''
+
+# タグ名の削除項目
+dfTagToExcludeData = pdsql.read_sql(sql_tag_to_exclude_select, db)
+
+
 def create_htmlfile(foldername, filename, text ,encode_thishtml):
     file = open(foldername + '/' + filename + '.html','wb')
     file.write(text.encode(encode_thishtml))
     file.close()
 
-
+# 比較するために不要なタグや属性の整理
 def adjustment_tag(htmlData):
-    # タグ名の削除項目
-    remove_tag_names = ['style', 'script', 'noscript', 'meta']
-    remove_tags = []
-    for tag_name in remove_tag_names:
-        remove_tags.append('.//' + tag_name)
+    for tag_list in dfTagToExcludeData.itertuples():
+        # 属性値があって、属性がないときはスルー
+        if ( tag_list.attribute_value ):
+            if not ( tag_list.attribute ):
+                continue
+        
+        # xpath の作成
+        tag_name = ""
+        if ( tag_list.tag_name or (tag_list.attribute and tag_list.attribute_value) ):
+            tag_name = ".//"
+            if( tag_list.tag_name ):
+                tag_name += tag_list.tag_name
+            else:
+                tag_name += "*"
+            
+            if( tag_list.attribute and tag_list.attribute_value ):
+                tag_name += "[@"
+                tag_name += tag_list.attribute
+                tag_name += "='"
+                tag_name += tag_list.attribute_value
+                tag_name += "']"
 
-    # タグ名の削除
-    for remove_tag in remove_tags:
-        for tag in htmlData.findall(remove_tag):
-            tag.drop_tree()
-    
-    # 要素の削除項目
-    remove_elements = ['style', 'width', 'height']
+        # タグを指定できる時は指定する
+        # できないときはすべて取得
+        if( tag_name ):
+            tags = htmlData.findall(tag_name)
+        else:
+            tags = htmlData.iter()
 
-    # 要素の削除
-    for tag in htmlData.iter():
-        for element in remove_elements:
-            tag.attrib.pop(element, None)
+        # タグ破壊
+        if( tag_list.tag_or_attribute == 0 ):
+            # タグを指定しているときのみ実行
+            if ( tag_name ):
+                for tag in tags:
+                    tag.drop_tree()
 
-    # id の場合は while /タグを取得できないから
-    try:
-        while(True):
-            htmlData.get_element_by_id("today").attrib.pop('id', None)
-    except:
-        pass
-
-
-    try:
-        while(True):
-            tag = htmlData.get_element_by_id("inquiryform-1").getchildren()[0]
-            tag.getparent().remove(tag)
-    except:
-        pass
-    
-    try:
-        while(True):
-            tag = htmlData.get_element_by_id("inquiryform-2").getchildren()[0]
-            tag.getparent().remove(tag)
-    except:
-        pass
-    
-    try:
-        while(True):
-            tag = htmlData.get_element_by_id("map_canvas")
-            tag.getparent().remove(tag)
-    except:
-        pass
-
-    try:
-        while(True):
-            tag = htmlData.get_element_by_id("jquery_slider")
-            tag.getparent().remove(tag)
-    except:
-        pass
-
-    try:
-        while(True):
-            tag = htmlData.get_element_by_id("jquery_slider_pc").getchildren()[0]
-            tag.getparent().remove(tag)
-    except:
-        pass
-    
-    try:
-        while(True):
-            tag = htmlData.get_element_by_id("calendar_wrap")
-            tag.getparent().remove(tag)
-    except:
-        pass
-    
-    try:
-        tags = htmlData.find_class("fixed_btn_in")
-        for tag in tags:
-            tag.getparent().remove(tag)   
-    except:
-        pass
-    
-    try:
-        tags = htmlData.find_class("fixed_btn_fb")
-        for tag in tags:
-            tag.getparent().remove(tag)   
-    except:
-        pass
-
-    try:
-        tags = htmlData.find_class("fixed_btn_tw")
-        for tag in tags:
-            tag.getparent().remove(tag)   
-    except:
-        pass
-
-    try:
-        tags = htmlData.find_class("viewer")
-        for tag in tags:
-            tag.getparent().remove(tag)        
-    except:
-        pass
-
+        # 属性のみ破壊
+        elif ( tag_list.tag_or_attribute == 1 ):
+            for tag in tags:
+                tag.attrib.pop(tag_list.attribute, None)
 
     return htmlData
 
@@ -211,7 +163,7 @@ for index, row in dfPageDataData.iterrows():
     except:
         htmldata = "error"
     
-    short_term_path = path.dirname(__file__)+'/different/short_term/'+str(row.page_id)+'.html'
+    short_term_path = path.dirname(__file__)+'/defferent/short_term/'+str(row.page_id)+'.html'
     if (os.path.exists(short_term_path)):
         os.remove(short_term_path) 
     print(row.page_id)
@@ -344,7 +296,7 @@ for index, row in dfPageDataData.iterrows():
                 
                 # 行分解しいるため、これを一つにまとめる。
                 diffHTML ='\n'.join(li_comparison_reflection_file)
-                create_htmlfile(path.dirname(__file__)+'/different/short_term', str(row.page_id), diffHTML, 'utf-8')
+                create_htmlfile(path.dirname(__file__)+'/defferent/short_term', str(row.page_id), diffHTML, 'utf-8')
                 print('diftrue')
             # プラス要素があるかどうか(なし)
             else:
