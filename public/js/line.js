@@ -1,10 +1,10 @@
 function changeClass(btn, line_flg){
   if(btn.innerText.indexOf("通信中") > -1 && line_flg == true){
-    btn.className = "cursor-pointer bg-transparent bg-green-400 font-semibold text-white py-2 px-4 rounded lineregister";
+    btn.className = "cursor-pointer bg-transparent bg-green-400 hover:bg-yellow-500 font-semibold text-white py-2 px-4 rounded lineregister";
     btn.innerText = '登録済み';
   }
   else if(btn.innerText.indexOf("通信中") > -1 && line_flg == false){
-    btn.className = "cursor-pointer lineregister";
+    btn.className = "cursor-pointer py-2 px-4 rounded hover:bg-gray-500 hover:text-white hover:opacity-50 lineregister";
     btn.innerText = '未登録';
   }
   else{
@@ -22,6 +22,11 @@ var btns = Array.from(btns);
 
 btns.forEach(function(btn){
   btn.addEventListener('click', function(){
+    // クリックイベント発生時のダブルクリック対策
+    if(btn.innerText.indexOf("通信中") > -1){
+      return
+    }
+
     // jsonに渡す値の準備
     var customer_id = btn.id;
     var innerText = btn.innerText;
@@ -39,9 +44,8 @@ btns.forEach(function(btn){
     var xmlHttpRequest = new XMLHttpRequest()
     xmlHttpRequest.onreadystatechange = function(){
       var completed = 4;
-      var httpOK = 200;
 
-      if( this.readyState == completed && this.status == 200){
+      if( this.readyState == completed && (this.status >= 200 && this.status <= 299)){ //status = 201はリクエストは成功し、その結果新たなリソースが作成されたことを示します。これは一般的に、 POST リクエストや、一部の PUT リクエストを送信した後のレスポンスになります。
         var response = JSON.parse(this.response);
         // 通信完了のクラス付与
         if(registered != response.line_flg){
@@ -54,9 +58,11 @@ btns.forEach(function(btn){
 
         
       }
-      else if(this.readyState == 1){
+      else{
         // 通信中のクラス付与メソッド
           changeClass(btn);
+
+
       }
     }
 
