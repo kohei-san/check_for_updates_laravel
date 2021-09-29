@@ -35,7 +35,6 @@ class LineRegisterController extends Controller
             $lineRecord->user_id = Auth::id();
             
             $lineRecord->save();
-            dd($lineRecord);
         }
         // 登録済みのユーザーのステータス変更
         else{
@@ -49,7 +48,7 @@ class LineRegisterController extends Controller
             }
         }
             
-        return view('/dashboard');
+        return $lineRecord;
     }
     
     /**

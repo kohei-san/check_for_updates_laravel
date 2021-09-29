@@ -1,9 +1,28 @@
+function changeClass(btn, line_flg){
+  if(btn.innerText.indexOf("通信中") > -1 && line_flg == true){
+    btn.className = "cursor-pointer bg-transparent bg-green-400 font-semibold text-white py-2 px-4 rounded lineregister";
+    btn.innerText = '登録済み';
+  }
+  else if(btn.innerText.indexOf("通信中") > -1 && line_flg == false){
+    btn.className = "cursor-pointer lineregister";
+    btn.innerText = '未登録';
+  }
+  else{
+    btn.className = "bg-transparent bg-gray-500 font-semibold text-white py-2 px-4 rounded opacity-50";
+    btn.innerText = '通信中...';
+  }
+}
+
+
+
+// 処理スタート
 var btns = document.getElementsByClassName('lineregister');
 
 var btns = Array.from(btns);
 
 btns.forEach(function(btn){
   btn.addEventListener('click', function(){
+    // jsonに渡す値の準備
     var customer_id = btn.id;
     var innerText = btn.innerText;
     if(innerText.indexOf("未") > -1){
@@ -18,19 +37,26 @@ btns.forEach(function(btn){
                                 registered: registered});
 
     var xmlHttpRequest = new XMLHttpRequest()
-    xmlHttpRequest
     xmlHttpRequest.onreadystatechange = function(){
       var completed = 4;
       var httpOK = 200;
 
       if( this.readyState == completed && this.status == 200){
-        // レスポンスのモーダル表示
-        // alert( 'LINEステータスを変更しました！' );
-        console.log(this.response);
+        var response = JSON.parse(this.response);
+        // 通信完了のクラス付与
+        if(registered != response.line_flg){
+          alert( 'LINEステータスを変更しました！' );
+          changeClass(btn, response.line_flg)
+        }
+        else{
+          alert( 'ステータスを変更できませんでした。画面をリロードしてください。' );
+        }
+
+        
       }
-      else{
-        // 問題なければ3度readyStateが変化している: alert(this.readyState) が 1, 2, 3 と表示される
-        // alert(this.readyState);
+      else if(this.readyState == 1){
+        // 通信中のクラス付与メソッド
+          changeClass(btn);
       }
     }
 
@@ -40,6 +66,5 @@ btns.forEach(function(btn){
     xmlHttpRequest.setRequestHeader( 'X-CSRF-TOKEN', token); //.open()の後、.sendの前に記述すること　複数呼び出し可能（その場合、マージされて単一のリクエストとなる）
     xmlHttpRequest.setRequestHeader( 'request', json);
     xmlHttpRequest.send();
-
   })
 })
