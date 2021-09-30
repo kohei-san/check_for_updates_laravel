@@ -65,6 +65,10 @@ Route::resource('not-active', NotActiveCustomerController::class)
 Route::post('/linepost', [LineRegisterController::class, 'update'])
     ->middleware(['auth']);
 
+Route::get('/writecustomerid', [LineRegisterController::class, 'writeCustomerId'])
+    ->middleware(['auth'])
+    ->name('writecustomerid');
+
 // 検索機能
 Route::get('/search', [SearchController::class, 'index'])
     ->middleware(['auth'])
