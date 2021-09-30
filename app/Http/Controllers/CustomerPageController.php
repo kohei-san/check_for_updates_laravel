@@ -18,15 +18,18 @@ class CustomerPageController extends Controller
     public function index()
     {
         $customerPages = CustomerPage::with(['customer', 'short_diff', 'line_register'])
-                                    ->whereHas('Customer', function($query){
-                                        $query->where('active_flg', 1)
-                                            ->where('del_flg', 0);
-                                    })
-                                    ->where('top_page_flg', 1)
-                                    ->sortable()
-                                    ->paginate(50);
+                                        ->whereHas('Customer', function($query){
+                                            $query->where('active_flg', 1)
+                                                ->where('del_flg', 0);
+                                        })
+                                        ->where('top_page_flg', 1)
+                                        ->sortable()
+                                        ->paginate(50);
 
-        return view('customer-page')->with('customerPages', $customerPages);
+        $htmlDir = __DIR__ . "\\python\\different\\short_term\\";            
+
+        return view('customer-page')->with('customerPages', $customerPages)
+                                    ->with('htmlDir', $htmlDir);
     }
 
     /**

@@ -1,7 +1,11 @@
+@php
+  use Illuminate\Support\Facades\File;
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('corsin') }}
+            {{ __('顧客一覧') }}
         </h2>
     </x-slot>
 
@@ -82,9 +86,19 @@
               {{-- ▼差分の表示 --}}
               @if($customerPage->short_diff->difference_flg == 1)
                 <x-table-td :active="$count % 2 == 1">
-                  <x-sabun-a href="{{route('customer.show', [$customerPage->customer->customer_id])}}" :haveDifference="true" class="">
-                    {{ __('差分あり') }}
-                  </x-sabun-a>
+                  @php
+                    $htmlfile = $htmlDir . $customerPage->page_id . "." . "html";
+                  @endphp
+                  @if( Illuminate\Support\Facades\File::exists($htmlfile))
+                    {{-- <x-sabun-a href="#" :haveDifference="true" onclick="window.open({{$htmlfile}}, 'chrome','width=1280,height=720,noopener'); return false;" class=""> --}}
+                    <x-sabun-a href="#" :haveDifference="true">
+                      {{ __('差分あり') }}
+                    </x-sabun-a>
+                  @else
+                    <x-sabun-a href="#" :haveDifference="true" class="">
+                      {{ __('差分あり') }}
+                    </x-sabun-a>
+                  @endif
                 </x-table-td>
               @else
                 <x-table-td :active="$count % 2 == 1">
