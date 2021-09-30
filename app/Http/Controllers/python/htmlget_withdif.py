@@ -92,7 +92,7 @@ sql_difference_longterm_insert = """
 """
 
 sql_create_long_difference_insert = """
-    INSERT INTO create_long_difference (create_html_id_from, create_html_id_to)
+    INSERT INTO create_long_difference (filename_timestamp_from, filename_timestamp_to)
     VALUES(%s,%s)
 """
 
@@ -477,7 +477,7 @@ for index, row in dfPageDataData.iterrows():
             arrCheckDifferenceTrueShort = []
 
             # 差分あるとき更新　更新時間も更新(Long)
-            mycursor.executemany(sql_difference_shortterm_diftrue_update, arrCheckDifferenceTrueLong)
+            mycursor.executemany(sql_difference_longterm_diftrue_update, arrCheckDifferenceTrueLong)
             db.commit
             arrCheckDifferenceTrueLong = []
 
@@ -487,7 +487,7 @@ for index, row in dfPageDataData.iterrows():
             arrCheckDifferenceFalseShort = []
 
             # 差分ないときの更新(Long)
-            mycursor.executemany(sql_difference_shortterm_diffalse_update, arrCheckDifferenceFalseLong)
+            mycursor.executemany(sql_difference_longterm_diffalse_update, arrCheckDifferenceFalseLong)
             db.commit
             arrCheckDifferenceFalseLong = []
 
@@ -506,13 +506,14 @@ if arrCheckDifferenceTrueShort:
     mycursor.executemany(sql_difference_shortterm_diftrue_update, arrCheckDifferenceTrueShort)
 
 if arrCheckDifferenceTrueLong:
-    mycursor.executemany(sql_difference_shortterm_diftrue_update, arrCheckDifferenceTrueLong)
+    mycursor.executemany(sql_difference_longterm_diftrue_update, arrCheckDifferenceTrueLong)
 
 if arrCheckDifferenceFalseShort:
     mycursor.executemany(sql_difference_shortterm_diffalse_update, arrCheckDifferenceFalseShort)
 
 if arrCheckDifferenceFalseLong:
-    mycursor.executemany(sql_difference_shortterm_diffalse_update, arrCheckDifferenceFalseLong)
+    mycursor.executemany(sql_difference_longterm_diffalse_update, arrCheckDifferenceFalseLong)
+
 
 if arrOKorNgPageNo: 
     mycursor.executemany(sql_ngpage_update, arrOKorNgPageNo)
