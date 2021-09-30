@@ -57,20 +57,20 @@
             @if($customerPage->customer->line_register != null)
               @if($lineFlg = $customerPage->customer->line_register->line_flg == 1)
                 <x-table-td :active="$count % 2 == 1">
-                  <x-span :registered="true" class="" id="{{$customerPage->customer->customer_id}}">
+                  <x-span :registered="true" class="" id="{{$customerPage->customer->support_id}}">
                     {{ __('登録済み') }}
                   </x-span>
                 </x-table-td>
               @else
                 <x-table-td :active="$count % 2 == 1">
-                  <x-span :registered="false" class="" id="{{$customerPage->customer->customer_id}}">
+                  <x-span :registered="false" class="" id="{{$customerPage->customer->support_id}}">
                     {{ __('未登録') }}
                   </x-span>
                 </x-table-td>
               @endif
             @else
               <x-table-td :active="$count % 2 == 1">
-                <x-span :registered="false" class="" id="{{$customerPage->customer->customer_id}}">
+                <x-span :registered="false" class="" id="{{$customerPage->customer->support_id}}">
                   {{ __('未登録') }}
                 </x-span>
               </x-table-td>

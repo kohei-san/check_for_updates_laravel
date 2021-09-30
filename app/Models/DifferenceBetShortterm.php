@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
-class CustomerPage extends Model
+class DifferenceBetShortterm extends Model
 {
     use HasFactory, sortable;
     /**
@@ -14,7 +14,7 @@ class CustomerPage extends Model
      *
      * @var string
      */
-    protected $table = 'customer_page';
+    protected $table = 'difference_bet_shortterm';
 
     /**
      * テーブルに関連付ける主キー
@@ -30,25 +30,17 @@ class CustomerPage extends Model
      */
     public $timestamps = false;
 
-    public function customer() {
+    public function customer_page() {
+        return $this->hasOne(CustomerPage::class, 'page_id');
+    }
+
+    
+    public function customer(){
         return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
 
-    public function page_html() {
-        return $this->hasOne(PageHtml::class, 'html_id', 'page_id');
-    }
-
-    public function line_register(){
-        return $this->belongsTo(LineRegister::class, 'customer_id', 'customer_id');
-    }
-
-    public function short_diff(){
-        return $this->hasOne(DifferenceBetShortterm::class, 'page_id', 'page_id');
-    }
-
-
+    // ソート可能なカラム
     public $sortable = [
-        'page_id',
-        'customer_id'
+        'time_stamp_dif_short'
     ];
 }

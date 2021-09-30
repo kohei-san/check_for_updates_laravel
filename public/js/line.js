@@ -28,7 +28,7 @@ btns.forEach(function(btn){
     }
 
     // jsonに渡す値の準備
-    var customer_id = btn.id;
+    var support_id = btn.id;
     var innerText = btn.innerText;
     if(innerText.indexOf("未") > -1){
       var registered = false;
@@ -38,7 +38,7 @@ btns.forEach(function(btn){
     }
 
     // jsonに値登録
-    var json = JSON.stringify( { customer_id: customer_id,
+    var json = JSON.stringify( { support_id: support_id,
                                 registered: registered});
 
     var xmlHttpRequest = new XMLHttpRequest()
@@ -54,6 +54,7 @@ btns.forEach(function(btn){
         }
         else{
           alert( 'ステータスを変更できませんでした。画面をリロードしてください。' );
+          changeClass(btn, response.line_flg);
         }
 
         

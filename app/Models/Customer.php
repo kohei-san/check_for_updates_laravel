@@ -41,7 +41,11 @@ class Customer extends Model
     }
 
     public function line_register(){
-        return $this->hasOne(LineRegister::class, 'customer_id', 'customer_id');
+        return $this->hasOne(LineRegister::class, 'support_id', 'support_id');
+    }
+
+    public function short_difference(){
+        return $this->hasOne(DifferenceBetShortterm::class, 'customer_id','customer_id')->oldestOfMany();
     }
 
     // ソート可能なカラム

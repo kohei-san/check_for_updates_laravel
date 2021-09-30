@@ -27,6 +27,7 @@ class LineRegister extends Model
     protected $fillable = [
         'line_flg',
         'customer_id',
+        'support_id',
         'user_id'
     ];
 
@@ -36,6 +37,10 @@ class LineRegister extends Model
 
     public function customer_page(){
         return $this->hasMany(CustomerPage::class, 'customer_id', 'customer_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
     // ソート可能なカラム

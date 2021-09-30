@@ -19,7 +19,7 @@ class LineRegisterController extends Controller
      * @param  \App\Models\LineRegister  $lineRegister
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LineRegister $lineRegister)
+    public function update(Request $request)
     {
         $headers = $request->headers;
         foreach( $headers as $key=>$value){
@@ -29,7 +29,7 @@ class LineRegisterController extends Controller
             }
         }
         // 未登録なら新規レコード作成
-        if(LineRegister::find($json['support_id']) == null){
+        if(LineRegister::where('support_id', ($json['support_id']))->first() == null){
             $lineRecord = new LineRegister;
 
             $lineRecord->line_flg = true;
@@ -40,12 +40,20 @@ class LineRegisterController extends Controller
         }
         // 登録済みのユーザーのステータス変更
         else{
-            $lineRecord = LineRegister::find($json['support_id']);
+            $lineRecord = LineRegister::where('support_id', ($json['support_id']))->first();
             $line_flg = boolval($lineRecord->line_flg);
-    
             // LINEステータス登録済みの顧客の場合
             if($line_flg == $json['registered'] && $lineRecord->support_id == $json['support_id']){
                 $lineRecord->line_flg = !$line_flg;
+
+                // 誤って登録を消したのが、登録したユーザーと同じユーザーなら、user_idを削除(誤操作、不正クリック予防)
+                if(($lineRecord->line_flg == false) && ($lineRecord->user_id == Auth::id())){
+                    $lineRecord->user_id = null;
+                } //登録時に、以前登録したユーザーがいなければ登録
+                elseif(($lineRecord->line_flg == true) && ($lineRecord->user_id == null )){
+                    $lineRecord->user_id = Auth::id(); 
+                }
+
                 $lineRecord->save();
             }
         }
