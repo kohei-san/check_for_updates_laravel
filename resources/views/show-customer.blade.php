@@ -18,7 +18,7 @@
                 <x-table-th>{{ __('URL') }}</x-table-th>
                 <x-table-th>{{ __('〇〇') }}</x-table-th>
                 <x-table-th>{{ __('〇〇') }}</x-table-th>
-                <x-table-th>{{ __('ファイル取得日') }}</x-table-th>
+                <x-table-th>{{ __('') }}</x-table-th>
             </tr>
             </thead>
             <!-- 顧客情報表示 -->
@@ -37,7 +37,7 @@
                         </x-table-td>
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
-                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customer_page->page_html->time_stamp_htmlsrc) }}</x-table-td>
+                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
                     </tr>
                 </tbody>
             @endforeach
