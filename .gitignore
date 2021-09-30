@@ -15,9 +15,9 @@ storage/*.key
 Homestead.yaml
 Homestead.json
 /.vagrant
+.phpunit.result.cache
 
 # python html作成ファイル
 app/Http/Controllers/python/acquired_data/
 app/Http/Controllers/python/different/
 app/Http/Controllers/python/test_server/
-

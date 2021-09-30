@@ -10,6 +10,7 @@ use App\Http\Controllers\PythonController;
 use App\Http\Controllers\NotActiveCustomerController;
 use App\Http\Controllers\CustomerPageController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\LineRegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,14 @@ Route::resource('noblog', NoBlogController::class)
 Route::resource('not-active', NotActiveCustomerController::class)
     ->middleware(['auth'])
     ->only(['index', 'show']);
+
+// ライン登録変更
+Route::post('/linepost', [LineRegisterController::class, 'update'])
+    ->middleware(['auth']);
+
+Route::get('/writecustomerid', [LineRegisterController::class, 'writeCustomerId'])
+    ->middleware(['auth'])
+    ->name('writecustomerid');
 
 // 検索機能
 Route::get('/search', [SearchController::class, 'index'])
