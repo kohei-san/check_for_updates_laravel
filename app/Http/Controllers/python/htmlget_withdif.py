@@ -199,12 +199,21 @@ def openfile_to_diff(filename):
 # 差分作成
 def create_diff(beforefilename, afterfilename):
     # 前回分があるかどうか
+    
+    # 比較符号と、比較対象を入れるリスト作成
+    liDifference = []
     if os.path.exists(beforefilename):
         # 過去比較ファイルを開いて整理する
         beforeHTMLtext = openfile_to_diff(beforefilename)
 
         # フォルダが開けたら
         if beforeHTMLtext:
+
+            # タグを修正して lxml から 比較のための文字列に変換
+            beforeHTML = lxml.html.fromstring(beforeHTMLtext)
+            beforeHTML = adjustment_tag(beforeHTML)
+            beforeFile = lxml.html.etree.tostring(beforeHTML, encoding='utf-8').decode()
+            
             # 今回比較ファイルを開いて整理する
             afterHTMLtext= openfile_to_diff(afterfilename)
 
@@ -212,10 +221,6 @@ def create_diff(beforefilename, afterfilename):
             if afterHTMLtext:
 
                 # タグを修正して lxml から 比較のための文字列に変換
-                beforeHTML = lxml.html.fromstring(beforeHTMLtext)
-                beforeHTML = adjustment_tag(beforeHTML)
-                beforeFile = lxml.html.etree.tostring(beforeHTML, encoding='utf-8').decode()
-
                 afterHTML = lxml.html.fromstring(afterHTMLtext)
                 afterHTML = adjustment_tag(afterHTML)
                 afterFile = lxml.html.etree.tostring(afterHTML, encoding='utf-8').decode()
@@ -223,9 +228,6 @@ def create_diff(beforefilename, afterfilename):
                 # ファイルを比較
                 difdiffer = difflib.Differ()
                 diff = difdiffer.compare(beforeFile.splitlines(), afterFile.splitlines())
-                
-                # 比較符号と、比較対象を入れるリスト作成
-                liDifference = []
 
                 # 比較対象があるかどうかのチェックと比較分のみ抽出
                 diffrence_flg = 0
@@ -235,6 +237,9 @@ def create_diff(beforefilename, afterfilename):
                         # + のみ検出かつli_ng_diffrenceに入っていないものかつ <div・・・>でないもの
                         if diffrence[:1] == '+' and not(diffrence[2:].replace(' ', '') in li_ng_diffrence) and not(diffrence[2:].startswith("<div") and diffrence[2:].endswith(">") and diffrence[2:].count("<")==1):
                             liDifference.append([diffrence[:1],''.join(diffrence[2:])])
+
+            else:
+                diffrence_flg = 0 
         
         # フォルダが開けなかったら
         else:
@@ -414,7 +419,6 @@ for index, row in dfPageDataData.iterrows():
                 # 行分解をして一つにまとめる。
                 diffHTML ='\n'.join(li_comparison_reflection_file)
                 create_htmlfile(path.dirname(__file__)+'/different/short_term', str(row.page_id), diffHTML, 'utf-8')
-                print('short')
 
             # プラス要素があるかどうか(なし)
             else:
