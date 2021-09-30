@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CustomerPage;
 use Kyslik\ColumnSortable\Sortable;
 use App\Models\Customer;
+use Carbon\Carbon;
 
 class CustomerPageController extends Controller
 {
@@ -16,7 +17,7 @@ class CustomerPageController extends Controller
      */
     public function index()
     {
-        $customerPages = CustomerPage::with(['customer', 'page_html'])
+        $customerPages = CustomerPage::with(['customer', 'short_diff', 'line_register'])
                                     ->whereHas('Customer', function($query){
                                         $query->where('active_flg', 1)
                                             ->where('del_flg', 0);

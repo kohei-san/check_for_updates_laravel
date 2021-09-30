@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-          {{ __('ブログ無し一覧') }}
+          {{ __('ブログ有り一覧') }}
       </h2>
   </x-slot>
 
@@ -50,17 +50,22 @@
               </a>
             </x-table-td>
                         
-            {{-- ▼JS編集用customer_id --}}
-            <div class="hidden">{{ $customerPage->customer->customer_id }}</div>
-            {{-- LINE登録有無 --}}
-            {{-- ラインフラッグ代入（JSの判定用） --}}
-            @if($customerPage->customer->line_register != null)
-              @if($lineFlg = $customerPage->customer->line_register->line_flg == 1)
-                <x-table-td :active="$count % 2 == 1">
-                  <x-span :registered="true" class="" id="{{$customerPage->customer->support_id}}">
-                    {{ __('登録済み') }}
-                  </x-span>
-                </x-table-td>
+              {{-- LINE登録有無 --}}
+              {{-- ラインフラッグ代入（JSの判定用） --}}
+              @if($customerPage->line_register != null)
+                @if($customerPage->line_register->line_flg == 1)
+                  <x-table-td :active="$count % 2 == 1">
+                    <x-span :registered="true" class="" id="{{$customerPage->customer->support_id}}">
+                      {{ __('登録済み') }}
+                    </x-span>
+                  </x-table-td>
+                @else
+                  <x-table-td :active="$count % 2 == 1">
+                    <x-span :registered="false" class="" id="{{$customerPage->customer->support_id}}">
+                      {{ __('未登録') }}
+                    </x-span>
+                  </x-table-td>
+                @endif
               @else
                 <x-table-td :active="$count % 2 == 1">
                   <x-span :registered="false" class="" id="{{$customerPage->customer->support_id}}">
@@ -68,16 +73,9 @@
                   </x-span>
                 </x-table-td>
               @endif
-            @else
-              <x-table-td :active="$count % 2 == 1">
-                <x-span :registered="false" class="" id="{{$customerPage->customer->support_id}}">
-                  {{ __('未登録') }}
-                </x-span>
-              </x-table-td>
-            @endif
-            {{-- ▲JS編集用customer_id --}}
+              {{-- ▲JS編集用customer_id --}}
             <x-table-td :active="$count % 2 == 1">{{ __('') }}</x-table-td>
-            <x-table-td :active="$count % 2 == 1">{{ __($customerPage->page_html->time_stamp_htmlsrc) }}</x-table-td>
+            <x-table-td :active="$count % 2 == 1">{{ __($customerPage->short_diff->time_stamp_dif_short) }}</x-table-td>
           </tr>
         </tbody>
         <?php $count += 1; ?>

@@ -36,7 +36,7 @@ class LineRegister extends Model
     }
 
     public function customer_page(){
-        return $this->hasMany(CustomerPage::class, 'customer_id', 'customer_id');
+        return $this->hasOne(CustomerPage::class, 'customer_id', 'customer_id')->ofMany('top_page_flg', 'max');
     }
 
     public function user(){

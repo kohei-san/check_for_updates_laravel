@@ -41,6 +41,7 @@ class DifferenceBetShortterm extends Model
 
     // ソート可能なカラム
     public $sortable = [
-        'time_stamp_dif_short'
+        'time_stamp_dif_short',
+        'difference_flg'
     ];
 }
