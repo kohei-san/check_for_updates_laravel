@@ -1,7 +1,11 @@
+@php
+  use Illuminate\Support\Facades\File;
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('corsin') }}
+            {{ __('顧客一覧') }}
         </h2>
     </x-slot>
 
@@ -27,9 +31,12 @@
               @sortablelink('line_register.line_flg', 'LINE登録')
               {{ __('') }}
             </x-table-th>
-            <x-table-th>{{ __('〇〇') }}</x-table-th>
             <x-table-th>
-              @sortablelink('page_html.time_stamp_htmlsrc', 'ファイル取得日')
+              @sortablelink('short_diff.difference_flg', '差分有り')
+              {{ __('') }}
+            </x-table-th>
+            <x-table-th>
+              @sortablelink('short_diff.time_stamp_dif_short', '差分検出日')
               {{ __('') }}
             </x-table-th>
           </tr>
@@ -42,8 +49,8 @@
           <tbody>
             <tr>
               <x-table-td :active="$count % 2 == 1">{{ __($count) }}</x-table-td>
-              <x-table-td :active="$count % 2 == 1"><a href="{{route('customer.show', [$customerPage->customer->customer_id])}}">{{ __($customerPage->customer->support_id) }}</a></x-table-td>
-              <x-table-td :active="$count % 2 == 1"><a href="{{route('customer.show', [$customerPage->customer->customer_id])}}">{{ __($customerPage->customer->customer_name) }}</a></x-table-td>
+              <x-table-td :active="$count % 2 == 1" class="py-2 px-4 rounded hover:bg-gray-500 hover:text-white hover:opacity-50"><a href="{{route('customer.show', [$customerPage->customer->customer_id])}}">{{ __($customerPage->customer->support_id) }}</a></x-table-td>
+              <x-table-td :active="$count % 2 == 1" class="font-bold py-2 px-4 rounded hover:bg-gray-500 hover:text-white hover:opacity-50"><a href="{{route('customer.show', [$customerPage->customer->customer_id])}}">{{ __($customerPage->customer->customer_name) }}</a></x-table-td>
               <x-table-td :active="$count % 2 == 1">{{ __('担当者名') }}</x-table-td>
               <x-table-td :active="$count % 2 == 1">
               <a href="{{ $customerPage->customer->customerPag_toppage_url }}"class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
@@ -51,12 +58,10 @@
               </a>
               </x-table-td>
 
-              {{-- ▼JS編集用customer_id --}}
-              <div class="hidden">{{ $customerPage->customer->customer_id }}</div>
               {{-- LINE登録有無 --}}
               {{-- ラインフラッグ代入（JSの判定用） --}}
-              @if($customerPage->customer->line_register != null)
-                @if($lineFlg = $customerPage->customer->line_register->line_flg == 1)
+              @if($customerPage->line_register != null)
+                @if($customerPage->line_register->line_flg == 1)
                   <x-table-td :active="$count % 2 == 1">
                     <x-span :registered="true" class="" id="{{$customerPage->customer->support_id}}">
                       {{ __('登録済み') }}
@@ -77,8 +82,40 @@
                 </x-table-td>
               @endif
               {{-- ▲JS編集用customer_id --}}
-              <x-table-td :active="$count % 2 == 1">{{ __('') }}</x-table-td>
-              <x-table-td :active="$count % 2 == 1">{{ __($customerPage->page_html->time_stamp_htmlsrc) }}</x-table-td>
+
+              {{-- ▼差分の表示 --}}
+              @if($customerPage->short_diff->difference_flg == 1)
+                <x-table-td :active="$count % 2 == 1">
+                  @php
+                    $htmlfile = $htmlDir . $customerPage->page_id . "." . "html";
+                  @endphp
+                  @if( Illuminate\Support\Facades\File::exists($htmlfile))
+                    {{-- <x-sabun-a href="#" :haveDifference="true" onclick="window.open({{$htmlfile}}, 'chrome','width=1280,height=720,noopener'); return false;" class=""> --}}
+                    <x-sabun-a href="#" :haveDifference="true">
+                      {{ __('差分あり') }}
+                    </x-sabun-a>
+                  @else
+                    <x-sabun-a href="#" :haveDifference="true" class="">
+                      {{ __('差分あり') }}
+                    </x-sabun-a>
+                  @endif
+                </x-table-td>
+              @else
+                <x-table-td :active="$count % 2 == 1">
+                  <x-sabun-a :haveDifference="false" class="">
+                    {{ __('差分なし') }}
+                  </x-sabun-a>
+                </x-table-td>
+              @endif
+              {{-- ▲ --}}
+
+              {{-- 差分がある場合は --}}
+              @if($customerPage->short_diff->time_stamp_dif_short != '0000-00-00 00:00:00' || $customerPage->short_diff->time_stamp_dif_short != '0000-00-00 00:00:00')
+                <x-table-td :active="$count % 2 == 1">{{ __(\Carbon\Carbon::parse($customerPage->short_diff->time_stamp_dif_short)->diffForHumans()) }}</x-table-td>
+              @else
+                <x-table-td :active="$count % 2 == 1">{{ __('-') }}</x-table-td>
+              @endif
+              {{-- ▲ --}}
             </tr>
           </tbody>
           <?php $count += 1; ?>
