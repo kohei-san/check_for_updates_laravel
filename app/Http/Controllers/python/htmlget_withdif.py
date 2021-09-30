@@ -69,7 +69,7 @@ sql_difference_shortterm_insert = """
 """
 
 sql_create_short_difference_insert = """
-    INSERT INTO create_short_difference (create_html_id_from, create_html_id_to)
+    INSERT INTO create_short_difference (filename_timestamp_from, filename_timestamp_to)
     VALUES(%s,%s)
 """
 
