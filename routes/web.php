@@ -86,13 +86,13 @@ Route::get('python', [PythonController::class, 'exec'])
 
 // acquired_data コントローラー
 Route::get('prehtml/{file_namepath}/{page_id}', function($file_namepath, $page_id){
-    return File::get(app_path("Http\\Controllers\\python\\acquired_data\\" . $file_namepath . "\\html\\" . $page_id . ".html"));
+    return File::get(app_path("Http/Controllers/python/acquired_data/" . $file_namepath . "/html/" . $page_id . ".html"));
 })  ->middleware(['auth']);
 
 
 // different コントローラー
 Route::get('different/{term}/{page_id}', function($term,$page_id){
-    return File::get(app_path("Http\\Controllers\\python\\different\\" . $term . "term\\" . $page_id . ".html"));
+    return File::get(app_path("Http/Controllers/python/different/" . $term . "_term/" . $page_id . ".html"));
 })  ->middleware(['auth']);
 
     
