@@ -7,6 +7,7 @@ use App\Models\CustomerPage;
 use Kyslik\ColumnSortable\Sortable;
 use App\Models\Customer;
 use Carbon\Carbon;
+use App\Models\DifferenceBetShortterm;
 
 class CustomerPageController extends Controller
 {
@@ -25,11 +26,8 @@ class CustomerPageController extends Controller
                                         ->where('top_page_flg', 1)
                                         ->sortable()
                                         ->paginate(50);
-
-        $htmlDir = __DIR__ . "\\python\\different\\short_term\\";            
-
-        return view('customer-page')->with('customerPages', $customerPages)
-                                    ->with('htmlDir', $htmlDir);
+                                        
+        return view('customer-page')->with('customerPages', $customerPages);
     }
 
     /**
