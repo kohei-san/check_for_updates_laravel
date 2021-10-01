@@ -82,12 +82,7 @@
               {{-- ▲JS編集用customer_id --}}
 
               {{-- ▼差分の表示 --}}
-              @php
-                $difference = App\Models\DifferenceBetShortterm::where('difference_flg', 1)
-                                                  ->where('customer_id', $customerPage->customer_id)
-                                                  ->first();
-              @endphp
-              @if($difference != null)
+              @if($customerPage->short_diff->difference_flg == 1)
                 <x-table-td :active="$count % 2 == 1">
                   <x-sabun-a href="{{route('customer.show', [$customerPage->customer->customer_id])}}" :haveDifference="true">
                     {{ __('差分あり') }}
@@ -103,8 +98,8 @@
               {{-- ▲ --}}
 
               {{-- 差分がある場合は時間表示 --}}
-              @if($difference != null)
-                <x-table-td :active="$count % 2 == 1">{{ __(\Carbon\Carbon::parse($difference->time_stamp_dif_short)->diffForHumans()) }}</x-table-td>
+              @if($customerPage->short_diff->time_stamp_dif_short != '0000-00-00 00:00:00' || $customerPage->short_diff->time_stamp_dif_short != '0000-00-00 00:00:00')
+                <x-table-td :active="$count % 2 == 1">{{ __(\Carbon\Carbon::parse($customerPage->short_diff->time_stamp_dif_short)->diffForHumans()) }}</x-table-td>
               @else
                 <x-table-td :active="$count % 2 == 1">{{ __('-') }}</x-table-td>
               @endif
