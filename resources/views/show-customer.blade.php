@@ -70,12 +70,11 @@
                             $pre1htmlPath = $htmlPreDirs['full'][1] . $customerPage->page_id . "." . "html";
                             $pre2htmlPath = $htmlPreDirs['full'][2] . $customerPage->page_id . "." . "html";
                         @endphp
-                        {{ app_path($newhtmlPath)}}
+
                         @if( Illuminate\Support\Facades\File::exists(app_path($newhtmlPath)))
-                            1
                             @if( Illuminate\Support\Facades\File::exists(app_path($pre1htmlPath)))
                                 <x-table-td :active="$loop->iteration % 2 == 1">
-                                    <a href="/prehtml/{{ $htmlPreDirs['filename'][1] }}/{{ $customerPage->page_id }}"class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+                                    <a href="/prehtml/{{ $htmlPreDirs['filename'][1] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
                                         {{ __("開く") }}
                                     </a>
                                 </x-table-td>
@@ -85,15 +84,14 @@
                                 </x-table-td>
                             @endif
                             <x-table-td :active="$loop->iteration % 2 == 1">
-                                <a href="/prehtml/{{ $htmlPreDirs['filename'][0] }}/{{ $customerPage->page_id }}"class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+                                <a href="/prehtml/{{ $htmlPreDirs['filename'][0] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
                                     {{ __("開く") }}
                                 </a>
                             </x-table-td>
                         @elseif( Illuminate\Support\Facades\File::exists(app_path($pre1htmlPath)))
-                            2
                             @if( Illuminate\Support\Facades\File::exists(app_path($pre2htmlPath)))
                                 <x-table-td :active="$loop->iteration % 2 == 1">
-                                    <a href="/prehtml/{{ $htmlPreDirs['filename'][2] }}/{{ $customerPage->page_id }}"class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+                                    <a href="/prehtml/{{ $htmlPreDirs['filename'][2] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
                                         {{ __("開く") }}
                                     </a>
                                 </x-table-td>
@@ -103,12 +101,11 @@
                                 </x-table-td>
                             @endif
                             <x-table-td :active="$loop->iteration % 2 == 1">
-                                <a href="/prehtml/{{ $htmlPreDirs['filename'][1] }}/{{ $customerPage->page_id }}"class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+                                <a href="/prehtml/{{ $htmlPreDirs['filename'][1] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
                                     {{ __("開く") }}
                                 </a>
                             </x-table-td>
                         @else
-                            3
                             <x-table-td :active="$loop->iteration % 2 == 1">
 
                             </x-table-td>
@@ -129,7 +126,7 @@
 
                             @if( Illuminate\Support\Facades\File::exists($htmlfile))
                             {{-- <x-sabun-a href="#" :haveDifference="true" onclick="window.open({{$htmlfile}}, 'chrome','width=1280,height=720,noopener'); return false;" class=""> --}}
-                            <x-sabun-a href="/different/short/{{$customerPage->page_id}}" :haveDifference="true">
+                            <x-sabun-a href="/different/short/{{$customerPage->page_id}}" target="_blank" rel="noopener" :haveDifference="true">
                                 {{ __('差分あり') }}
                             </x-sabun-a>
                             @else
