@@ -17,7 +17,7 @@ class NoBlogController extends Controller
     {
         $customerPages = CustomerPage::with(['customer', 'page_html', 'line_register'])
                                     ->whereHas('Customer', function($query){
-                                        $query->where('eccube_flg', 0) //eccube_flgに"blog_flg"が入っていたため
+                                        $query->where('blog_flg', 0) //eccube_flgに"blog_flg"が入っていたため
                                             ->where('active_flg', 1)
                                             ->where('del_flg', 0);
                                     })
