@@ -1,11 +1,7 @@
-@php
-  use Illuminate\Support\Facades\File;
-@endphp
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('顧客一覧') }}
+            {{ __('corsin') }}
         </h2>
     </x-slot>
 
@@ -30,12 +26,9 @@
               @sortablelink('line_register.line_flg', 'LINE登録')
               {{ __('') }}
             </x-table-th>
+            <x-table-th>{{ __('〇〇') }}</x-table-th>
             <x-table-th>
-              @sortablelink('short_diff.difference_flg', '差分有り')
-              {{ __('') }}
-            </x-table-th>
-            <x-table-th>
-              @sortablelink('short_diff.time_stamp_dif_short', '差分検出日')
+              @sortablelink('page_html.time_stamp_htmlsrc', 'ファイル取得日')
               {{ __('') }}
             </x-table-th>
           </tr>
@@ -56,10 +49,12 @@
                 </x-link>
               </x-table-td>
 
+              {{-- ▼JS編集用customer_id --}}
+              <div class="hidden">{{ $customerPage->customer->customer_id }}</div>
               {{-- LINE登録有無 --}}
               {{-- ラインフラッグ代入（JSの判定用） --}}
-              @if($customerPage->line_register != null)
-                @if($customerPage->line_register->line_flg == 1)
+              @if($customerPage->customer->line_register != null)
+                @if($lineFlg = $customerPage->customer->line_register->line_flg == 1)
                   <x-table-td :active="$count % 2 == 1">
                     <x-span :registered="true" class="" id="{{$customerPage->customer->support_id}}">
                       {{ __('登録済み') }}
@@ -80,7 +75,6 @@
                 </x-table-td>
               @endif
               {{-- ▲JS編集用customer_id --}}
-
               {{-- ▼差分の表示 --}}
               @if($customerPage->short_diff->difference_flg == 1)
                 <x-table-td :active="$count % 2 == 1">

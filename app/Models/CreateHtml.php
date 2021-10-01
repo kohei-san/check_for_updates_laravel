@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class CreateHtml extends Model
 {
-    use HasFactory;
-
+    use HasFactory, sortable;
         /**
      * モデルに関連付けるテーブル
      *
@@ -23,14 +23,4 @@ class CreateHtml extends Model
      */
     protected $primaryKey = 'create_html_id';
 
-    /**
-     * モデルにタイムスタンプを付けるか
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    public function page_html() {
-        return $this->hasMany(PageHtml::class, 'html_id');
-    }
 }
