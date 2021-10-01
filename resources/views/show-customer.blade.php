@@ -144,7 +144,7 @@
                         {{-- ▲ --}}
                         
 
-                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __($customerPage->page_html->time_stamp_htmlsrc) }}</x-table-td>
+                        <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
                     </tr>
                 </tbody>
             @endforeach
