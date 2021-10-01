@@ -31,7 +31,7 @@
               {{ __('') }}
             </x-table-th>
             <x-table-th>
-              @sortablelink('short_diff.difference_flg', '差分有り')
+              @sortablelink('short_diff.difference_flg', '差分')
               {{ __('') }}
             </x-table-th>
             <x-table-th>

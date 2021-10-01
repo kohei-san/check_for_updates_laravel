@@ -26,9 +26,11 @@
               @sortablelink('line_register.line_flg', 'LINE登録')
               {{ __('') }}
             </x-table-th>
-            <x-table-th>{{ __('〇〇') }}</x-table-th>
             <x-table-th>
-              @sortablelink('page_html.time_stamp_htmlsrc', 'ファイル取得日')
+              @sortablelink('short_diff.difference_flg', '差分')
+              {{ __('') }}</x-table-th>
+            <x-table-th>
+              @sortablelink('short_diff.time_stamp_dif_short', '差分検出日')
               {{ __('') }}
             </x-table-th>
           </tr>

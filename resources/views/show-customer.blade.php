@@ -142,7 +142,6 @@
                         </x-table-td>
                         @endif
                         {{-- ▲ --}}
-                        
 
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __('') }}</x-table-td>
                     </tr>
