@@ -30,7 +30,7 @@
               @sortablelink('short_diff.difference_flg', '差分')
               {{ __('') }}</x-table-th>
             <x-table-th>
-              @sortablelink('short_diff.time_stamp_dif_short', '差分検出日')
+              @sortablelink('short_diff.time_stamp_dif_short', '最終更新日')
               {{ __('') }}
             </x-table-th>
           </tr>
