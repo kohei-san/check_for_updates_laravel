@@ -5,9 +5,9 @@
         </h2>
     </x-slot>
 
-<section class="text-gray-600 body-font">
+<section class="text-gray-600 body-font overflow-x-scroll">
   <div class="xl:container px-5 py-24 mx-auto">
-    <div class="w-full mx-auto overflow-auto">
+    <div class="w-full mx-auto min-w-min">
       <table class="table-auto w-full text-left whitespace-no-wrap">
         {{-- テーブルヘッダー --}}
         <thead>
@@ -21,7 +21,6 @@
               @sortablelink('customer.customer_name', '顧客名')
               {{ __('') }}
             </x-table-th>
-            <x-table-th>{{ __('担当者名') }}</x-table-th>
             <x-table-th>{{ __('URL') }}</x-table-th>
             <x-table-th>
               @sortablelink('line_register.line_flg', 'LINE登録')
@@ -42,13 +41,12 @@
           <tbody>
             <tr>
               <x-table-td :active="$count % 2 == 1">{{ __($count) }}</x-table-td>
-              <x-table-td :active="$count % 2 == 1"><a href="{{route('customer.show', [$customerPage->customer->customer_id])}}">{{ __($customerPage->customer->support_id) }}</a></x-table-td>
-              <x-table-td :active="$count % 2 == 1"><a href="{{route('customer.show', [$customerPage->customer->customer_id])}}">{{ __($customerPage->customer->customer_name) }}</a></x-table-td>
-              <x-table-td :active="$count % 2 == 1">{{ __('担当者名') }}</x-table-td>
-              <x-table-td :active="$count % 2 == 1">
-              <a href="{{ $customerPage->customer->customerPag_toppage_url }}"class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+              <x-table-td :active="$count % 2 == 1" class="py-2 px-4 rounded hover:bg-gray-500 hover:text-white hover:opacity-50"><a href="{{route('customer.show', [$customerPage->customer->customer_id])}}">{{ __($customerPage->customer->support_id) }}</a></x-table-td>
+              <x-table-td :active="$count % 2 == 1" class="font-bold py-2 px-4 rounded hover:bg-gray-500 hover:text-white hover:opacity-50"><a href="{{route('customer.show', [$customerPage->customer->customer_id])}}">{{ __($customerPage->customer->customer_name) }}</a></x-table-td>
+              <x-table-td :active="$count % 2 == 1" class="">
+                <x-link :url="$customerPage->customer->customer_toppage_url" class="" >
                   {{ __("開く") }}
-              </a>
+                </x-link>
               </x-table-td>
 
               {{-- ▼JS編集用customer_id --}}
@@ -77,8 +75,29 @@
                 </x-table-td>
               @endif
               {{-- ▲JS編集用customer_id --}}
-              <x-table-td :active="$count % 2 == 1">{{ __('') }}</x-table-td>
-              <x-table-td :active="$count % 2 == 1">{{ __($customerPage->page_html->time_stamp_htmlsrc) }}</x-table-td>
+              {{-- ▼差分の表示 --}}
+              @if($customerPage->short_diff->difference_flg == 1)
+                <x-table-td :active="$count % 2 == 1">
+                  <x-sabun-a href="{{route('customer.show', [$customerPage->customer->customer_id])}}" :haveDifference="true">
+                    {{ __('差分あり') }}
+                  </x-sabun-a>
+                </x-table-td>
+              @else
+                <x-table-td :active="$count % 2 == 1">
+                  <x-sabun-a  :haveDifference="false" class="">
+                    {{ __('差分なし') }}
+                  </x-sabun-a>
+                </x-table-td>
+              @endif
+              {{-- ▲ --}}
+
+              {{-- 差分がある場合は時間表示 --}}
+              @if($customerPage->short_diff->time_stamp_dif_short != '0000-00-00 00:00:00' || $customerPage->short_diff->time_stamp_dif_short != '0000-00-00 00:00:00')
+                <x-table-td :active="$count % 2 == 1">{{ __(\Carbon\Carbon::parse($customerPage->short_diff->time_stamp_dif_short)->diffForHumans()) }}</x-table-td>
+              @else
+                <x-table-td :active="$count % 2 == 1">{{ __('-') }}</x-table-td>
+              @endif
+              {{-- ▲ --}}
             </tr>
           </tbody>
           <?php $count += 1; ?>
