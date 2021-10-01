@@ -66,7 +66,7 @@
                             $pre1htmlPath = $htmlPreDirs['full'][1] . $customerPage->page_id . "." . "html";
                             $pre2htmlPath = $htmlPreDirs['full'][2] . $customerPage->page_id . "." . "html";
                         @endphp
-                        {{app_path($pre2htmlPath)}}
+                        {{Illuminate\Support\Facades\File::exists(app_path($newhtmlPath))}}
                         @if( Illuminate\Support\Facades\File::exists(app_path($newhtmlPath)))
 
                             @if( Illuminate\Support\Facades\File::exists(app_path($pre1htmlPath)))
