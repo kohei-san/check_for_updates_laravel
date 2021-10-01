@@ -44,15 +44,17 @@ class CustomerController extends Controller
                             ->where('customer_id', $customer_id)
                             ->get();
 
-        $htmlPreDirsModel = CreateHtml::orderBy("create_html_id", 'desc')->limit(3)->get();
-        foreach ($htmlPreDirsModel as $key => $htmlPreDirmodel){
-            $htmlPreDir[$key] = "Http\Controllers\\python\\acquired_data\\" . $htmlPreDirmodel["filename_timestamp"] ."\\html\\";
+        $htmlPreModels = CreateHtml::orderBy("create_html_id", 'desc')->limit(3)->get();
+        
+        foreach ($htmlPreModels as $key => $htmlPreModel){
+            $htmlPreDirs['full'][$key] = "Http\\Controllers\\python\\acquired_data\\" . $htmlPreModel["filename_timestamp"] ."\\html\\";
+            $htmlPreDirs['filename'][$key] = $htmlPreModel["filename_timestamp"];
         }
 
-        $htmlShortDifDir = __DIR__ . "\\python\\different\\short_term\\";
+        $htmlShortDifDir = "Http\\Controllers\\python\\different\\short_term\\";
 
         return view('show-customer')->with('customerPages', $customerPages)
-                                    ->with('htmlPreDir', $htmlPreDir)
+                                    ->with('htmlPreDirs', $htmlPreDirs)
                                     ->with('htmlShortDifDir', $htmlShortDifDir);
     }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\NotActiveCustomerController;
 use App\Http\Controllers\CustomerPageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\LineRegisterController;
+use Illuminate\Support\Facades\File;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,4 +84,16 @@ Route::get('python', [PythonController::class, 'exec'])
     ->middleware(['auth'])
     ->name('python');
 
+// acquired_data コントローラー
+Route::get('prehtml/{file_namepath}/{page_id}', function($file_namepath, $page_id){
+    return File::get(app_path("Http\\Controllers\\python\\acquired_data\\" . $file_namepath . "\\html\\" . $page_id . ".html"));
+})  ->middleware(['auth']);
+
+
+// different コントローラー
+Route::get('different/{term}/{page_id}', function($term,$page_id){
+    return File::get(app_path("Http\\Controllers\\python\\different\\" . $term . "term\\" . $page_id . ".html"));
+})  ->middleware(['auth']);
+
+    
 require __DIR__.'/auth.php';
