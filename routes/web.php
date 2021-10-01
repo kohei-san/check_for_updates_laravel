@@ -92,7 +92,7 @@ Route::get('prehtml/{file_namepath}/{page_id}', function($file_namepath, $page_i
 
 // different コントローラー
 Route::get('different/{term}/{page_id}', function($term,$page_id){
-    return File::get(app_path("Http/Controllers/python/different/" . $term . "term/" . $page_id . ".html"));
+    return File::get(app_path("Http/Controllers/python/different/" . $term . "_term/" . $page_id . ".html"));
 })  ->middleware(['auth']);
 
     
