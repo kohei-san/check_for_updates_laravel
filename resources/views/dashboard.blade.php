@@ -30,7 +30,25 @@
                         </a>
                     </div> --}}
                     
+
                 @endif
+
+                {{--  --}}
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <div class="">
+                        {{-- <h3 class="">ブログ導入顧客（目標6200件</h3> --}}
+                        <div id="barchart_values" class="w-full h-auto"></div>
+                    </div>
+                    <div class="flex flex-wrap justify-center">
+                        <!--Div that will hold the pie chart-->
+                        <div id="chart_div1"></div>
+                        <div id="chart_div2"></div>
+                        <div id="chart_div3"></div>
+                    </div>
+                </div>
+                {{--  --}}
+            
+
             </div>
         </div>
     </div>
