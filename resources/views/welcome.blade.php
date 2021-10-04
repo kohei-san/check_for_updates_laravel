@@ -15,7 +15,7 @@
         </style>
 
         <!-- icon -->
-        <link rel="icon" href="{{asset('image/CorSin.png')}}">
+        <link rel="icon" href="{{asset('image/CorSin_favicon.png')}}">
 
         <style>
             body {

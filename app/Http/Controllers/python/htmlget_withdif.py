@@ -16,6 +16,7 @@ from os import path
 import shutil
 from urllib.parse import urljoin
 
+# ▼▼▼▼--sql 文--▼▼▼▼
 sql_pagedata_select = '''
     SELECT * FROM customer_page 
     WHERE customer_id IN ( SELECT customer_id FROM customer WHERE active_flg=1 AND del_flg=0 )
@@ -96,22 +97,23 @@ sql_create_long_difference_insert = """
     VALUES(%s,%s)
 """
 
-
-
 sql_tag_to_exclude_select = '''
     SELECT * FROM tag_to_exclude 
     WHERE del_flg=0 
 '''
+# ▲▲▲▲--sql 文--▲▲▲▲
 
 
+# ▼▼▼▼--関数--▼▼▼▼
 
-
+# ファイルを
 def create_htmlfile(foldername, filename, text ,encode_thishtml):
     file = open(foldername + '/' + filename + '.html','wb')
     file.write(text.encode(encode_thishtml))
     file.close()
 
 dfTagToExcludeData = pdsql.read_sql(sql_tag_to_exclude_select, db)
+
 # 比較するために不要なタグや属性の整理
 def adjustment_tag(htmlData):
     # タグ名の削除項目
@@ -291,8 +293,6 @@ def create_comparison_reflection_file(li_differ_sentences, afterfilename, encode
 time_stamp = datetime.datetime.now()
 file_nametime_stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M")
 
-# Customer Table を取得
-dfCustomerData = pdsql.read_sql(sql_customerdata_select, db)
 
 # customer_page Table を取得
 dfPageDataData = pdsql.read_sql(sql_pagedata_select, db)
@@ -495,7 +495,6 @@ for index, row in dfPageDataData.iterrows():
             mycursor.executemany(sql_ngpage_update, arrOKorNgPageNo)
             db.commit
             arrOKorNgPageNo = []
-
         except:
             pass
 
