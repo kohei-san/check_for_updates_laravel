@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         <!-- icon -->
-        <link rel="icon" href="{{asset('image/CorSin_favicon.png')}}">
+        <link rel="icon" href="{{asset('image/CorSin_header_log.png')}}">
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <!-- icon -->
-    <link rel="icon" href="{{asset('image/CorSin_favicon.png')}}">
+    <link rel="icon" href="{{asset('image/CorSin_header_log.png')}}">
 
     {{-- fontawsome / column sortable用 --}}
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
