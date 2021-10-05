@@ -13,6 +13,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\LineRegisterController;
 use Illuminate\Support\Facades\File;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,14 +29,14 @@ Route::get('/', function () {
     return view('top-page');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 // user編集ページ
 Route::resource('user', UserController::class)
     ->middleware(['auth'])
-    ->only(['edit', 'update']);
+    ->only(['index','edit', 'update']);
 
 // 顧客一覧表示
 Route::resource('customer', CustomerController::class)

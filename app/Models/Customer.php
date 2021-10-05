@@ -48,6 +48,11 @@ class Customer extends Model
         return $this->hasOne(DifferenceBetShortterm::class, 'customer_id','customer_id')->oldestOfMany();
     }
 
+    public function long_diff(){
+        return $this->hasOne(LongDifference::class, 'customer_id','customer_id');
+    }
+
+
     // ソート可能なカラム
     public $sortable = [
         'support_id',
