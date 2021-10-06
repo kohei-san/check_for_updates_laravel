@@ -52,7 +52,7 @@ def get_linkurl(toppage_url):
             return arrHref
 
         # href なしはスルー
-        if (not href) or href =='/':
+        if (not href) or href =='/' or ng_words(href):
             continue
 
         # /始まりは、一文字目の「/」移行をtopurlに結合
@@ -63,7 +63,7 @@ def get_linkurl(toppage_url):
             href = href + '/'
 
         # hrefの「/」の数がオーバー、またはNGワードがあるかで場合分け
-        if href.count('/') > slashCount or ng_words(href):
+        if href.count('/') > slashCount:
             continue
         
         # topurl が入っているか（外部リンク除外）かつ 今までの arrHref に格納されてない場合

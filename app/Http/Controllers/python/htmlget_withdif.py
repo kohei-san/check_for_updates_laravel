@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from genericpath import exists
 import DBconfig
 db = DBconfig.functionDBconfig()
 mycursor = db.cursor()
@@ -15,6 +16,11 @@ import os
 from os import path
 import shutil
 from urllib.parse import urljoin
+
+
+# =================================================
+# ====▼▼▼▼▼▼▼▼====　　　sql 文　　　====▼▼▼▼▼▼▼▼====
+# =================================================
 
 sql_pagedata_select = '''
     SELECT * FROM customer_page 
@@ -96,23 +102,49 @@ sql_create_long_difference_insert = """
     VALUES(%s,%s)
 """
 
-
-
 sql_tag_to_exclude_select = '''
     SELECT * FROM tag_to_exclude 
     WHERE del_flg=0 
 '''
 
+# =================================================
+# ====▲▲▲▲▲▲▲▲====　　　sql 文　　　====▲▲▲▲▲▲▲▲====
+# =================================================
 
 
 
+# =================================================
+# ====▼▼▼▼▼▼▼▼====       関数      ====▼▼▼▼▼▼▼▼====
+# =================================================
+
+# ファイルを作成する
 def create_htmlfile(foldername, filename, text ,encode_thishtml):
     file = open(foldername + '/' + filename + '.html','wb')
     file.write(text.encode(encode_thishtml))
     file.close()
 
-dfTagToExcludeData = pdsql.read_sql(sql_tag_to_exclude_select, db)
+# ファイルを削除する
+def removeFile(fullpath):
+    if (os.path.exists(fullpath)):
+        os.remove(fullpath) 
+
+# betdeffrence table 二つに登録されていない page_id を探し出す
+# page_id登録用のlistを作成
+def checkExistInBetTabel(dfPageDataData, dfDiffernceData):
+    liDifferenceData = []
+    for index, row in dfPageDataData.iterrows():
+        cust=""
+        try:
+            cust = dfDiffernceData.query('page_id == ' + str(row.page_id)).reset_index().loc[0,'page_id']
+        except:
+            pass
+        if cust=="":
+            liDifferenceData.append([row.page_id, row.customer_id])
+    return liDifferenceData
+
+
 # 比較するために不要なタグや属性の整理
+dfTagToExcludeData = pdsql.read_sql(sql_tag_to_exclude_select, db)
 def adjustment_tag(htmlData):
     # タグ名の削除項目
     for tag_list in dfTagToExcludeData.itertuples():
@@ -158,6 +190,7 @@ def adjustment_tag(htmlData):
 
     return htmlData
 
+# 文字化け削除
 def unescape(s):
     s = s.replace("&lt;", "<")
     s = s.replace("&gt;", ">")
@@ -165,8 +198,9 @@ def unescape(s):
     s = s.replace("&amp;", "&")
     return s
 
+
 # 全ての相対パスを絶対パスに変更
-def path_relative_direct(htmldata, url):
+def changePathRelateiveToDirect(htmldata, url):
     tags = htmldata.findAll()
     for tag in tags:
         if tag.get('src'):
@@ -176,9 +210,8 @@ def path_relative_direct(htmldata, url):
     return htmldata
 
 
-cleaner = Cleaner(page_structure=False, remove_tags=('ruby', 'rb', 'br'), kill_tags=('rt', 'rp'))
-
 # 差分を見るためのファイルを開く
+cleaner = Cleaner(page_structure=False, remove_tags=('ruby', 'rb', 'br'), kill_tags=('rt', 'rp'))
 def openfile_to_diff(filename):
     with open(filename, mode='rb') as f1:
         enc = detect(f1.read())['encoding']
@@ -196,41 +229,32 @@ def openfile_to_diff(filename):
                             HTMLtext = ""
     return HTMLtext
 
-# 差分作成
+
+# 差分テキスト作成
 def create_diff(beforefilename, afterfilename):
-    # 前回分があるかどうか
     
     # 比較符号と、比較対象を入れるリスト作成
     liDifference = []
+    diffrence_flg = 0 
     if os.path.exists(beforefilename):
-        # 過去比較ファイルを開いて整理する
         beforeHTMLtext = openfile_to_diff(beforefilename)
-
-        # フォルダが開けたら
         if beforeHTMLtext:
 
-            # タグを修正して lxml から 比較のための文字列に変換
             beforeHTML = lxml.html.fromstring(beforeHTMLtext)
             beforeHTML = adjustment_tag(beforeHTML)
             beforeFile = lxml.html.etree.tostring(beforeHTML, encoding='utf-8').decode()
             
-            # 今回比較ファイルを開いて整理する
             afterHTMLtext= openfile_to_diff(afterfilename)
-
-            # フォルダが開けたら
             if afterHTMLtext:
 
-                # タグを修正して lxml から 比較のための文字列に変換
                 afterHTML = lxml.html.fromstring(afterHTMLtext)
                 afterHTML = adjustment_tag(afterHTML)
                 afterFile = lxml.html.etree.tostring(afterHTML, encoding='utf-8').decode()
 
-                # ファイルを比較
                 difdiffer = difflib.Differ()
                 diff = difdiffer.compare(beforeFile.splitlines(), afterFile.splitlines())
 
                 # 比較対象があるかどうかのチェックと比較分のみ抽出
-                diffrence_flg = 0
                 for diffrence in diff:
                     if diffrence[:1] in change_flg_word:
                         diffrence_flg = 1
@@ -238,24 +262,12 @@ def create_diff(beforefilename, afterfilename):
                         if diffrence[:1] == '+' and not(diffrence[2:].replace(' ', '') in li_ng_diffrence) and not(diffrence[2:].startswith("<div") and diffrence[2:].endswith(">") and diffrence[2:].count("<")==1):
                             liDifference.append([diffrence[:1],''.join(diffrence[2:])])
 
-            else:
-                diffrence_flg = 0 
-        
-        # フォルダが開けなかったら
-        else:
-            diffrence_flg = 0
-
-    # 前回分があるかどうか(なし)
-    else:
-        diffrence_flg = 0
     return liDifference, diffrence_flg
 
 
-change_flg_word = ["-","+","-"]
-
-li_ng_diffrence = ['<div>', '</div>', '<a>', '</a>', '<p>','</p>', '<span>' ,'</span>', '</div></div>', '</span>', '\xa0', '<p>', '</p>']
-
 # 差分がある箇所に赤枠を生成する
+change_flg_word = ["-","+","-"]
+li_ng_diffrence = ['<div>', '</div>', '<a>', '</a>', '<p>','</p>', '<span>' ,'</span>', '</div></div>', '</span>', '\xa0', '<p>', '</p>']
 def create_comparison_reflection_file(li_differ_sentences, afterfilename, encode_thishtml):
     # インテンド位置
     div_stage = 0
@@ -288,24 +300,56 @@ def create_comparison_reflection_file(li_differ_sentences, afterfilename, encode
         
     return li_comparison_reflection_file
 
+# 差分チェックメイン
+# 差分比較ファイルが生成されたかが0,1で返る。
+def checkDif_createDifFile(beforefilename, afterfilename, encode_thishtml):
+    # 比較ファイル名から、比較リストの生成
+    liDifference, diffrence_flg = create_diff(beforefilename, afterfilename)
+    difcheck_flg = 0
+
+    # 比較対象があるかどうかの分岐
+    if diffrence_flg == 1:
+        # 比較対象センテンスのみ取り出し
+        li_differ_sentences = [sentence[1] for sentence in liDifference]
+        # プラス要素があるかどうか分岐
+        if(liDifference):
+            difcheck_flg = 1
+
+            # 今回取得ファイルの中で、差分がある箇所に赤枠を生成する
+            li_comparison_reflection_file = create_comparison_reflection_file(li_differ_sentences, afterfilename, encode_thishtml)
+            
+            # 行分解をして一つにまとめる。
+            diffHTML ='\n'.join(li_comparison_reflection_file)
+            create_htmlfile(path.dirname(__file__)+'/different/short_term', str(row.page_id), diffHTML, 'utf-8')
+
+    # 差分ファイルが作れたら1　なかったら0
+    return difcheck_flg
+
+# =================================================
+# ====▲▲▲▲▲▲▲▲====       関数      ====▲▲▲▲▲▲▲▲====
+# =================================================
+
+
+# ======================================================================
+# ====▼▼▼▼▼▼▼▼====(1) 前処理　DB 取得・登録　ファイルの削除====▼▼▼▼▼▼▼▼====
+# ======================================================================
+
 time_stamp = datetime.datetime.now()
 file_nametime_stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M")
 
-# Customer Table を取得
-dfCustomerData = pdsql.read_sql(sql_customerdata_select, db)
 
 # customer_page Table を取得
 dfPageDataData = pdsql.read_sql(sql_pagedata_select, db)
 # 比較一個前のcreate_html_idを取得
 dfpreCreatePageid = pdsql.read_sql(sql_create_page_select_max, db)
 # 比較のcreate_html_idに対応するフォルダパス
-pre_dir_path_recursive = path.dirname(__file__) + "/acquired_data/" + dfpreCreatePageid.loc[0,'filename_timestamp'] + "/html"
+pre_dir_path_recursive = path.dirname(__file__) + "/acquired_data/" + dfpreCreatePageid.loc[0,'filename_timestamp'] + "/html/"
 
 
 # favoriteのcreate_html_idを取得
 dfFavoriteCreatePageid = pdsql.read_sql(sql_favo_create_page_select, db)
 # favoriteに対応するフォルダパス
-favorite_dir_path_recursive = path.dirname(__file__) + "/acquired_data/" + dfFavoriteCreatePageid.loc[0,'filename_timestamp'] + "/html"
+favorite_dir_path_recursive = path.dirname(__file__) + "/acquired_data/" + dfFavoriteCreatePageid.loc[0,'filename_timestamp'] + "/html/"
 
 # create_html Table に新規追加
 arrtime_stamp=[]
@@ -345,20 +389,25 @@ if li_delete_html_folder:
 
 # difference_bet_shortterm Table に未登録分新規追加
 dfDiffernceShortData = pdsql.read_sql(sql_difference_shortterm_select, db)
-
-liDiffernceShortData = []
-for index, row in dfPageDataData.iterrows():
-    cust=""
-    try:
-        cust = dfDiffernceShortData.query('page_id == ' + str(row.page_id)).reset_index().loc[0,'page_id']
-    except:
-        pass
-    if cust=="":
-        liDiffernceShortData.append([row.page_id, row.customer_id])
-
-
+liDiffernceShortData = liDiffernceLongData = checkExistInBetTabel(dfPageDataData, dfDiffernceShortData)
 mycursor.executemany(sql_difference_shortterm_insert, liDiffernceShortData)
 db.commit
+
+# difference_bet_longterm Table に未登録分新規追加
+dfDiffernceLongData = pdsql.read_sql(sql_difference_longterm_select, db)
+liDiffernceLongData = checkExistInBetTabel(dfPageDataData, dfDiffernceLongData)
+mycursor.executemany(sql_difference_longterm_insert, liDiffernceLongData)
+db.commit
+
+
+# ======================================================================
+# ====▲▲▲▲▲▲▲▲====(1) 前処理　DB 取得・登録　ファイルの削除====▲▲▲▲▲▲▲▲====
+# ======================================================================
+
+
+# ==============================================================
+# ====▼▼▼▼▼▼▼▼====(2) page ごとにHTMLを取得・保存====▼▼▼▼▼▼▼▼====
+# ==============================================================
 
 create_html_id = dfCreatePageid.loc[0,'create_html_id']
 arrHTMLData = []
@@ -367,135 +416,92 @@ arrCheckDifferenceTrueShort = []
 arrCheckDifferenceFalseShort = []
 arrCheckDifferenceTrueLong = []
 arrCheckDifferenceFalseLong = []
+short_term_path = path.dirname(__file__)+'/different/short_term/'
+long_term_path = path.dirname(__file__)+'/different/long_term/'
 
 for index, row in dfPageDataData.iterrows():
-    # htmlデータの取得
+
+    removeFile(short_term_path + str(row.page_id)+'.html')
+    removeFile(long_term_path + str(row.page_id)+'.html')
+
     try:
         res = requests.get(row.page_url)
         htmldata = BeautifulSoup(res.content,'lxml')
     except:
         htmldata = "error"
     
-    # 短期更新時のファイルパスを取得して、毎回一旦消す。
-    short_term_path = path.dirname(__file__)+'/different/short_term/'+str(row.page_id)+'.html'
-    if (os.path.exists(short_term_path)):
-        os.remove(short_term_path) 
-
-    # ページデータがあるかどうかの分岐
     if res.status_code < 400 and not htmldata == "error":
-        # 相対パスを変更する
-        htmldata = path_relative_direct(htmldata, row.page_url)
-        # エンコード取得
+        htmldata = changePathRelateiveToDirect(htmldata, row.page_url)
         encode_thishtml = htmldata.original_encoding
         create_htmlfile(new_dir_path_recursive, str(row.page_id), htmldata, encode_thishtml)
         time_get_file = datetime.datetime.now()
         arrHTMLData.append([row.page_id, int(row.customer_id), int(create_html_id), time_get_file])
         arrOKorNgPageNo.append([0, row.page_id])
 
-        # ===================================================================
-        # ==============================比較開始==============================
-        # ===================================================================
+        # ==============================================================
+        # ====▲▲▲▲▲▲▲▲====(2) page ごとにHTMLを取得・保存====▲▲▲▲▲▲▲▲====
+        # ==============================================================
 
-        # ==============================短期(一回目)==============================
 
-        # 比較ファイルのアドレスを取得
-        beforefilename = pre_dir_path_recursive + "/" + str(row.page_id) + ".html"
-        afterfilename = new_dir_path_recursive + "/" + str(row.page_id) + ".html"
-        
-        # 比較ファイル名から、比較リストの生成
-        liDifference, diffrence_flg = create_diff(beforefilename, afterfilename)
+        # ========================================================
+        # ====▼▼▼▼▼▼▼▼====(3) 取得したファイルの比較====▼▼▼▼▼▼▼▼====
+        # ========================================================
 
-        # 比較対象があるかどうかの分岐
-        if diffrence_flg == 1:
-            # 比較対象センテンスのみ取り出し
-            li_differ_sentences = [sentence[1] for sentence in liDifference]
-            # プラス要素があるかどうか分岐
-            if(liDifference):
-                arrCheckDifferenceTrueShort.append([1, time_get_file, row.page_id])
+        beforefilename = pre_dir_path_recursive + str(row.page_id) + ".html"
+        favoritefilename = favorite_dir_path_recursive + str(row.page_id) + ".html"
+        afterfilename = new_dir_path_recursive + str(row.page_id) + ".html"
 
-                # 今回取得ファイルの中で、差分がある箇所に赤枠を生成する
-                li_comparison_reflection_file = create_comparison_reflection_file(li_differ_sentences, afterfilename, encode_thishtml)
-                
-                # 行分解をして一つにまとめる。
-                diffHTML ='\n'.join(li_comparison_reflection_file)
-                create_htmlfile(path.dirname(__file__)+'/different/short_term', str(row.page_id), diffHTML, 'utf-8')
+        # 直近比較
+        difShortCheck_flg = checkDif_createDifFile(beforefilename, afterfilename, encode_thishtml)
 
-            # プラス要素があるかどうか(なし)
-            else:
-                arrCheckDifferenceFalseShort.append([0, row.page_id])
-
-        # 比較対象があるかどうかの分岐(なし)
+        if( difShortCheck_flg == 1 ):
+            arrCheckDifferenceTrueShort.append([1, time_get_file, row.page_id])
         else:
             arrCheckDifferenceFalseShort.append([0, row.page_id])
 
-
-        # ==============================長期(二回目)==============================
-        # 比較ファイルのアドレスを取得
-        beforefilename = favorite_dir_path_recursive + "/" + str(row.page_id) + ".html"
-        
-        # 比較ファイル名から、比較リストの生成
-        liDifference, diffrence_flg = create_diff(beforefilename, afterfilename)
-
-        # 比較対象があるかどうかの分岐
-        if diffrence_flg == 1:
-            # 比較対象センテンスのみ取り出し
-            li_differ_sentences = [sentence[1] for sentence in liDifference]
-            # プラス要素があるかどうか分岐
-            if(liDifference):
-                arrCheckDifferenceTrueLong.append([1, time_get_file, row.page_id])
-
-                # 今回取得ファイルの中で、差分がある箇所に赤枠を生成する
-                li_comparison_reflection_file = create_comparison_reflection_file(li_differ_sentences, afterfilename, encode_thishtml)
-                
-                # 行分解をして一つにまとめる。
-                diffHTML ='\n'.join(li_comparison_reflection_file)
-                create_htmlfile(path.dirname(__file__)+'/different/long_term', str(row.page_id), diffHTML, 'utf-8')
-            # プラス要素があるかどうか(なし)
-            else:
-                arrCheckDifferenceFalseLong.append([0, row.page_id])
-
-        # 比較対象があるかどうかの分岐(なし)
+        # favorite比較
+        difLongCheck_flg = checkDif_createDifFile(favoritefilename, afterfilename, encode_thishtml)
+        if( difLongCheck_flg == 1 ):
+            arrCheckDifferenceTrueShort.append([1, time_get_file, row.page_id])
         else:
             arrCheckDifferenceFalseLong.append([0, row.page_id])
-            
-    # ページデータがあるかどうかの分岐(なし)
+
+        # ========================================================
+        # ====▲▲▲▲▲▲▲▲====(3) 取得したファイルの比較====▲▲▲▲▲▲▲▲====
+        # ========================================================
+    
     else:
         arrOKorNgPageNo.append([1, row.page_id])
         arrCheckDifferenceFalseShort.append([0, row.page_id])
         arrCheckDifferenceFalseLong.append([0, row.page_id])
 
+
+    # 100回ごとに登録していく
     if (index + 1) % 100 == 0:
         try:
-            # HTML作った履歴
             mycursor.executemany(sql_create_htmlsrc_insert, arrHTMLData)
             db.commit
             arrHTMLData = []
 
-            # 差分あるとき更新　更新時間も更新(short)
             mycursor.executemany(sql_difference_shortterm_diftrue_update, arrCheckDifferenceTrueShort)
             db.commit
             arrCheckDifferenceTrueShort = []
 
-            # 差分あるとき更新　更新時間も更新(Long)
             mycursor.executemany(sql_difference_longterm_diftrue_update, arrCheckDifferenceTrueLong)
             db.commit
             arrCheckDifferenceTrueLong = []
 
-            # 差分ないときの更新(short)
             mycursor.executemany(sql_difference_shortterm_diffalse_update, arrCheckDifferenceFalseShort)
             db.commit
             arrCheckDifferenceFalseShort = []
 
-            # 差分ないときの更新(Long)
             mycursor.executemany(sql_difference_longterm_diffalse_update, arrCheckDifferenceFalseLong)
             db.commit
             arrCheckDifferenceFalseLong = []
 
-            # ページが生きているかチェックして更新
             mycursor.executemany(sql_ngpage_update, arrOKorNgPageNo)
             db.commit
             arrOKorNgPageNo = []
-
         except:
             pass
 
@@ -513,7 +519,6 @@ if arrCheckDifferenceFalseShort:
 
 if arrCheckDifferenceFalseLong:
     mycursor.executemany(sql_difference_longterm_diffalse_update, arrCheckDifferenceFalseLong)
-
 
 if arrOKorNgPageNo: 
     mycursor.executemany(sql_ngpage_update, arrOKorNgPageNo)
