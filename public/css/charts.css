@@ -1,3 +1,7 @@
+.bar-chart{
+	overflow-x: clip;
+}
+
 .donuts {
 	display: flex;
 	justify-content: center;
