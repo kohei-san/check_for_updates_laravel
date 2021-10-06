@@ -12,6 +12,7 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/charts.css') }}">
         
         <!-- icon -->
         <link rel="icon" href="{{asset('image/CorSin_header_log.png')}}">
