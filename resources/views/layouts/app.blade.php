@@ -21,6 +21,12 @@
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
+
+        <!--Load the AJAX API-->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="{{ asset('js/engraph.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('js/barcharts.js')}}"></script>
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-200">
@@ -39,6 +45,7 @@
             </main>
         </div>
         <script src="{{ asset('js/line.js') }}" defer></script>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
 
     </body>
 </html>
