@@ -15,7 +15,7 @@
                 
                 {{-- ▼棒グラフ --}}
                 <div class="max-w-7xl mx-auto p-8">
-                    <div class="text-center p-4">ブログ導入顧客({{$sabun['blog']}}件)</div>
+                    <div class="text-center p-4">(▼現在制作中)<br>ブログ導入顧客({{$sabun['blog']}}件)</div>
                     <div class="px-8">
                         <div class="bar-chart">{{-- charts.cssクラス --}}
                             <div class="flex">

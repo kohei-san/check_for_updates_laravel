@@ -13,14 +13,14 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                        {{ __('user.index') }}
+                        {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
 
                 <!-- corsin画面 -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('customer-page.index')" :active="request()->routeIs('customer-page.index')">
-                        {{ __('corsin') }}
+                        {{ __('顧客一覧') }}
                     </x-nav-link>
                 </div>
 
