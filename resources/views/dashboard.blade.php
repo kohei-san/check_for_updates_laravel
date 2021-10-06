@@ -30,7 +30,7 @@
                                 <div class="w-1/6 bg-gray-200 h-20 rounded-r-lg border-r-2"></div>
                             </div>
                             <div class="w-full h-20 bg-yellow-300 rounded-lg z-10 opacity-80 text-right" style="transform: translate({{ '-'.$sabun['rate']}}%, -100%);">
-                                <span class="inline-block transform -translate-y-full">現在{{$sabun['all']}}件</span>
+                                <span class="inline-block transform -translate-y-full">現在{{$sabun['all']}}件▼</span>
                             </div>
                             {{-- @dd($sabun) --}}
                         </div>
