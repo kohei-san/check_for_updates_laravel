@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\CustomerPage;
 use App\Models\LineRegister;
 use App\Models\LongDifference;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -24,14 +25,19 @@ class UserController extends Controller
         );
 
         // ブログ更新ユーザーの割合
-        $haveLongDiff = LongDifference::where('difference_flg', 1)->count();
+        $haveLongDiff = DB::table('difference_bet_longterm')
+                            ->select(DB::raw('count(*) as customer_count, customer_id'))
+                            ->groupBy('customer_id')
+                            ->where('difference_flg', 1)
+                            ->get();
+        $haveLongDiff = $haveLongDiff->count();
 
-        // $haveDiffCustomer = LongDifference::where()
-        $allPages = CustomerPage::count();
+        $blogUser = Customer::where('blog_flg', 1)->count();
+        $allCustomer = Customer::count();
         $sabun = array(
-            // 'rate' => round($haveLongDiff / 6200 * 100, 1),
-            'rate' => round(100 - ($haveLongDiff / $allPages * 100), 1),
+            'rate' => round(100 - ($haveLongDiff / $allCustomer * 100), 1),
             'all' => $haveLongDiff,
+            'blog' => $blogUser,
         );
 
         return view('dashboard')->with('linedata' ,$linedata)
