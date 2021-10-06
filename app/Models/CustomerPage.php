@@ -46,11 +46,8 @@ class CustomerPage extends Model
         return $this->hasOne(DifferenceBetShortterm::class, 'page_id', 'page_id');
     }
 
-    public function children_diff(){
-        return $this->hasOne(DifferenceBetShortterm::class, 'customer_id', 'customer_id')->ofMany([
-            'difference_flg' => 1,
-            'page_id' => 'max',
-        ]);
+    public function long_diff(){
+        return $this->hasOne(LongDifference::class, 'page_id', 'page_id');
     }
 
     public $sortable = [

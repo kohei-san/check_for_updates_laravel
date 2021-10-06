@@ -27,10 +27,10 @@
               {{ __('') }}
             </x-table-th>
             <x-table-th>
-              @sortablelink('short_diff.difference_flg', '差分')
+              @sortablelink('long_diff.difference_flg', '差分')
               {{ __('') }}</x-table-th>
             <x-table-th>
-              @sortablelink('short_diff.time_stamp_dif_short', '最終更新日')
+              @sortablelink('long_diff.time_stamp_dif_long', '最終更新日')
               {{ __('') }}
             </x-table-th>
           </tr>
@@ -55,8 +55,8 @@
               <div class="hidden">{{ $customerPage->customer->customer_id }}</div>
               {{-- LINE登録有無 --}}
               {{-- ラインフラッグ代入（JSの判定用） --}}
-              @if($customerPage->customer->line_register != null)
-                @if($lineFlg = $customerPage->customer->line_register->line_flg == 1)
+              @if($customerPage->line_register != null)
+                @if($lineFlg = $customerPage->line_register->line_flg == 1)
                   <x-table-td :active="$count % 2 == 1">
                     <x-span :registered="true" class="" id="{{$customerPage->customer->support_id}}">
                       {{ __('登録済み') }}
@@ -78,7 +78,7 @@
               @endif
               {{-- ▲JS編集用customer_id --}}
               {{-- ▼差分の表示 --}}
-              @if($customerPage->short_diff->difference_flg == 1)
+              @if($customerPage->long_diff->difference_flg == 1)
                 <x-table-td :active="$count % 2 == 1">
                   <x-sabun-a href="{{route('customer.show', [$customerPage->customer->customer_id])}}" :haveDifference="true">
                     {{ __('差分あり') }}
@@ -94,8 +94,8 @@
               {{-- ▲ --}}
 
               {{-- 差分がある場合は時間表示 --}}
-              @if($customerPage->short_diff->time_stamp_dif_short != '0000-00-00 00:00:00' || $customerPage->short_diff->time_stamp_dif_short != '0000-00-00 00:00:00')
-                <x-table-td :active="$count % 2 == 1">{{ __(\Carbon\Carbon::parse($customerPage->short_diff->time_stamp_dif_short)->diffForHumans()) }}</x-table-td>
+              @if($customerPage->long_diff->time_stamp_dif_long != '0000-00-00 00:00:00' || $customerPage->long_diff->time_stamp_dif_long != '0000-00-00 00:00:00')
+                <x-table-td :active="$count % 2 == 1">{{ __(\Carbon\Carbon::parse($customerPage->long_diff->time_stamp_dif_long)->diffForHumans()) }}</x-table-td>
               @else
                 <x-table-td :active="$count % 2 == 1">{{ __('-') }}</x-table-td>
               @endif

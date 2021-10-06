@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\CustomerPage;
 use App\Models\PageHtml;
 use App\Models\CreateHtml;
+use App\Models\LongDifference;
 use Illuminate\Http\Request;
 use Kyslik\ColumnSortable\Sortable;
 
@@ -18,14 +19,11 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::with('page_html', 'line_register')
-                            // ->whereHas('page_html', function($query){
-                            //     $query->where('line_flg', 1);
-                            // })
-                            ->where('active_flg', 1)
-                            ->where('del_flg', 0)
-                            ->sortable()
-                            ->paginate(50);
+        $customers = Customer::with(['line_register','long_diff'])
+                                    ->where('active_flg', 1)
+                                    ->where('del_flg', 0)
+                                    ->sortable()
+                                    ->paginate(50);
 
         return view('customer')->with('customers', $customers);
     }

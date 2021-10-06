@@ -16,6 +16,9 @@
               <div class="flex flex-col md:pr-10 md:mb-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center">
                 <h2 class="text-s text-blue-800 tracking-widest font-medium title-font mb-1">{{ $customerPages[0]->customer->support_id }}</h2>
                 <h1 class="md:text-3xl text-2xl font-medium font-mono text-gray-900">{{ $customerPages[0]->customer->customer_name }}</h1>
+                {{-- デバッグ用 --}}
+                <h1 class="md:text-3xl text-2xl font-medium font-mono text-gray-900">{{ $customerPages[0]->customer->customer_id }}</h1>
+                {{--  --}}
               </div>
               <div class="flex md:ml-auto md:mr-10 mx-auto items-center flex-shrink-0 space-x-4" id="show_customer">
                 @if($customerPages[0]->customer->line_register != null)
