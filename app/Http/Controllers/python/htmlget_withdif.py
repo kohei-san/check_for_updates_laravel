@@ -143,14 +143,15 @@ for i in range(2):
         if res.status_code < 400 and not htmldata:
             # toppageだった場合ページ更新
             if row.top_page_flg == 1:
+                arrUrlLink = []
                 get_links = get_linkurl(htmldata, page_url)
                 for link in get_links:
                     if not link in all_urls:
                         top_page_flg = 0
                         arrUrlLink.append([row.customer_id, link, top_page_flg])
-                
                 if arrUrlLink:
                     mycursor.executemany(sql_sentence.customer_page_insert, arrUrlLink)
+                    
 
             htmldata = changePathRelateiveToDirect(htmldata, page_url)
             encode_thishtml = htmldata.original_encoding

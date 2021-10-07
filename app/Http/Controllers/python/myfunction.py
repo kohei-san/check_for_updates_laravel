@@ -123,7 +123,6 @@ def openfile_to_diff(filename):
     cleaner = Cleaner(page_structure=False, remove_tags=('ruby', 'rb', 'br'), kill_tags=('rt', 'rp'))
     with open(filename, mode='rb') as f1:
         enc = detect(f1.read())['encoding']
-    print(enc)
     with open(filename, mode='r',encoding=enc) as f2:
         if enc == 'utf-8':
             HTMLtext = f2.read()
@@ -136,46 +135,8 @@ def openfile_to_diff(filename):
                         HTMLtext = cleaner.clean_html(f3.read().encode("utf-8_sig")).decode('utf-8')
                     except:
                         HTMLtext = ""
+
     return HTMLtext
-
-# 差分テキスト作成
-change_flg_word = ["-","+","-"]
-li_ng_diffrence = ['<div>', '</div>', '<a>', '</a>', '<p>','</p>', '<span>' ,'</span>', '</div></div>', '</span>', '\xa0', '<p>', '</p>']
-def create_diff(beforefilename, afterfilename):
-    
-    # 比較符号と、比較対象を入れるリスト作成
-    liDifference = []
-    diffrence_flg = 0 
-    if path.exists(beforefilename):
-        beforeHTMLtext = openfile_to_diff(beforefilename)
-        if beforeHTMLtext:
-
-            beforeHTML = lxml.html.fromstring(beforeHTMLtext)
-            beforeHTML = adjustment_tag(beforeHTML)
-            beforeFile = lxml.html.etree.tostring(beforeHTML, encoding='utf-8').decode()
-            
-            afterHTMLtext= openfile_to_diff(afterfilename)
-            if afterHTMLtext:
-
-                afterHTML = lxml.html.fromstring(afterHTMLtext)
-                afterHTML = adjustment_tag(afterHTML)
-                afterFile = lxml.html.etree.tostring(afterHTML, encoding='utf-8').decode()
-                print(afterFile)
-
-                difdiffer = difflib.Differ()
-                diff = difdiffer.compare(beforeFile.splitlines(), afterFile.splitlines())
-
-                # 比較対象があるかどうかのチェックと比較分のみ抽出
-                for diffrence in diff:
-                    if diffrence[:1] in change_flg_word:
-                        diffrence_flg = 1
-                        # + のみ検出かつli_ng_diffrenceに入っていないものかつ <div・・・>でないもの
-                        if diffrence[:1] == '+' and not(diffrence[2:].replace(' ', '') in li_ng_diffrence) and not(diffrence[2:].startswith("<div") and diffrence[2:].endswith(">") and diffrence[2:].count("<")==1):
-                            liDifference.append([diffrence[:1],''.join(diffrence[2:])])
-
-    return liDifference, diffrence_flg
-
-
 # 比較するために不要なタグや属性の整理
 dfTagToExcludeData = pdsql.read_sql(sql_sentence.tag_to_exclude_select, db)
 def adjustment_tag(htmlData):
@@ -223,6 +184,42 @@ def adjustment_tag(htmlData):
 
     return htmlData
 
+# 差分テキスト作成
+change_flg_word = ["-","+","-"]
+li_ng_diffrence = ['<div>', '</div>', '<a>', '</a>', '<p>','</p>', '<span>' ,'</span>', '</div></div>', '</span>', '\xa0', '<p>', '</p>']
+def create_diff(beforefilename, afterfilename):
+    
+    # 比較符号と、比較対象を入れるリスト作成
+    liDifference = []
+    diffrence_flg = 0 
+    if path.exists(beforefilename):
+        beforeHTMLtext = openfile_to_diff(beforefilename)
+        if beforeHTMLtext:
+
+            beforeHTML = lxml.html.fromstring(beforeHTMLtext)
+            beforeHTML = adjustment_tag(beforeHTML)
+            beforeFile = lxml.html.etree.tostring(beforeHTML, encoding='utf-8').decode()
+            
+            afterHTMLtext= openfile_to_diff(afterfilename)
+            if afterHTMLtext:
+
+                afterHTML = lxml.html.fromstring(afterHTMLtext)
+                afterHTML = adjustment_tag(afterHTML)
+                afterFile = lxml.html.etree.tostring(afterHTML, encoding='utf-8').decode()
+                # print(afterFile)
+
+                difdiffer = difflib.Differ()
+                diff = difdiffer.compare(beforeFile.splitlines(), afterFile.splitlines())
+
+                # 比較対象があるかどうかのチェックと比較分のみ抽出
+                for diffrence in diff:
+                    if diffrence[:1] in change_flg_word:
+                        diffrence_flg = 1
+                        # + のみ検出かつli_ng_diffrenceに入っていないものかつ <div・・・>でないもの
+                        if diffrence[:1] == '+' and not(diffrence[2:].replace(' ', '') in li_ng_diffrence) and not(diffrence[2:].startswith("<div") and diffrence[2:].endswith(">") and diffrence[2:].count("<")==1):
+                            liDifference.append([diffrence[:1], diffrence[2:]])
+    return liDifference, diffrence_flg
+
 
 # 差分がある箇所に赤枠を生成する
 change_flg_word = ["-","+","-"]
@@ -230,9 +227,12 @@ li_ng_diffrence = ['<div>', '</div>', '<a>', '</a>', '<p>','</p>', '<span>' ,'</
 def create_comparison_reflection_file(li_differ_sentences, afterfilename, encode_thishtml):
     # インテンド位置
     div_stage = 0
+    td_stage = 0
     # 直近の親要素のライン行
-    last_stage_status = {}
-    
+    last_divstage_status = {}
+    last_tdstage_status = {}
+    for sss in li_differ_sentences:
+        print(sss)
     # 比較を反映するafterfile と同等ファイルを開いて、行ごとに分ける。（afterfileは整理されているため、新しいfileを開く）
     with open(afterfilename, mode='r',encoding=encode_thishtml) as f:
 
@@ -245,18 +245,36 @@ def create_comparison_reflection_file(li_differ_sentences, afterfilename, encode
             if "div" in line:
                 if r'<div' in line:
                     for num in range(div_stage, div_stage + line.count(r'<div')):
-                        last_stage_status[num] = index
+                        last_divstage_status[num] = index
                     div_stage += line.count(r'<div')
                 div_stage -= line.count(r'</div')
+
+            if "td" in line:
+                if r'<td' in line:
+                    for num in range(td_stage, td_stage + line.count(r'<td')):
+                        last_tdstage_status[num] = index
+                    td_stage += line.count(r'<td')
+                td_stage -= line.count(r'</td')
             
-            if line in li_differ_sentences:
-                if div_stage > 0 and not('style="border:4px double red' in li_comparison_reflection_file[last_stage_status[div_stage-1]]):
-                    replace_sentence = li_comparison_reflection_file[last_stage_status[div_stage-1]]
-                    if 'style="' in replace_sentence:
-                        li_comparison_reflection_file[last_stage_status[div_stage-1]] = replace_sentence.replace('style="','style="border:4px double red; ')
+            for li_differ_sentence in li_differ_sentences:
+                if line == li_differ_sentence:
+                    if div_stage > 0:
+                        if not('style="border:4px double red' in li_comparison_reflection_file[last_divstage_status[div_stage-1]]):
+                            replace_sentence = li_comparison_reflection_file[last_divstage_status[div_stage-1]]
+                            if 'style="' in replace_sentence:
+                                li_comparison_reflection_file[last_divstage_status[div_stage-1]] = replace_sentence.replace('style="','style="border:4px double red !important; ')
+                            else:
+                                li_comparison_reflection_file[last_divstage_status[div_stage-1]] = replace_sentence.replace('<div','<div style="border:4px double red !important;"')
+
+                    elif td_stage > 0:
+                        if not('style="border:4px double red' in li_comparison_reflection_file[last_tdstage_status[td_stage-1]]):
+                            replace_sentence = li_comparison_reflection_file[last_tdstage_status[td_stage-1]]
+                            if 'style="' in replace_sentence:
+                                li_comparison_reflection_file[last_tdstage_status[td_stage-1]] = replace_sentence.replace('style="','style="border:4px double red !important; ')
+                            else:
+                                li_comparison_reflection_file[last_tdstage_status[td_stage-1]] = replace_sentence.replace('<td','<td style="border:4px double red !important;"')              
                     else:
-                        li_comparison_reflection_file[last_stage_status[div_stage-1]] = replace_sentence.replace('<div','<div style="border:4px double red;"')
-        
+                        li_comparison_reflection_file[index] += '赤枠例外変更点です。栗田に報告お願いします。'
     return li_comparison_reflection_file
 
 # 差分チェックメイン
