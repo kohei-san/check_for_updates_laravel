@@ -206,7 +206,6 @@ def create_diff(beforefilename, afterfilename):
                 afterHTML = lxml.html.fromstring(afterHTMLtext)
                 afterHTML = adjustment_tag(afterHTML)
                 afterFile = lxml.html.etree.tostring(afterHTML, encoding='utf-8').decode()
-                # print(afterFile)
 
                 difdiffer = difflib.Differ()
                 diff = difdiffer.compare(beforeFile.splitlines(), afterFile.splitlines())
@@ -231,8 +230,6 @@ def create_comparison_reflection_file(li_differ_sentences, afterfilename, encode
     # 直近の親要素のライン行
     last_divstage_status = {}
     last_tdstage_status = {}
-    for sss in li_differ_sentences:
-        print(sss)
     # 比較を反映するafterfile と同等ファイルを開いて、行ごとに分ける。（afterfileは整理されているため、新しいfileを開く）
     with open(afterfilename, mode='r',encoding=encode_thishtml) as f:
 
@@ -330,5 +327,3 @@ def mail_print(arrPrintTime):
     print('経過時間 : ' + str(time))
     print()
 
-# (weeks=1, days=1, hours=1, minutes=1, seconds=1, milliseconds=1, microseconds=1)
-# (days=1, hours=1, minutes=1)

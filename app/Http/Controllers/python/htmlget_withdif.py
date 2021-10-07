@@ -116,7 +116,6 @@ arrCheckDifferenceTrueShort = []
 arrCheckDifferenceFalseShort = []
 arrCheckDifferenceTrueLong = []
 arrCheckDifferenceFalseLong = []
-arrUrlLink = []
 short_term_path = path.dirname(__file__)+'/different/short_term'
 long_term_path = path.dirname(__file__)+'/different/long_term'
 
