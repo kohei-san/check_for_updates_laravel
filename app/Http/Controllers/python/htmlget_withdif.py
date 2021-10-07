@@ -7,11 +7,8 @@ mycursor = db.cursor()
 # sql文読み込み
 import sql_sentence
 
-import datetime
-from bs4 import BeautifulSoup
 import os
 from os import path
-import requests
 import pandas.io.sql as pdsql
 import datetime
 import shutil
