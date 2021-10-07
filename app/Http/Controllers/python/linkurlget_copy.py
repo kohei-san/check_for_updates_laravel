@@ -57,5 +57,6 @@ if arrUrlLink:
 if arrUpdatesActivateCustomer:
     mycursor.executemany(sql_sentence.customer_update, arrUpdatesActivateCustomer)
 
-db.commit
+
+# db.commit
 db.close
