@@ -49,7 +49,10 @@ class Customer extends Model
     }
 
     public function long_diff(){
-        return $this->hasOne(LongDifference::class, 'customer_id','customer_id');
+        return $this->hasOne(LongDifference::class, 'customer_id','customer_id')->ofMany([
+            'time_stamp_dif_long' => 'max',
+            'difference_flg' => 'max'
+        ]);
     }
 
 

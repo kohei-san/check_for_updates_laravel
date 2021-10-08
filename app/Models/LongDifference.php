@@ -31,7 +31,7 @@ class LongDifference extends Model
     public $timestamps = false;
 
     public function customer_page() {
-        return $this->hasOne(CustomerPage::class, 'page_id');
+        return $this->belongsTo(CustomerPage::class, 'page_id');
     }
 
     
