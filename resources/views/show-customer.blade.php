@@ -32,19 +32,19 @@
                     <tbody>
                       <tr>
                           {{-- ▼▼▼口コミ登録▼▼▼ --}}
-                          <td class="border px-4 py-2">
-                            <x-span :registered="false" class="" id="{{$customerPages[0]->customer->support_id}}">
+                          <td class="px-4 py-2">
+                            <x-span :registered="false" class="" id="">
                                 {{ __('未登録') }}
                             </x-span>
                           </td>
                           {{-- ▼▼▼アクティブコール登録▼▼▼ --}}
-                          <td class="border px-4 py-2">
-                            <x-span :registered="false" class="" id="{{$customerPages[0]->customer->support_id}}">
+                          <td class="px-4 py-2">
+                            <x-span :registered="false" class="" id="">
                                 {{ __('未登録') }}
                             </x-span>
                           </td>
                           {{-- ▼▼▼ライン登録▼▼▼ --}}
-                          <td class="border px-4 py-2">                
+                          <td class="px-4 py-2">                
                               @if($customerPages[0]->customer->line_register != null)
                                   @if($customerPages[0]->customer->line_register->line_flg == 1)
                                       <x-span :registered="true" class="" id="{{$customerPages[0]->customer->support_id}}">
