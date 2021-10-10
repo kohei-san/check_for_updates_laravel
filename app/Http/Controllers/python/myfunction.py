@@ -16,13 +16,13 @@ import difflib
 import sql_sentence
 import pandas.io.sql as pdsql
 import datetime
+import shutil
 
 
 # ファイルを作成する
 def create_htmlfile(foldername, filename, text ,encode_thishtml):
-    file = open(foldername + '/' + filename + '.html','wb')
-    file.write(text.encode(encode_thishtml))
-    file.close()
+    with open(foldername + '/' + filename + '.html','wb') as f:
+        f.write(text.encode(encode_thishtml))
 
 # ファイルを削除する
 def removeFile(fullpath):
@@ -41,7 +41,7 @@ def tryBeautifulSoup(url):
         res = requests.get(url)
         htmldata = BeautifulSoup(res.content,'lxml')
     except:
-        res= ""
+        res = ""
         htmldata = ""
     
     return res, htmldata
@@ -87,13 +87,9 @@ def get_linkurl(htmldata, toppage_url):
 # page_id登録用のlistを作成
 def checkExistInBetTabel(dfPageDataData, dfDiffernceData):
     liDifferenceData = []
+    diff_page_ids = dfDiffernceData.page_id.values
     for index, row in dfPageDataData.iterrows():
-        cust=""
-        try:
-            cust = dfDiffernceData.query('page_id == ' + str(row.page_id)).reset_index().loc[0,'page_id']
-        except:
-            pass
-        if cust=="":
+        if not row.page_id in diff_page_ids:
             liDifferenceData.append([row.page_id, row.customer_id])
     return liDifferenceData
 
@@ -125,7 +121,7 @@ def openfile_to_diff(filename):
         enc = detect(f1.read())['encoding']
     with open(filename, mode='r',encoding=enc) as f2:
         if enc == 'utf-8':
-            HTMLtext = f2.read()
+            HTMLtext = f2.read().encode()
         else:
             try:
                 HTMLtext = cleaner.clean_html(f2.read().encode(enc)).decode('utf-8')
@@ -217,6 +213,10 @@ def create_diff(beforefilename, afterfilename):
                         # + のみ検出かつli_ng_diffrenceに入っていないものかつ <div・・・>でないもの
                         if diffrence[:1] == '+' and not(diffrence[2:].replace(' ', '') in li_ng_diffrence) and not(diffrence[2:].startswith("<div") and diffrence[2:].endswith(">") and diffrence[2:].count("<")==1):
                             liDifference.append([diffrence[:1], diffrence[2:]])
+    else:
+        if ("favorite" in beforefilename) and path.exists(afterfilename):
+            shutil.copy2(afterfilename, beforefilename)
+    
     return liDifference, diffrence_flg
 
 

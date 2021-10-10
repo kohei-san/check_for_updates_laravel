@@ -16,17 +16,19 @@ from myfunction import tryBeautifulSoup
 from myfunction import get_linkurl
 
 
-# Customer Table内容の取得
-dfCustomerData = pdsql.read_sql(sql_sentence.customer_select, db)
+# NonActiveCustomer Table内容の取得
+dfCustomerData = pdsql.read_sql(sql_sentence.non_active_customer_select, db)
 dfCustomerPageUrlAllData = pdsql.read_sql(sql_sentence.all_page_data_select, db)
 all_urls = dfCustomerPageUrlAllData.page_url.values
 
 arrUrlLink=[]
 arrUpdatesActivateCustomer=[]
 
+print('link')
 for index, row in dfCustomerData.iterrows():
     top_url = row.customer_toppage_url
     res, htmldata = tryBeautifulSoup(top_url)
+    print(index)
 
     if htmldata:
     

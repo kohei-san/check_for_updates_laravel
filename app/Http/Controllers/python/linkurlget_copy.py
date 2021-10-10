@@ -17,7 +17,7 @@ from myfunction import get_linkurl
 
 
 # Customer Table内容の取得
-dfCustomerData = pdsql.read_sql(sql_sentence.customer_select, db)
+dfCustomerData = pdsql.read_sql(sql_sentence.non_active_customer_select, db)
 dfCustomerPageUrlAllData = pdsql.read_sql(sql_sentence.all_page_data_select, db)
 all_urls = dfCustomerPageUrlAllData.page_url.values
 

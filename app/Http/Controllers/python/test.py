@@ -29,8 +29,8 @@ import time
 # sql文読み込み
 import sql_sentence
 
-page_url = 'http://www.seibu-co.com/'
-page_id = 99999999
+page_url = 'https://www.shintoku-spice.com/shop/'
+page_id = 473
 new_dir_path_recursive = "C:/Users/kurita/Desktop"
 res, htmldata = tryBeautifulSoup(page_url)
 
@@ -41,7 +41,7 @@ if res.status_code < 400 and htmldata:
     create_htmlfile(new_dir_path_recursive, str(page_id), htmldata, 'utf-8')
     time_get_file = datetime.datetime.now()
 
-    beforefilename = new_dir_path_recursive + "/99999999aaa.html"
+    beforefilename = new_dir_path_recursive + "/" + str(page_id) + "aaa.html"
     favoritefilename = new_dir_path_recursive + "/" + str(page_id) + ".html"
     afterfilename = new_dir_path_recursive + "/" + str(page_id) + ".html"
 

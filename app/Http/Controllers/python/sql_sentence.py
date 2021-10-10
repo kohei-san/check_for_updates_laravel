@@ -25,9 +25,9 @@ create_page_select_max = """
     SELECT * FROM create_html WHERE create_html_id=( SELECT MAX(create_html_id) FROM create_html )
 """
 
-create_page_select = """
+del_create_page_select = """
     SELECT * FROM create_html
-    WHERE favorite=0 AND del_flg=0 AND create_html_id not in(
+    WHERE favorite=0 AND save_flg=0 AND del_flg=0 AND create_html_id not in(
         SELECT * FROM (
             SELECT create_html_id 
             FROM create_html 
@@ -46,6 +46,8 @@ create_htmlsrc_insert = """
 
 ngpage_update = "UPDATE customer_page SET ng_flg=%s WHERE page_id=%s"
 
+
+# short 処理
 difference_shortterm_diftrue_update  = "UPDATE difference_bet_shortterm SET difference_flg=%s, time_stamp_dif_short=%s WHERE page_id=%s"
 
 difference_shortterm_diffalse_update  = "UPDATE difference_bet_shortterm SET difference_flg=%s WHERE page_id=%s"
@@ -64,13 +66,13 @@ create_short_difference_insert = """
     VALUES(%s,%s)
 """
 
-difference_longterm_diftrue_update  = "UPDATE difference_bet_longterm SET difference_flg=%s, time_stamp_dif_long=%s WHERE page_id=%s"
+# long 処理
+difference_longterm_diftrueorfalse_update  = "UPDATE difference_bet_longterm SET difference_flg=%s, time_stamp_dif_long=%s WHERE page_id=%s"
 
 difference_longterm_diffalse_update  = "UPDATE difference_bet_longterm SET difference_flg=%s WHERE page_id=%s"
 
 difference_longterm_select = """
     SELECT * FROM difference_bet_longterm
-    VALUES(%s, %s)
 """
 
 favo_create_page_select = """
@@ -87,13 +89,20 @@ create_long_difference_insert = """
     VALUES(%s,%s)
 """
 
+
+create_difference_history_insert = """
+    INSERT INTO difference_history (page_id, customer_id, time_stamp_dif)
+    VALUES(%s,%s,%s)
+"""
+
+
 tag_to_exclude_select = '''
     SELECT * FROM tag_to_exclude 
     WHERE del_flg=0 
 '''
 
 # pageurlの保存
-customer_select = "SELECT * FROM customer WHERE active_flg=1 AND del_flg=0"
+non_active_customer_select = "SELECT * FROM customer WHERE active_flg=0 AND del_flg=0"
 
 # pageurlの保存
 customer_page_insert = """
