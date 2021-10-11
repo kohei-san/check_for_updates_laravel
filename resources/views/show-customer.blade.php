@@ -11,34 +11,79 @@
 
     <section class="text-gray-600 body-font">
     <div class="xl:container px-5 py-10 mx-auto">
-        <section class="text-gray-600 body-font">
+        {{-- <section class="text-gray-600 body-font"> --}}
             <div class="container px-5 mb-5 mx-auto flex items-center md:flex-row flex-col">
               <div class="flex flex-col md:pr-10 md:mb-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center">
                 <h2 class="text-s text-blue-800 tracking-widest font-medium title-font mb-1">{{ $customerPages[0]->customer->support_id }}</h2>
                 <h1 class="md:text-3xl text-2xl font-medium font-mono text-gray-900">{{ $customerPages[0]->customer->customer_name }}</h1>
                 {{-- デバッグ用 --}}
-                <h1 class="md:text-3xl text-2xl font-medium font-mono text-gray-900">{{ $customerPages[0]->customer->customer_id }}</h1>
+                {{-- <h1 class="md:text-3xl text-2xl font-medium font-mono text-gray-900">{{ $customerPages[0]->customer->customer_id }}</h1> --}}
                 {{--  --}}
               </div>
               <div class="flex md:ml-auto md:mr-10 mx-auto items-center flex-shrink-0 space-x-4" id="show_customer">
-                @if($customerPages[0]->customer->line_register != null)
-                    @if($customerPages[0]->customer->line_register->line_flg == 1)
-                        <x-span :registered="true" class="" id="{{$customerPages[0]->customer->support_id}}">
-                            {{ __('登録済み') }}
-                        </x-span>
-                    @else
-                        <x-span :registered="false" class="" id="{{$customerPages[0]->customer->support_id}}">
-                            {{ __('未登録') }}
-                        </x-span>
-                    @endif
-                @else
-                    <x-span :registered="false" class="" id="{{$customerPages[0]->customer->support_id}}">
-                        {{ __('未登録') }}
-                    </x-span>
-                @endif
+                <table class="table-auto">
+                    <thead>
+                      <tr>
+                        <th class="px-4 py-2">口コミ</th>
+                        <th class="px-4 py-2">アクティブコール</th>
+                        <th class="px-4 py-2">ライン登録</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          {{-- ▼▼▼口コミ登録▼▼▼ --}}
+                          <td class="px-4 py-2">
+                            <x-span :registered="false" class="" id="">
+                                {{ __('未登録') }}
+                            </x-span>
+                          </td>
+                          {{-- ▼▼▼アクティブコール登録▼▼▼ --}}
+                          @if ($customerPages[0]->active_call != null)
+                            @if ($customerPages[0]->active_call->active_call_flg == 1)
+                                <td class="px-4 py-2">
+                                    <x-activecall :registered="true" class="" data-registered=1 id="activecall" data-customerid='{{$customerPages[0]->customer->customer_id}}'>
+                                        {{ __('登録済み') }}
+                                    </x-activecall>
+                                </td> 
+                            @else
+                                <td class="px-4 py-2">
+                                    <x-activecall :registered="false" class="" data-registered=0 id="activecall" data-customerid='{{$customerPages[0]->customer->customer_id}}'>
+                                        {{ __('未登録') }}
+                                    </x-activecall>
+                                </td> 
+                            @endif
+                          @else
+                            <td class="px-4 py-2">
+                                <x-activecall :registered="false" class="" data-registered=0 id="activecall" data-customerid='{{$customerPages[0]->customer->customer_id}}'>
+                                    {{ __('未登録') }}
+                                </x-activecall>
+                            </td>
+                          @endif
+                          {{-- ▼▼▼ライン登録▼▼▼ --}}
+                          <td class="px-4 py-2">                
+                              @if($customerPages[0]->customer->line_register != null)
+                                  @if($customerPages[0]->customer->line_register->line_flg == 1)
+                                      <x-span :registered="true" class="" id="{{$customerPages[0]->customer->support_id}}">
+                                          {{ __('登録済み') }}
+                                      </x-span>
+                                  @else
+                                      <x-span :registered="false" class="" id="{{$customerPages[0]->customer->support_id}}">
+                                          {{ __('未登録') }}
+                                      </x-span>
+                                  @endif
+                              @else
+                                  <x-span :registered="false" class="" id="{{$customerPages[0]->customer->support_id}}">
+                                      {{ __('未登録') }}
+                                  </x-span>
+                              @endif
+                          </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
               </div>
             </div>
-        </section>
+        {{-- </section> --}}
                 
         <div class="w-full mx-auto overflow-auto">
         <table class="table-auto border-separate border w-full text-left whitespace-no-wrap">

@@ -19,13 +19,13 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::with(['line_register','long_diff'])
-                                    ->where('active_flg', 1)
-                                    ->where('del_flg', 0)
-                                    ->sortable()
-                                    ->paginate(50);
+        // $customers = Customer::with(['line_register','long_diff'])
+        //                             ->where('active_flg', 1)
+        //                             ->where('del_flg', 0)
+        //                             ->sortable()
+        //                             ->paginate(50);
 
-        return view('customer')->with('customers', $customers);
+        // return view('customer')->with('customers', $customers);
     }
 
     /**
@@ -37,8 +37,7 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer_id = $id;
-        // $customer_pages = CustomerPage::where('customer_id', $customer_id)->get();
-        $customerPages = CustomerPage::with(['customer', 'page_html', 'short_diff'])
+        $customerPages = CustomerPage::with(['customer', 'page_html', 'short_diff','active_call'])
                             ->where('customer_id', $customer_id)
                             ->get();
 

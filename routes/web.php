@@ -4,13 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HasBlogController;
 use App\Http\Controllers\NoBlogController;
-use App\Http\Controllers\PageHtmlController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PythonController;
 use App\Http\Controllers\NotActiveCustomerController;
 use App\Http\Controllers\CustomerPageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\LineRegisterController;
+use App\Http\Controllers\ActiveCallController;
 use Illuminate\Support\Facades\File;
 
 
@@ -67,6 +67,11 @@ Route::resource('not-active', NotActiveCustomerController::class)
 Route::post('/linepost', [LineRegisterController::class, 'update'])
     ->middleware(['auth']);
 
+// アクティブコール登録機能
+Route::resource('activecall', ActiveCallController::class)
+    ->middleware(['auth'])
+    ->only(['store']);
+
 Route::get('/writecustomerid', [LineRegisterController::class, 'writeCustomerId'])
     ->middleware(['auth'])
     ->name('writecustomerid');
@@ -85,16 +90,17 @@ Route::get('python', [PythonController::class, 'exec'])
     ->middleware(['auth'])
     ->name('python');
 
+
 // acquired_data コントローラー
 Route::get('prehtml/{file_namepath}/{page_id}', function($file_namepath, $page_id){
-    return File::get(app_path("Http/Controllers/python/acquired_data/" . $file_namepath . "/html/" . $page_id . ".html"));
-})  ->middleware(['auth']);
+        return File::get(app_path("Http/Controllers/python/acquired_data/" . $file_namepath . "/html/" . $page_id . ".html"));
+    })->middleware(['auth']);
 
 
 // different コントローラー
 Route::get('different/{term}/{page_id}', function($term,$page_id){
-    return File::get(app_path("Http/Controllers/python/different/" . $term . "_term/" . $page_id . ".html"));
-})  ->middleware(['auth']);
+        return File::get(app_path("Http/Controllers/python/different/" . $term . "_term/" . $page_id . ".html"));
+    })->middleware(['auth']);
 
     
 require __DIR__.'/auth.php';
