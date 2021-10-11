@@ -57,7 +57,6 @@ function sendRequest(){
     else{
       // 通信中のクラス付与メソッド
         changeClass(btn);
-        var status = 1;
     }
   }
 

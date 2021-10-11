@@ -45,7 +45,7 @@ class Customer extends Model
     }
 
     public function active_call(){
-        return $this->hasOne(ActiveCall::class)->latestOfMany();
+        return $this->hasOne(ActiveCall::class, 'customer_id', 'customer_id')->latestOfMany();
     }
 
     public function short_difference(){
