@@ -21,7 +21,7 @@ class ActiveCall extends Model
     }
 
     public function customer_page(){
-        return $this->hasOne(CustomerPage::class, 'customer_id', 'customer_id')->ofMany('top_page_flg', 'max');
+        return $this->hasMany(CustomerPage::class, 'customer_id', 'customer_id');
     }
 
     public function user(){

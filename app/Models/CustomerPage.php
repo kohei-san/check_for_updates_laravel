@@ -41,6 +41,10 @@ class CustomerPage extends Model
     public function line_register(){
         return $this->belongsTo(LineRegister::class, 'customer_id', 'customer_id');
     }
+    
+    public function active_call(){
+        return $this->belongsTo(ActiveCall::class, 'customer_id', 'customer_id');
+    }
 
     public function short_diff(){
         return $this->hasOne(DifferenceBetShortterm::class, 'page_id', 'page_id');

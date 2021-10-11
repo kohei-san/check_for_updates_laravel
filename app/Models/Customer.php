@@ -44,6 +44,10 @@ class Customer extends Model
         return $this->hasOne(LineRegister::class, 'support_id', 'support_id');
     }
 
+    public function active_call(){
+        return $this->hasOne(ActiveCall::class)->latestOfMany();
+    }
+
     public function short_difference(){
         return $this->hasOne(DifferenceBetShortterm::class, 'customer_id','customer_id')->oldestOfMany();
     }

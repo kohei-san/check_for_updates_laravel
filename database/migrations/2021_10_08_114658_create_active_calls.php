@@ -17,7 +17,7 @@ class CreateActiveCalls extends Migration
             $table->id();
             $table->boolean('active_call_flg');
             $table->integer('customer_id');
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
         });
     }

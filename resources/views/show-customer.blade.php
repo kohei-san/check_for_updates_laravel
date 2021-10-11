@@ -38,11 +38,27 @@
                             </x-span>
                           </td>
                           {{-- ▼▼▼アクティブコール登録▼▼▼ --}}
-                          <td class="px-4 py-2">
-                            <x-span :registered="false" class="" id="">
-                                {{ __('未登録') }}
-                            </x-span>
-                          </td>
+                          @if ($customerPages[0]->active_call != null)
+                            @if ($customerPages[0]->active_call->active_call_flg == 1)
+                                <td class="px-4 py-2">
+                                    <x-activecall :registered="true" class="" data-registered=1 id="activecall" data-customerid='{{$customerPages[0]->customer->customer_id}}'>
+                                        {{ __('登録済み') }}
+                                    </x-activecall>
+                                </td> 
+                            @else
+                                <td class="px-4 py-2">
+                                    <x-activecall :registered="false" class="" data-registered=0 id="activecall" data-customerid='{{$customerPages[0]->customer->customer_id}}'>
+                                        {{ __('未登録') }}
+                                    </x-activecall>
+                                </td> 
+                            @endif
+                          @else
+                            <td class="px-4 py-2">
+                                <x-activecall :registered="false" class="" data-registered=0 id="activecall" data-customerid='{{$customerPages[0]->customer->customer_id}}'>
+                                    {{ __('未登録') }}
+                                </x-activecall>
+                            </td>
+                          @endif
                           {{-- ▼▼▼ライン登録▼▼▼ --}}
                           <td class="px-4 py-2">                
                               @if($customerPages[0]->customer->line_register != null)
