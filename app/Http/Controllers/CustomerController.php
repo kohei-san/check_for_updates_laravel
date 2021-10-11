@@ -37,7 +37,7 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer_id = $id;
-        $customerPages = CustomerPage::with(['customer', 'page_html', 'short_diff','active_call'])
+        $customerPages = CustomerPage::with(['customer', 'page_html', 'short_diff'])
                             ->where('customer_id', $customer_id)
                             ->get();
 
