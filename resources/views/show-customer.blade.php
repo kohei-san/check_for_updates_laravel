@@ -40,9 +40,9 @@
                           {{-- ▼▼▼アクティブコール登録▼▼▼ --}}
                           @if ($customerPages[0]->active_call != null)
                             @if ($customerPages[0]->active_call->active_call_flg == 1)
-                                <td class="px-4 py-2">
+                                <td class="px-4 py-2 text-center">
                                     <x-activecall :registered="true" class="" data-registered=1 id="activecall" data-customerid='{{$customerPages[0]->customer->customer_id}}'>
-                                        {{ __('登録済み') }}
+                                        {{ __( \Carbon\Carbon::parse($customerPages[0]->active_call->updated_at)->diffForHumans() ) }}
                                     </x-activecall>
                                 </td> 
                             @else
