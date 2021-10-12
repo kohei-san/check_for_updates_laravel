@@ -44,7 +44,7 @@ function sendRequest(){
     if( this.readyState == completed && (this.status >= 200 && this.status <= 299)){ //status = 201はリクエストは成功し、その結果新たなリソースが作成されたことを示します。これは一般的に、 POST リクエストや、一部の PUT リクエストを送信した後のレスポンスになります。
       var response = JSON.parse(this.response);
       // 通信完了のクラス付与
-      if(registered != response.active_call_flg){
+      if(registered){
         alert( 'アクティブコールステータスを変更しました！' );
         changeClass(btn, response.active_call_flg);
       }

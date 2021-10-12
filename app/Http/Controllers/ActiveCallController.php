@@ -6,6 +6,7 @@ use App\Models\ActiveCall;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Action;
 use Illuminate\Support\Facades\Auth;
+use \Carbon\Carbon;
 
 class ActiveCallController extends Controller
 {
@@ -20,44 +21,56 @@ class ActiveCallController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 関数名: new()
+     * DBに新しいレコードを作成する場合に呼び出す。
      */
-    public function create()
+    protected function new($customer_id)
     {
-        //
+        $activeCall = new ActiveCall;
+
+        $activeCall->active_call_flg = true;
+        $activeCall->customer_id = $customer_id;
+        $activeCall->user_id = Auth::id();
+
+        return $activeCall;
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 関数内容: アクティブコール登録
+     * 条件: 
+     * 1: 未登録なら新規レコード作成
+     * 2: 既存レコードに同じcustomer_idがあり、updated_atが1日以上前ならば、新しいレコード作成
+     * 3: 既存レコードに同じcustomer_idがあり、updated_atが1日以内ならば、同レコードを編集
      */
     public function store(Request $request)
     {
         $json = json_decode($request->header('request'));
-        // 未登録なら新規レコード作成
+        // 1
         if(ActiveCall::where('customer_id', $json->customer_id)->first() == null){
-            $activeCall = new ActiveCall;
-
-            $activeCall->active_call_flg = true;
-
-            $activeCall->customer_id = $json->customer_id;
-            $activeCall->user_id = Auth::id();
+            $activeCall = $this->new($json->customer_id);
         }
-        else{ // 登録済みのユーザーのステータス変更
-            $activeCall = ActiveCall::where('customer_id', $json->customer_id)->first();
-            $active_call_flg = boolval($activeCall->active_call_flg);
-            if($active_call_flg == $json->registered){
-                $activeCall->active_call_flg = !$active_call_flg;
-                // 誤って登録を消したのが、登録したユーザーと同じユーザーなら、user_idを削除(誤操作、不正クリック予防)
-                if(($activeCall->active_call_flg == false) && ($activeCall->user_id == Auth::id())){
-                    $activeCall->user_id = null;
-                } //登録時に、以前登録したユーザーがいなければ登録
-                elseif(($activeCall->active_call_flg == true) && ($activeCall->user_id == null)){
-                    $activeCall->user_id = Auth::id();
+        else{
+            $activeCall = ActiveCall::where('customer_id', $json->customer_id)->orderByDesc('updated_at')->first();
+            $a_day_after_updated = Carbon::parse($activeCall->updated_at)->addDay(1);
+            // 2
+            if( Carbon::now()->greaterThan($a_day_after_updated)){
+                $activeCall = $this->new($json->customer_id);
+            }
+            else{ // 3
+                $active_call_flg = boolval($activeCall->active_call_flg);
+                if($active_call_flg == $json->registered){
+                    $activeCall->active_call_flg = !$active_call_flg;
+                    /**
+                     * 不正登録防止
+                     * 誤って登録を消したのが、登録したユーザーと同じユーザーなら、user_idを削除(誤操作、不正クリック予防)
+                     * 登録時に、以前登録したユーザーがいなければ登録
+                     */
+                    if(($activeCall->active_call_flg == false) && ($activeCall->user_id == Auth::id())){
+                        $activeCall->user_id = null;
+                    }
+                    elseif(($activeCall->active_call_flg == true) && ($activeCall->user_id == null)){
+                        $activeCall->user_id = Auth::id();
+                    }
                 }
             }
         }

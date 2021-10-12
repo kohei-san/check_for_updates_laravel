@@ -1,9 +1,11 @@
 @php
     use Illuminate\Support\Facades\File;  
     use \Carbon\Carbon;
-    $updated = $customerPages[0]->customer->active_call->updated_at;
-    $a_day_after_updated = Carbon::parse($customerPages[0]->customer->active_call->updated_at)->addDays(1);
-    // $a_day_after_updated = Carbon::parse($customerPages[0]->customer->active_call->updated_at)->addHours(1);
+    if($customerPages[0]->customer->active_call != null){
+        $updated = $customerPages[0]->customer->active_call->updated_at;
+        $a_day_after_updated = Carbon::parse($customerPages[0]->customer->active_call->updated_at)->addDays(1);
+        // $a_day_after_updated = Carbon::parse($customerPages[0]->customer->active_call->updated_at)->addHours(1);
+    }
 @endphp
 
 <x-app-layout>
