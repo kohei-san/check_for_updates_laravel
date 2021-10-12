@@ -48,6 +48,10 @@ class Customer extends Model
         return $this->hasOne(ActiveCall::class, 'customer_id', 'customer_id')->latestOfMany();
     }
 
+    public function review(){
+        return $this->hasOne(Review::class, 'customer_id', 'customer_id')->latestOfMany();
+    }
+
     public function short_difference(){
         return $this->hasOne(DifferenceBetShortterm::class, 'customer_id','customer_id')->oldestOfMany();
     }

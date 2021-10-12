@@ -11,6 +11,7 @@ use App\Http\Controllers\CustomerPageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\LineRegisterController;
 use App\Http\Controllers\ActiveCallController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\File;
 
 
@@ -69,6 +70,11 @@ Route::post('/linepost', [LineRegisterController::class, 'update'])
 
 // アクティブコール登録機能
 Route::resource('activecall', ActiveCallController::class)
+    ->middleware(['auth'])
+    ->only(['store']);
+
+// 口コミ登録機能
+Route::resource('review', ReviewController::class)
     ->middleware(['auth'])
     ->only(['store']);
 

@@ -3,9 +3,15 @@
     use \Carbon\Carbon;
     if($customerPages[0]->customer->active_call != null){
         $updated = $customerPages[0]->customer->active_call->updated_at;
-        $a_day_after_updated = Carbon::parse($customerPages[0]->customer->active_call->updated_at)->addDays(1);
-        // $a_day_after_updated = Carbon::parse($customerPages[0]->customer->active_call->updated_at)->addHours(1);
+        $recent_activecall = Carbon::parse($customerPages[0]->customer->active_call->updated_at)->addDays(1);
+        // $recent_activecall = Carbon::parse($customerPages[0]->customer->active_call->updated_at)->addHours(1);
     }
+    if($customerPages[0]->customer->review != null){
+        $review_created = $customerPages[0]->customer->review->created_at;
+        $recent_review = Carbon::parse($customerPages[0]->customer->review->created_at)->addMonth(3);
+    }
+
+    // ---------変数定義---------
 @endphp
 
 <x-app-layout>
@@ -37,16 +43,39 @@
                     </thead>
                     <tbody>
                       <tr>
-                          {{-- ▼▼▼口コミ登録▼▼▼ --}}
-                          <td class="px-4 py-2">
-                            <x-span :registered="false" class="" id="">
-                                {{ __('未登録') }}
-                            </x-span>
-                          </td>
-                          {{-- ▼▼▼アクティブコール登録▼▼▼ --}}
-                          {{--  --}}
-                          @if ($customerPages[0]->customer->active_call != null)
-                            @if ($customerPages[0]->customer->active_call->active_call_flg == 1 && Carbon::now()->greaterThan($a_day_after_updated) )
+                        {{-- ▼▼▼口コミ登録▼▼▼ --}}
+                        @if ($customerPages[0]->customer->review != null)
+                            @if ($customerPages[0]->customer->review->review_flg == 1 && Carbon::now()->greaterThan($recent_review))
+                                <td class="px-4 py-2">
+                                    <x-review :registered="true" data-registered=1 data-customerid="{{$customerPages[0]->customer->customer_id}}" class="border border-blue-500 hover:bg-blue-500 hover:text-white" id="review">
+                                        {{ __( Carbon::parse($review_created)->diffForHumans() ) }}
+                                    </x-review>
+                                </td>
+                            @elseif($customerPages[0]->customer->review->review_flg == 1)
+                                <td class="px-4 py-2">
+                                    <x-review :registered="true" data-registered=1 data-customerid="{{$customerPages[0]->customer->customer_id}}" class="bg-blue-500 text-white hover:bg-green-500" id="review">
+                                        {{ __( Carbon::parse($review_created)->diffForHumans() ) }}
+                                    </x-review>
+                                </td>
+                            @else
+                                <td class="px-4 py-2">
+                                    <x-review :registered="false" data-registered=0 data-customerid="{{$customerPages[0]->customer->customer_id}}" class="" id="review">
+                                        {{ __('未登録') }}
+                                    </x-review>
+                                </td>
+                            @endif
+                        @else
+                            <td class="px-4 py-2">
+                                <x-review :registered="false" data-registered=0 data-customerid="{{$customerPages[0]->customer->customer_id}}" class="" id="review">
+                                    {{ __('未登録') }}
+                                </x-review>
+                            </td>
+                        @endif
+                        {{-- ▲▲▲口コミ登録▲▲▲ --}}
+
+                        {{-- ▼▼▼アクティブコール登録▼▼▼ --}}
+                        @if ($customerPages[0]->customer->active_call != null)
+                            @if ($customerPages[0]->customer->active_call->active_call_flg == 1 && Carbon::now()->greaterThan($recent_activecall) )
                                 <td class="px-4 py-2 text-center">
                                     <x-activecall :registered="true" class="border border-yellow-500 hover:text-white hover:bg-yellow-500" data-registered=1 id="activecall" data-customerid='{{$customerPages[0]->customer->customer_id}}'>
                                         {{ __( Carbon::parse($updated)->diffForHumans() ) }}
@@ -65,34 +94,34 @@
                                     </x-activecall>
                                 </td> 
                             @endif
-                          @else
-                            <td class="px-4 py-2">
-                                <x-activecall :registered="false" class="" data-registered=0 id="activecall" data-customerid='{{$customerPages[0]->customer->customer_id}}'>
-                                    {{ __('未登録') }}
-                                </x-activecall>
-                            </td>
-                          @endif
-                          {{-- ▲▲▲アクティブコール登録▲▲▲ --}}
+                        @else
+                        <td class="px-4 py-2">
+                            <x-activecall :registered="false" class="" data-registered=0 id="activecall" data-customerid='{{$customerPages[0]->customer->customer_id}}'>
+                                {{ __('未登録') }}
+                            </x-activecall>
+                        </td>
+                        @endif
+                        {{-- ▲▲▲アクティブコール登録▲▲▲ --}}
 
-                          {{-- ▼▼▼ライン登録▼▼▼ --}}
-                          <td class="px-4 py-2">                
+                        {{-- ▼▼▼ライン登録▼▼▼ --}}
+                        <td class="px-4 py-2">                
                               @if($customerPages[0]->customer->line_register != null)
-                                  @if($customerPages[0]->customer->line_register->line_flg == 1)
-                                      <x-span :registered="true" class="" id="{{$customerPages[0]->customer->support_id}}">
-                                          {{ __('登録済み') }}
-                                      </x-span>
-                                  @else
-                                      <x-span :registered="false" class="" id="{{$customerPages[0]->customer->support_id}}">
-                                          {{ __('未登録') }}
-                                      </x-span>
-                                  @endif
-                              @else
-                                  <x-span :registered="false" class="" id="{{$customerPages[0]->customer->support_id}}">
-                                      {{ __('未登録') }}
-                                  </x-span>
-                              @endif
-                          </td>
-                      </tr>
+                                    @if($customerPages[0]->customer->line_register->line_flg == 1)
+                                        <x-span :registered="true" class="" id="{{$customerPages[0]->customer->support_id}}">
+                                            {{ __('登録済み') }}
+                                        </x-span>
+                                    @else
+                                        <x-span :registered="false" class="" id="{{$customerPages[0]->customer->support_id}}">
+                                            {{ __('未登録') }}
+                                        </x-span>
+                                    @endif
+                                @else
+                                    <x-span :registered="false" class="" id="{{$customerPages[0]->customer->support_id}}">
+                                        {{ __('未登録') }}
+                                    </x-span>
+                                @endif
+                            </td>
+                        </tr>
                     </tbody>
                   </table>
 
