@@ -3,13 +3,13 @@
 */
 function changeClass(btn, flg){
   if(btn.innerText.indexOf("通信中") > -1 && flg == true){
-    btn.className = "cursor-pointer bg-transparent bg-yellow-500 hover:bg-green-500 font-semibold text-white py-2 px-4 rounded";
-    btn.innerText = '登録済み';
+    btn.className = "cursor-pointer bg-transparent bg-blue-500 hover:bg-green-500 font-semibold text-white py-2 px-4 rounded";
+    btn.innerText = '登録しました';
     btn.dataset.registered = 1;
   }
   else if(btn.innerText.indexOf("通信中") > -1 && flg == false){
     btn.className = "cursor-pointer py-2 px-4 rounded hover:bg-gray-500 hover:text-white hover:opacity-50 ";
-    btn.innerText = '未登録';
+    btn.innerText = '削除しました';
     btn.dataset.registered = 0;
   }
   else{
@@ -45,12 +45,12 @@ function sendRequest(){
       var response = JSON.parse(this.response);
       // 通信完了のクラス付与
       if(registered){
-        alert( 'アクティブコールステータスを変更しました！' );
-        changeClass(btn, response.active_call_flg);
+        alert( '口コミのステータスを変更しました！' );
+        changeClass(btn, response.review_flg);
       }
       else{
         alert( 'ステータスを変更できませんでした。画面をリロードしてください。' );
-        changeClass(btn, response.active_call_flg);
+        changeClass(btn, response.review_flg);
       }
     }
     else{
@@ -60,13 +60,13 @@ function sendRequest(){
   }
 
   var token = document.getElementsByName('csrf-token').item(0).content; // x-csrf追加
-  xmlHttpRequest.open( 'POST', '/activecall');
+  xmlHttpRequest.open( 'POST', '/review');
   xmlHttpRequest.setRequestHeader( 'X-CSRF-TOKEN', token); //.open()の後、.sendの前に記述すること　複数呼び出し可能（その場合、マージされて単一のリクエストとなる）
   xmlHttpRequest.setRequestHeader( 'request', json);
   xmlHttpRequest.send();
 }
 
 // 処理スタート
-var btn = document.getElementById('activecall');
+var btn = document.getElementById('review');
 
 btn.addEventListener('click', sendRequest);

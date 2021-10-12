@@ -47,6 +47,7 @@
         </div>
         <script src="{{ asset('js/line.js') }}" defer></script>
         <script src="{{ asset('js/activecall.js') }}" defer></script>
+        <script src="{{ asset('js/review.js') }}" defer></script>
         <script src="https://d3js.org/d3.v7.min.js"></script>
 
     </body>
