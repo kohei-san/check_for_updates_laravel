@@ -24,7 +24,6 @@ function changeClass(btn, flg){
 引数: btn (customer_id, user_idを含んだノード)
 */
 function sendRequest(){
-  console.log(btn)
   if(btn.dataset.registered == 3){ // クリックイベント発生時のダブルクリック対策
     return
   }
@@ -45,7 +44,6 @@ function sendRequest(){
       var response = JSON.parse(this.response);
       // 通信完了のクラス付与
       if(registered){
-        alert( '口コミのステータスを変更しました！' );
         changeClass(btn, response.review_flg);
       }
       else{
@@ -69,4 +67,8 @@ function sendRequest(){
 // 処理スタート
 var btn = document.getElementById('review');
 
-btn.addEventListener('click', sendRequest);
+btn.addEventListener('click', function(){
+  if(window.confirm('口コミのステータスを変更してもいいですか？')){
+    sendRequest();
+  }
+});
