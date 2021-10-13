@@ -12,7 +12,7 @@ import os
 # with open(file_name, 'wb') as f:
 #     f.write(soup.encode("utf-8"))
 
-directry_folder="C:/xampp-7422/htdocs/check_for_updates_laravel/app/Http/Controllers/python/acquired_data/favorite/html"
+directry_folder="C:/xampp-7422/htdocs/check_for_updates_laravel/app/Http/Controllers/python/acquired_data/20211001_0146/html"
 files = os.listdir(directry_folder)
 count = 1
 for file in files:
