@@ -43,8 +43,16 @@
           <tbody>
             <tr>
               <x-table-td :active="$count % 2 == 1">{{ __($count) }}</x-table-td>
-              <x-table-td :active="$count % 2 == 1" class="py-2 px-4 rounded hover:bg-gray-500 hover:text-white hover:opacity-50"><a href="{{route('customer.show', [$customerPage->customer->customer_id])}}">{{ __($customerPage->customer->support_id) }}</a></x-table-td>
-              <x-table-td :active="$count % 2 == 1" class="font-bold py-2 px-4 rounded hover:bg-gray-500 hover:text-white hover:opacity-50"><a href="{{route('customer.show', [$customerPage->customer->customer_id])}}">{{ __($customerPage->customer->customer_name) }}</a></x-table-td>
+              <x-table-td :active="$count % 2 == 1" class="py-2 px-4 rounded hover:bg-gray-500 hover:text-white hover:opacity-50">
+                <x-a-tag href="{{route('customer.show', [$customerPage->customer->customer_id])}}">
+                  {{ __($customerPage->customer->support_id) }}
+                </x-a-tag>
+              </x-table-td>
+              <x-table-td :active="$count % 2 == 1" class="font-bold py-2 px-4 rounded hover:bg-gray-500 hover:text-white hover:opacity-50">
+                <x-a-tag href="{{route('customer.show', [$customerPage->customer->customer_id])}}">
+                  {{ __($customerPage->customer->customer_name) }}
+                </x-a-tag>
+              </x-table-td>
               <x-table-td :active="$count % 2 == 1" class="">
                 <x-link :url="$customerPage->customer->customer_toppage_url" class="" >
                   {{ __("開く") }}
