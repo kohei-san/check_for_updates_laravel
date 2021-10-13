@@ -152,9 +152,9 @@
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __($loop->iteration) }}</x-table-td>
 
                         <x-table-td :active="$loop->iteration % 2 == 1">
-                            <a href="{{ $customerPage->page_url }}">    
+                            <x-a-tag href="{{ $customerPage->page_url }}">    
                                 {{ __($customerPage->page_url) }}
-                            </a>
+                            </x-a-tag>
                         </x-table-td>
                         {{-- ▼前回、前々回の表示 --}}
                         @php

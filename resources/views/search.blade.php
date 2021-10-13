@@ -86,8 +86,16 @@
                 <tbody>
                   <tr>
                     <x-table-td :active="$count % 2 == 1">{{ __($count) }}</x-table-td>
-                    <x-table-td :active="$count % 2 == 1"><a href="{{route('customer.show', [$customer->customer_id])}}">{{ __($customer->support_id) }}</a></x-table-td>
-                    <x-table-td :active="$count % 2 == 1"><a href="{{route('customer.show', [$customer->customer_id])}}">{{ __($customer->customer_name) }}</a></x-table-td>
+                    <x-table-td :active="$count % 2 == 1">
+                      <x-a-tag href="{{route('customer.show', [$customer->customer_id])}}">
+                        {{ __($customer->support_id) }}
+                      </x-a-tag>
+                    </x-table-td>
+                    <x-table-td :active="$count % 2 == 1">
+                      <x-a-tag href="{{route('customer.show', [$customer->customer_id])}}">
+                        {{ __($customer->customer_name) }}
+                      </x-a-tag>
+                    </x-table-td>
                     <x-table-td :active="$count % 2 == 1">{{ __('担当者名') }}</x-table-td>
                     <x-table-td :active="$count % 2 == 1">
                       <a href="{{ $customer->customer_toppage_url }}"class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
