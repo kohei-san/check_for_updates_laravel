@@ -1,7 +1,7 @@
 /*
 関数概要: アクティブコールボタンの配色を変更
 */
-function changeClass(btn, flg){
+function changeClassReview(btn, flg){
   if(btn.innerText.indexOf("通信中") > -1 && flg == true){
     btn.className = "cursor-pointer bg-transparent bg-blue-500 hover:bg-green-500 font-semibold text-white py-2 px-4 rounded";
     btn.innerText = '登録しました';
@@ -23,13 +23,13 @@ function changeClass(btn, flg){
 関数概要: コントローラーへcustomer_idとステータスの送信
 引数: btn (customer_id, user_idを含んだノード)
 */
-function sendRequest(){
-  if(btn.dataset.registered == 3){ // クリックイベント発生時のダブルクリック対策
+function sendRequestReview(){
+  if(btnRV.dataset.registered == 3){ // クリックイベント発生時のダブルクリック対策
     return
   }
   // jsonに渡す値の準備
-  var customer_id = btn.dataset.customerid;
-  var registered = btn.dataset.registered;
+  var customer_id = btnRV.dataset.customerid;
+  var registered = btnRV.dataset.registered;
   
   // jsonに値登録
   var json = JSON.stringify({ customer_id: customer_id,
@@ -44,16 +44,16 @@ function sendRequest(){
       var response = JSON.parse(this.response);
       // 通信完了のクラス付与
       if(registered){
-        changeClass(btn, response.review_flg);
+        changeClassReview(btnRV, response.review_flg);
       }
       else{
         alert( 'ステータスを変更できませんでした。画面をリロードしてください。' );
-        changeClass(btn, response.review_flg);
+        changeClassReview(btnRV, response.review_flg);
       }
     }
     else{
       // 通信中のクラス付与メソッド
-        changeClass(btn);
+        changeClassReview(btnRV);
     }
   }
 
@@ -65,10 +65,11 @@ function sendRequest(){
 }
 
 // 処理スタート
-var btn = document.getElementById('review');
+const btnRV = document.getElementById('review');
 
-btn.addEventListener('click', function(){
-  if(window.confirm('口コミのステータスを変更してもいいですか？')){
-    sendRequest();
+btnRV.addEventListener('click', function(){
+  if(window.confirm('口コミのステータスを変更します。よろしいですか？')){
+    sendRequestReview();
   }
 });
+// btnRV.addEventListener('click', sendRequestReview);
