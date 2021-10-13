@@ -1,7 +1,7 @@
 /*
 関数概要: アクティブコールボタンの配色を変更
 */
-function changeClass(btn, flg){
+function changeClassActiveCall(btn, flg){
   if(btn.innerText.indexOf("通信中") > -1 && flg == true){
     btn.className = "cursor-pointer bg-transparent bg-yellow-500 hover:bg-green-500 font-semibold text-white py-2 px-4 rounded";
     btn.innerText = '登録済み';
@@ -23,14 +23,14 @@ function changeClass(btn, flg){
 関数概要: コントローラーへcustomer_idとステータスの送信
 引数: btn (customer_id, user_idを含んだノード)
 */
-function sendRequest(){
-  console.log(btn)
-  if(btn.dataset.registered == 3){ // クリックイベント発生時のダブルクリック対策
+function sendRequestAC(){
+  console.log(btnAC)
+  if(btnAC.dataset.registered == 3){ // クリックイベント発生時のダブルクリック対策
     return
   }
   // jsonに渡す値の準備
-  var customer_id = btn.dataset.customerid;
-  var registered = btn.dataset.registered;
+  var customer_id = btnAC.dataset.customerid;
+  var registered = btnAC.dataset.registered;
   
   // jsonに値登録
   var json = JSON.stringify({ customer_id: customer_id,
@@ -45,17 +45,17 @@ function sendRequest(){
       var response = JSON.parse(this.response);
       // 通信完了のクラス付与
       if(registered){
-        alert( 'アクティブコールステータスを変更しました！' );
-        changeClass(btn, response.active_call_flg);
+        // alert( 'アクティブコールステータスを変更しました！' );
+        changeClassActiveCall(btnAC, response.active_call_flg);
       }
       else{
         alert( 'ステータスを変更できませんでした。画面をリロードしてください。' );
-        changeClass(btn, response.active_call_flg);
+        changeClassActiveCall(btnAC, response.active_call_flg);
       }
     }
     else{
       // 通信中のクラス付与メソッド
-        changeClass(btn);
+        changeClassActiveCall(btnAC);
     }
   }
 
@@ -67,6 +67,11 @@ function sendRequest(){
 }
 
 // 処理スタート
-var btn = document.getElementById('activecall');
+const btnAC = document.getElementById('activecall');
 
-btn.addEventListener('click', sendRequest);
+btnAC.addEventListener('click', function(){
+  if(window.confirm('アクティブコールのステータスを変更します。よろしいですか？')){
+    sendRequestAC();
+  }
+});
+// btnAC.addEventListener('click', sendRequestAC);
