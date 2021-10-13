@@ -15,12 +15,12 @@ import shutil
 
 arrPrintTime={}
 arrPrintTime['python-start'] = datetime.datetime.now()
-print('update-s')
+
 # customer_page 更新
 arrPrintTime['up_pagelist-start'] = datetime.datetime.now()
 import linkurlget
 arrPrintTime['up_pagelist-end'] = datetime.datetime.now()
-print('update-e')
+
 
 # =================================================
 # ====▼▼▼▼▼▼▼▼====       関数      ====▼▼▼▼▼▼▼▼====
@@ -39,7 +39,6 @@ from myfunction import mail_print
 # ====▼▼▼▼▼▼▼▼====(1) 前処理　DB 取得・登録　ファイルの削除====▼▼▼▼▼▼▼▼====
 # ======================================================================
 
-print('pre-s')
 arrPrintTime['preprocessing-start'] = datetime.datetime.now()
 
 dfPageData = pdsql.read_sql(sql_sentence.pagedata_select, db)
@@ -47,7 +46,7 @@ dfPageData = pdsql.read_sql(sql_sentence.pagedata_select, db)
 # urlチェック用
 dfCustomerPageUrlAllData = pdsql.read_sql(sql_sentence.all_page_data_select, db)
 all_urls = dfCustomerPageUrlAllData.page_url.values
-print('1')
+
 # 比較一個前のcreate_html_idを取得
 dfpreCreatePageid = pdsql.read_sql(sql_sentence.create_page_select_max, db)
 pre_dir_path_recursive = path.dirname(__file__) + "/acquired_data/" + dfpreCreatePageid.loc[0,'filename_timestamp'] + "/html/"
@@ -63,7 +62,6 @@ arrtime_stamp.append([time_stamp,file_nametime_stamp])
 mycursor.executemany(sql_sentence.create_page_insert, arrtime_stamp)
 db.commit
 
-print('2')
 # 上記で作成した新しいcreate_html_idを取得
 dfCreatePageid = pdsql.read_sql(sql_sentence.create_page_select_max, db)
 new_dir_path_recursive = path.dirname(__file__) + "/acquired_data/" + dfCreatePageid.loc[0,'filename_timestamp'] + "/html/"
@@ -78,7 +76,6 @@ li_create_long_difference=[]
 li_create_long_difference.append([dfFavoriteCreatePageid.loc[0,'filename_timestamp'], dfCreatePageid.loc[0,'filename_timestamp']])
 mycursor.executemany(sql_sentence.create_long_difference_insert, li_create_long_difference)
 db.commit
-print('3')
 
 # 古いデータの削除 過去５回分以外は削除する（favoriteを除く)
 li_delete_html_folder=[]
@@ -90,14 +87,12 @@ for index,row in dfpreCreatePageid.iterrows():
         li_delete_html_folder.append([1,row.create_html_id])
 if li_delete_html_folder:
     mycursor.executemany(sql_sentence.create_page_del_update, li_delete_html_folder)
-print('4')
 
 # difference_bet_shortterm Table に未登録分新規追加
 dfDiffernceShortData = pdsql.read_sql(sql_sentence.difference_shortterm_select, db)
 liDiffernceShortData = checkExistInBetTabel(dfPageData, dfDiffernceShortData)
 mycursor.executemany(sql_sentence.difference_shortterm_insert, liDiffernceShortData)
 db.commit
-print('5')
 
 # difference_bet_longterm Table に未登録分新規追加
 dfDiffernceLongData = pdsql.read_sql(sql_sentence.difference_longterm_select, db)
@@ -106,7 +101,6 @@ mycursor.executemany(sql_sentence.difference_longterm_insert, liDiffernceLongDat
 db.commit
 
 arrPrintTime['preprocessing-end'] = datetime.datetime.now()
-print('pre-e')
 
 # ======================================================================
 # ====▲▲▲▲▲▲▲▲====(1) 前処理　DB 取得・登録　ファイルの削除====▲▲▲▲▲▲▲▲====
@@ -127,7 +121,6 @@ long_term_path = path.dirname(__file__)+'/different/long_term'
 
 
 arrPrintTime['crawl-start'] = datetime.datetime.now()
-print('main-s')
 
 for i in range(2):
     if i == 0:
@@ -138,7 +131,6 @@ for i in range(2):
 
 
     for index, row in dfForPageData.iterrows():
-        print(row.page_id)
         page_url = row.page_url
         page_id = row.page_id
         removeFile(short_term_path + "/" + str(page_id)+'.html')
