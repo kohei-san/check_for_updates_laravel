@@ -49,9 +49,10 @@ class CustomerController extends Controller
         }
 
         $htmlShortDifDir = "Http/Controllers/python/different/short_term/";
-
+        $href_http = "http://" . $_SERVER['HTTP_HOST'];
         return view('show-customer')->with('customerPages', $customerPages)
                                     ->with('htmlPreDirs', $htmlPreDirs)
-                                    ->with('htmlShortDifDir', $htmlShortDifDir);
+                                    ->with('htmlShortDifDir', $htmlShortDifDir)
+                                    ->with('href_http', $href_http);
     }
 }
