@@ -28,6 +28,7 @@ import time
 import os
 
 
-if "favorite" in path.dirname(__file__) + "/acquired_data/20202/html/":
-    print("true")
+# if "favorite" in path.dirname(__file__) + "/acquired_data/20202/html/":
+#     print("true")
 
+mycursor.execute('set max_allowed_packet=67108864')
