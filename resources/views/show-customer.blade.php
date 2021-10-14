@@ -151,7 +151,7 @@
                     <tr>
                         <x-table-td :active="$loop->iteration % 2 == 1">{{ __($loop->iteration) }}</x-table-td>
 
-                        <x-table-td :active="$loop->iteration % 2 == 1">
+                        <x-table-td :active="$loop->iteration % 2 == 1" class="max-w-lg overflow-hidden">
                             <x-a-tag href="{{ $customerPage->page_url }}">    
                                 {{ __($customerPage->page_url) }}
                             </x-a-tag>
@@ -214,18 +214,18 @@
                             @if($customerPage->short_diff->difference_flg == 1)
                                 <x-table-td :active="$loop->iteration % 2 == 1">
                                     @php
-                                    $htmlfile = app_path($htmlShortDifDir . $customerPage->page_id . "." . "html");
+                                        $htmlfile = app_path($htmlShortDifDir . $customerPage->page_id . "." . "html");
                                     @endphp
 
                                     @if( Illuminate\Support\Facades\File::exists($htmlfile))
-                                    {{-- <x-sabun-a href="#" :haveDifference="true" onclick="window.open({{$htmlfile}}, 'chrome','width=1280,height=720,noopener'); return false;" class=""> --}}
-                                    <x-sabun-a href="/different/short/{{$customerPage->page_id}}" target="_blank" rel="noopener" :haveDifference="true">
-                                        {{ __('差分あり') }}
-                                    </x-sabun-a>
+                                        {{-- <x-sabun-a href="#" :haveDifference="true" onclick="window.open({{$htmlfile}}, 'chrome','width=1280,height=720,noopener'); return false;" class=""> --}}
+                                        <x-sabun-a href="/different/short/{{$customerPage->page_id}}" target="_blank" rel="noopener" :haveDifference="true">
+                                            {{ __('差分あり') }}
+                                        </x-sabun-a>
                                     @else
-                                    <x-sabun-a href="#!" :haveDifference="true" class="">
-                                        {{ __('差分あり(-)') }}
-                                    </x-sabun-a>
+                                        <x-sabun-a href="#!" :haveDifference="true" class="">
+                                            {{ __('差分あり(-)') }}
+                                        </x-sabun-a>
                                     @endif
                                 </x-table-td>
                             @else
@@ -235,6 +235,12 @@
                                     </x-sabun-a>
                                 </x-table-td>
                             @endif
+                        @else
+                            <x-table-td :active="$loop->iteration % 2 == 1">
+                                <x-sabun-a :haveDifference="false" class="">
+                                {{ __('差分なし') }}
+                                </x-sabun-a>
+                            </x-table-td>
                         @endif
                         {{-- ▲ --}}
                         
