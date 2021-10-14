@@ -166,7 +166,7 @@
                         @if( Illuminate\Support\Facades\File::exists(app_path($newhtmlPath)))
                             @if( Illuminate\Support\Facades\File::exists(app_path($pre1htmlPath)))
                                 <x-table-td :active="$loop->iteration % 2 == 1">
-                                    <a href="{{ $href_http }}/prehtml/{{ $htmlPreDirs['filename'][1] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+                                    <a href="/prehtml/{{ $htmlPreDirs['filename'][1] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
                                         {{ __("開く") }}
                                     </a>
                                 </x-table-td>
@@ -176,14 +176,14 @@
                                 </x-table-td>
                             @endif
                             <x-table-td :active="$loop->iteration % 2 == 1">
-                                <a href="{{ $href_http }}/prehtml/{{ $htmlPreDirs['filename'][0] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+                                <a href="/prehtml/{{ $htmlPreDirs['filename'][0] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
                                     {{ __("開く") }}
                                 </a>
                             </x-table-td>
                         @elseif( Illuminate\Support\Facades\File::exists(app_path($pre1htmlPath)))
                             @if( Illuminate\Support\Facades\File::exists(app_path($pre2htmlPath)))
                                 <x-table-td :active="$loop->iteration % 2 == 1">
-                                    <a href="{{ $href_http }}/prehtml/{{ $htmlPreDirs['filename'][2] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+                                    <a href="/prehtml/{{ $htmlPreDirs['filename'][2] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
                                         {{ __("開く") }}
                                     </a>
                                 </x-table-td>
@@ -193,7 +193,7 @@
                                 </x-table-td>
                             @endif
                             <x-table-td :active="$loop->iteration % 2 == 1">
-                                <a href="{{ $href_http }}/prehtml/{{ $htmlPreDirs['filename'][1] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
+                                <a href="/prehtml/{{ $htmlPreDirs['filename'][1] }}/{{ $customerPage->page_id }}" target="_blank" rel="noopener" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >
                                     {{ __("開く") }}
                                 </a>
                             </x-table-td>
