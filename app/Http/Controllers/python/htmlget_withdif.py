@@ -129,31 +129,43 @@ for i in range(2):
         predeta_last_page_id = dfPageData.tail(1).page_id.values[0]
         dfForPageData = pdsql.read_sql(sql_sentence.create_new_page_select_SQL(predeta_last_page_id), db)
 
-
+    
     for index, row in dfForPageData.iterrows():
         page_url = row.page_url
         page_id = row.page_id
         removeFile(short_term_path + "/" + str(page_id)+'.html')
         removeFile(long_term_path + "/" + str(page_id)+'.html')
-
         page_url = row.page_url
         res, htmldata = tryBeautifulSoup(page_url)
+
         if res:
             if res.status_code < 400 and htmldata:
                 # toppageだった場合ページ更新
                 if row.top_page_flg == 1:
+
                     arrUrlLink = []
                     get_links = get_linkurl(htmldata, page_url)
+
                     for link in get_links:
                         if not link in all_urls:
-                            top_page_flg = 0
-                            arrUrlLink.append([row.customer_id, link, top_page_flg])
+                            arrUrlLink.append([row.customer_id, link, 0])
+                    
                     if arrUrlLink:
-                        mycursor.executemany(sql_sentence.customer_page_insert, arrUrlLink)
-                        
+                        try:
+                            mycursor.executemany(sql_sentence.customer_page_insert, arrUrlLink)
+                            db.commit
+                            arrUrlLink = []
+                        except:
+                            db.close
+                            db = DBconfig.functionDBconfig()
+                            mycursor = db.cursor()
+                            pass
+                
                 htmldata = changePathRelateiveToDirect(htmldata, page_url)
+
                 encode_thishtml = 'utf-8'
                 create_htmlfile(new_dir_path_recursive, str(page_id), htmldata, encode_thishtml)
+
                 time_get_file = datetime.datetime.now()
                 arrHTMLData.append([page_id, int(row.customer_id), int(create_html_id), time_get_file])
                 arrOKorNgPageNo.append([0, page_id])
@@ -201,6 +213,11 @@ for i in range(2):
         # 100回ごとに登録していく
         if (index + 1) % 100 == 0:
             try:
+                if arrUrlLink:
+                    mycursor.executemany(sql_sentence.customer_page_insert, arrUrlLink)
+                    db.commit
+                    arrUrlLink = []
+
                 if arrHTMLData:
                     mycursor.executemany(sql_sentence.create_htmlsrc_insert, arrHTMLData)
                     db.commit
@@ -226,6 +243,9 @@ for i in range(2):
                     db.commit
                     arrOKorNgPageNo = []
             except:
+                db.close
+                db = DBconfig.functionDBconfig()
+                mycursor = db.cursor()
                 pass
 
     if arrHTMLData:

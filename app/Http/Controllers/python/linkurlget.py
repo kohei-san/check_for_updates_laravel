@@ -24,14 +24,11 @@ all_urls = dfCustomerPageUrlAllData.page_url.values
 arrUrlLink=[]
 arrUpdatesActivateCustomer=[]
 
-print('link')
 for index, row in dfCustomerData.iterrows():
     top_url = row.customer_toppage_url
     res, htmldata = tryBeautifulSoup(top_url)
-    print(index)
 
-    if htmldata:
-    
+    if htmldata:    
         get_links = get_linkurl(htmldata, top_url)
         for link in get_links:
             if not link in all_urls:
