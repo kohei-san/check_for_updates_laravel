@@ -25,6 +25,7 @@ arrPrintTime['up_pagelist-end'] = datetime.datetime.now()
 # =================================================
 # ====▼▼▼▼▼▼▼▼====       関数      ====▼▼▼▼▼▼▼▼====
 # =================================================
+from myfunction import regist_difference_bet_xterm
 from myfunction import create_htmlfile
 from myfunction import removeFile
 from myfunction import checkExistInBetTabel
@@ -33,6 +34,7 @@ from myfunction import checkDif_createDifFile
 from myfunction import tryBeautifulSoup
 from myfunction import get_linkurl
 from myfunction import mail_print
+
 
 
 # ======================================================================
@@ -88,17 +90,8 @@ for index,row in dfpreCreatePageid.iterrows():
 if li_delete_html_folder:
     mycursor.executemany(sql_sentence.create_page_del_update, li_delete_html_folder)
 
-# difference_bet_shortterm Table に未登録分新規追加
-dfDiffernceShortData = pdsql.read_sql(sql_sentence.difference_shortterm_select, db)
-liDiffernceShortData = checkExistInBetTabel(dfPageData, dfDiffernceShortData)
-mycursor.executemany(sql_sentence.difference_shortterm_insert, liDiffernceShortData)
-db.commit
-
-# difference_bet_longterm Table に未登録分新規追加
-dfDiffernceLongData = pdsql.read_sql(sql_sentence.difference_longterm_select, db)
-liDiffernceLongData = checkExistInBetTabel(dfPageData, dfDiffernceLongData)
-mycursor.executemany(sql_sentence.difference_longterm_insert, liDiffernceLongData)
-db.commit
+# difference_bet_short/long term Table に未登録分新規追加
+regist_difference_bet_xterm(dfPageData)
 
 arrPrintTime['preprocessing-end'] = datetime.datetime.now()
 
@@ -128,6 +121,7 @@ for i in range(2):
     elif i == 1:
         predeta_last_page_id = dfPageData.tail(1).page_id.values[0]
         dfForPageData = pdsql.read_sql(sql_sentence.create_new_page_select_SQL(predeta_last_page_id), db)
+        regist_difference_bet_xterm(dfForPageData)
 
     
     for index, row in dfForPageData.iterrows():
@@ -142,14 +136,11 @@ for i in range(2):
             if res.status_code < 400 and htmldata:
                 # toppageだった場合ページ更新
                 if row.top_page_flg == 1:
-
                     arrUrlLink = []
                     get_links = get_linkurl(htmldata, page_url)
-
                     for link in get_links:
                         if not link in all_urls:
                             arrUrlLink.append([row.customer_id, link, 0])
-                    
                     if arrUrlLink:
                         try:
                             mycursor.executemany(sql_sentence.customer_page_insert, arrUrlLink)
@@ -160,12 +151,10 @@ for i in range(2):
                             db = DBconfig.functionDBconfig()
                             mycursor = db.cursor()
                             pass
-                
+        
                 htmldata = changePathRelateiveToDirect(htmldata, page_url)
-
                 encode_thishtml = 'utf-8'
                 create_htmlfile(new_dir_path_recursive, str(page_id), htmldata, encode_thishtml)
-
                 time_get_file = datetime.datetime.now()
                 arrHTMLData.append([page_id, int(row.customer_id), int(create_html_id), time_get_file])
                 arrOKorNgPageNo.append([0, page_id])

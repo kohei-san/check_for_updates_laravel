@@ -93,6 +93,20 @@ def checkExistInBetTabel(dfPageDataData, dfDiffernceData):
             liDifferenceData.append([row.page_id, row.customer_id])
     return liDifferenceData
 
+
+# difference_bet_shortterm Table に未登録分新規追加
+def regist_difference_bet_xterm(dfPageData):
+    dfDiffernceShortData = pdsql.read_sql(sql_sentence.difference_shortterm_select, db)
+    liDiffernceShortData = checkExistInBetTabel(dfPageData, dfDiffernceShortData)
+    mycursor.executemany(sql_sentence.difference_shortterm_insert, liDiffernceShortData)
+    db.commit
+
+    # difference_bet_longterm Table に未登録分新規追加
+    dfDiffernceLongData = pdsql.read_sql(sql_sentence.difference_longterm_select, db)
+    liDiffernceLongData = checkExistInBetTabel(dfPageData, dfDiffernceLongData)
+    mycursor.executemany(sql_sentence.difference_longterm_insert, liDiffernceLongData)
+    db.commit
+
 # 文字化け削除
 def unescape(s):
     s = s.replace("&lt;", "<")
