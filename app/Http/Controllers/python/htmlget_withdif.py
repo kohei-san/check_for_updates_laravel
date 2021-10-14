@@ -136,14 +136,11 @@ for i in range(2):
             if res.status_code < 400 and htmldata:
                 # toppageだった場合ページ更新
                 if row.top_page_flg == 1:
-
                     arrUrlLink = []
                     get_links = get_linkurl(htmldata, page_url)
-
                     for link in get_links:
                         if not link in all_urls:
                             arrUrlLink.append([row.customer_id, link, 0])
-                    
                     if arrUrlLink:
                         try:
                             mycursor.executemany(sql_sentence.customer_page_insert, arrUrlLink)
@@ -154,12 +151,10 @@ for i in range(2):
                             db = DBconfig.functionDBconfig()
                             mycursor = db.cursor()
                             pass
-                
+        
                 htmldata = changePathRelateiveToDirect(htmldata, page_url)
-
                 encode_thishtml = 'utf-8'
                 create_htmlfile(new_dir_path_recursive, str(page_id), htmldata, encode_thishtml)
-
                 time_get_file = datetime.datetime.now()
                 arrHTMLData.append([page_id, int(row.customer_id), int(create_html_id), time_get_file])
                 arrOKorNgPageNo.append([0, page_id])
