@@ -14,7 +14,6 @@
         "laravel/sanctum": "^2.11",
         "laravel/scout": "^9.2",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.3",
         "meilisearch/meilisearch-php": "^0.19.1"
     },
     "require-dev": {
