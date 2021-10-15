@@ -252,8 +252,8 @@ for i in range(2):
     if arrOKorNgPageNo: 
         mycursor.executemany(sql_sentence.ngpage_update, arrOKorNgPageNo)
     db.commit 
-    db.close
-
+    
+db.close
 arrPrintTime['crawl-end'] = datetime.datetime.now()
 arrPrintTime['python-end'] = datetime.datetime.now()
 
