@@ -25,9 +25,22 @@ class AnalysisController extends Controller
 
         $reviewCount = Review::where('review_flg', 1)->count();
 
+        $updated = LongDifference::selectRaw('count(customer_id) as customer_count, customer_id')
+                                ->groupBy('customer_id')
+                                ->where('difference_flg', 1)
+                                ->get();
+        $updated = $updated->count();
+
+        $allCustomers = Customer::where('blog_flg', 1)
+                                ->where('active_flg', 1)
+                                ->where('del_flg', 0)
+                                ->count();
+
         return view('analysis')->with('users', $users)
                                 ->with('lineCount', $lineCount)
                                 ->with('activeCallCount', $activeClallCount)
-                                ->with('reviewCount', $reviewCount);
+                                ->with('reviewCount', $reviewCount)
+                                ->with('allCustomers', $allCustomers)
+                                ->with('updated', $updated);
     }
 }

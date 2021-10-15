@@ -13,57 +13,25 @@
     {{$activeCallCount}}
     {{$reviewCount}}
 
-    <template>
-      <div class="small">
-        <line-chart :chart-data="datacollection"></line-chart>
-        <button @click="fillData()">Randomize</button>
-      </div>
-    </template>
-    
-    <script>
-      import LineChart from './LineChart.js'
-    
-      export default {
-        components: {
-          LineChart
-        },
-        data () {
-          return {
-            datacollection: null
-          }
-        },
-        mounted () {
-          this.fillData()
-        },
-        methods: {
-          fillData () {
-            this.datacollection = {
-              labels: [this.getRandomInt(), this.getRandomInt()],
-              datasets: [
-                {
-                  label: 'Data One',
-                  backgroundColor: '#f87979',
-                  data: [this.getRandomInt(), this.getRandomInt()]
-                }, {
-                  label: 'Data One',
-                  backgroundColor: '#f87979',
-                  data: [this.getRandomInt(), this.getRandomInt()]
-                }
-              ]
-            }
-          },
-          getRandomInt () {
-            return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-          }
-        }
-      }
-    </script>
-    
-    <style>
-      .small {
-        max-width: 600px;
-        margin:  150px auto;
-      }
-    </style>
-    
+  <canvas id="blog" data-blog="{{$updated}}" data-all="{{$allCustomers}}" width="400" height="100"></canvas>
+  <script src="{{ asset('js/blog-bar-chart.js') }}" defer></script>
+
+  
+    <div class="flex fl">
+    <div>
+      <canvas id="mail" data-mail="1" data-all="{{$allCustomers - $lineCount}}" width="400" height="400"></canvas>
+      <script src="{{ asset('js/mail-chart.js') }}" defer></script>
+    </div>
+    <div>
+      <canvas id="LineRegister" data-line="{{$lineCount}}" data-all="{{$allCustomers - $lineCount}}" width="400" height="400"></canvas>
+      <script src="{{ asset('js/line-chart.js') }}" defer></script>
+    </div>
+    <div>
+      <canvas id="call" data-call="{{$activeCallCount}}" data-all="{{$allCustomers - $activeCallCount}}" width="400" height="400"></canvas>
+      <script src="{{ asset('js/call-chart.js') }}" defer></script>
+    </div>
+  </div>
+
+
+
 </x-app-layout>

@@ -28,6 +28,8 @@
         <script type="text/javascript" src="{{ asset('js/engraph.js')}}"></script>
         <script type="text/javascript" src="{{ asset('js/barcharts.js')}}"></script>
 
+        {{-- chart.js --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.js" integrity="sha512-b3xr4frvDIeyC3gqR1/iOi6T+m3pLlQyXNuvn5FiRrrKiMUJK3du2QqZbCywH6JxS5EOfW0DY0M6WwdXFbCBLQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-200">
