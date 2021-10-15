@@ -12,6 +12,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\LineRegisterController;
 use App\Http\Controllers\ActiveCallController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AnalysisController;
 use Illuminate\Support\Facades\File;
 
 
@@ -38,6 +39,11 @@ Route::get('/', function () {
 Route::resource('user', UserController::class)
     ->middleware(['auth'])
     ->only(['index','edit', 'update']);
+
+// analysisページ
+Route::get('analysis',[AnalysisController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('analysis.index');
 
 // 顧客一覧表示
 Route::resource('customer', CustomerController::class)

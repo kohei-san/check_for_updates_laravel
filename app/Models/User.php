@@ -45,6 +45,15 @@ class User extends Authenticatable
     ];
 
     public function line_register(){
-        $this->hasOne(LineRegister::class);
+        return $this->hasMany(LineRegister::class);
     }
+
+    public function active_call(){
+        return $this->hasMany(ActiveCall::class);
+    }
+
+    public function review(){
+        return $this->hasMany(Review::class);
+    }
+
 }

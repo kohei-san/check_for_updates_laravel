@@ -67,6 +67,11 @@
                             {{ __('登録情報編集') }}
                         </x-dropdown-link>
 
+                        {{-- 成績分析画面 --}}
+                        <x-dropdown-link :href="route('user.edit', [Auth::user()])">
+                            {{ __('成績一覧') }}
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

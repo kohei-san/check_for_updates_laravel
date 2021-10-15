@@ -10,19 +10,7 @@ class LineRegister extends Model
 {
     use HasFactory, sortable;
 
-    /**
-     * モデルに関連付けるテーブル
-     *
-     * @var string
-     */
-    protected $table = 'line_registers';
 
-    /**
-     * テーブルに関連付ける主キー
-     *
-     * @var string
-     */
-    protected $primaryKey = 'id';
 
     protected $fillable = [
         'line_flg',
