@@ -13,6 +13,6 @@
     {{$activeCallCount}}
     {{$reviewCount}}
 
-    <test-component></test-component>
+    <chart-component></chart-component>
     
 </x-app-layout>
