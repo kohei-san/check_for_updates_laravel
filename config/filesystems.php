@@ -53,6 +53,20 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => '119.75.238.28:8443',
+            'username' => 'admin',
+            'password' => '1REa70OR',
+        
+            // オプションのFTP設定
+            // 'port' => 21,
+            'root' => '',
+            'passive' => true,
+            'ssl' => true,
+            'timeout' => 30,
+        ],
+
     ],
 
     /*

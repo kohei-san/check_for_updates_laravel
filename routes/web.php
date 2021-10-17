@@ -13,6 +13,7 @@ use App\Http\Controllers\LineRegisterController;
 use App\Http\Controllers\ActiveCallController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AnalysisController;
+use App\Http\Controllers\sshController;
 use Illuminate\Support\Facades\File;
 
 
@@ -87,6 +88,11 @@ Route::resource('review', ReviewController::class)
 Route::get('/writecustomerid', [LineRegisterController::class, 'writeCustomerId'])
     ->middleware(['auth'])
     ->name('writecustomerid');
+
+// sshコントローラー
+Route::get('/ssh', [sshController::class, 'getfile'])
+    ->middleware(['auth'])
+    ->name('ssh');
 
 // 検索機能
 Route::get('/search', [SearchController::class, 'index'])
