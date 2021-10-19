@@ -12,56 +12,42 @@
                     <x-flash-message status="session('status')" />
                     こんにちは{{ Auth::user()->name }}さん
                 </div>
-                
-                {{-- ▼棒グラフ --}}
-                <div class="max-w-7xl mx-auto p-8">
-                    <div class="text-center p-4">(▼現在制作中)<br>ブログ導入顧客({{$sabun['blog']}}件)</div>
-                    <div class="px-8">
-                        <div class="bar-chart">{{-- charts.cssクラス --}}
-                            <div class="flex">
-                                <div class="w-1/6 bg-gray-200 h-20 rounded-l-lg border-r-2"></div>
-                                <div class="w-1/6 bg-gray-200 h-20 border-r-2 border-black">10月目標<br>2000顧客が更新</div>
-                                <div class="w-1/6 bg-gray-200 h-20 border-r-2"></div>
-                                <div class="w-1/6 bg-gray-200 h-20 flex">
-                                    <span class="w-1/2 bg-gray-200 h-20 border-r-2 border-black">11月目標<br>4000件</span>
-                                    <span class="w-1/2 bg-gray-200 h-20"></span>
-                                </div>
-                                <div class="w-1/6 bg-gray-200 h-20 border-r-2 border-black">80%<br>16期目標（12月）</div>
-                                <div class="w-1/6 bg-gray-200 h-20 rounded-r-lg border-r-2"></div>
-                            </div>
-                            <div class="w-full h-20 bg-yellow-300 rounded-lg z-10 opacity-80 text-right" style="transform: translate({{ '-'.$sabun['rate']}}%, -100%);">
-                                <span class="inline-block transform -translate-y-full">現在{{$sabun['all']}}件▼</span>
-                            </div>
-                            {{-- @dd($sabun) --}}
-                        </div>
-                    </div>
-                </div>
-                {{-- ▲棒グラフ --}}
 
-                
-                {{-- ▼円グラフ --}}
-                <div class="p-6 bg-white border-b border-gray-200 flex flex-wrap justify-center">
-                    <div>
-                        <div>メールアドレス保有</div>
-                        <div class="donuts" style="background-image: radial-gradient(#f2f2f2 30%, transparent 31%), conic-gradient(#d5525f 0% 60%, #d9d9d9 60% 100%);">
-                            60%
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <div class="text-center p-4">(▼現在制作中)<br>ブログ導入顧客({{$record['blogCustomersAll']}}件)</div>
+                    <div class="h-full p-4">
+                        <canvas id="blog" data-blog="{{$record['updated']}}" data-all="{{$record['blogCustomersAll']}}" height="50px" class=""></canvas>
+                        <script src="/Applications/MAMP/htdocs/check_for_updates_laravel/chartjs-plugin-annotation/src/annotation.js"></script>
+                        <script src="{{ asset('js/blog-bar-chart.js') }}" defer></script>
                         </div>
-                    </div>
-                    <div>
-                        <div>ライン保有</div>
-                        <div class="donuts" style="background-image: radial-gradient(#f2f2f2 30%, transparent 31%), conic-gradient(#d5525f 0% {{$linedata['rate']}}%, #d9d9d9 {{$linedata['rate']}}% 100%);">
-                            {{$linedata['rate']}}%<br>{{$linedata['all']}}件
-                        </div>
-                    </div>
                     
-                    <div>
-                        <div>10/1以降の電話接触</div>
-                        <div class="donuts" style="background-image: radial-gradient(#f2f2f2 30%, transparent 31%), conic-gradient(#d5525f 0% 60%, #d9d9d9 60% 100%);">
-                            60%
+                        
+                        <div class="flex">
+                            <div class="w-1/3 p-4">
+                                {{-- <h3>メールアドレス保有</h3> --}}
+                                <canvas id="mail" data-mail="1" data-all="{{$record['blogCustomersAll']}}"></canvas>
+                                <script src="{{ asset('js/mail-chart.js') }}" defer></script>
+                            </div>
+                            <div class="w-1/3 p-4 relative">
+                                {{-- <span class="inline-block w-full h-full text-center -translate-y-2/3">55%</span>
+                                <span class="inline-block w-full text-center absolute">---件</span> --}}
+                                {{-- <h3>ライン保有</h3> --}}
+                                {{-- <span class="">{{$record['lineRegisteredRate']}}%</span> --}}
+                                <canvas id="LineRegister" data-line="{{$record['line']}}" data-all="{{$record['blogCustomersAll'] - $record['line']}}">555</canvas>
+                                <script src="{{ asset('js/line-chart.js') }}" defer></script>
+                                <div class="w-full absolute inset-1/2 font-bold text-gray-500">
+                                    <p>{{$record['lineRegisterRate']}}%</p>
+                                    <p>---件</p>
+                                </div>
+                            </div>
+                            <div class="w-1/3 p-4">
+                                {{-- <h3>10/1以降の電話接触</h3> --}}
+                                <canvas id="call" data-call="{{$record['activeCall']}}" data-all="{{$record['blogCustomersAll'] - $record['activeCall']}}"></canvas>
+                                <script src="{{ asset('js/call-chart.js') }}" defer></script>
+                            </div>
                         </div>
-                    </div>
                 </div>
-                {{-- ▲円グラフ --}}
+                
                 
                 {{-- ▼管理者メニュー --}}
                 @if(Auth::user()->is_admin == 1)

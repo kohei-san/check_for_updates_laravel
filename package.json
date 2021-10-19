@@ -21,6 +21,8 @@
         "tailwindcss": "^2.0.2"
     },
     "dependencies": {
+        "chart.js": "^3.5.1",
+        "chartjs-plugin-doughnutlabel": "^2.0.3",
         "mysql": "^2.18.1"
     }
 }

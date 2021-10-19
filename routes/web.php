@@ -37,7 +37,7 @@ Route::get('/', function () {
 
 // user編集ページ
 Route::resource('user', UserController::class)
-    ->middleware(['auth'])
+    ->middleware(['auth', 'record'])
     ->only(['index','edit', 'update']);
 
 // analysisページ

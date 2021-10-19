@@ -6,7 +6,7 @@
     </x-slot>
 
   <div class="h-full p-4">
-    <canvas id="blog" data-blog="{{$record['updated']}}" data-all="{{$record['allCustomers']}}" height="50px" class=""></canvas>
+    <canvas id="blog" data-blog="{{$record['updated']}}" data-all="{{$record['blogCustomersAll']}}" height="50px" class=""></canvas>
     <script src="/Applications/MAMP/htdocs/check_for_updates_laravel/chartjs-plugin-annotation/src/annotation.js"></script>
     <script src="{{ asset('js/blog-bar-chart.js') }}" defer></script>
   </div>
@@ -14,15 +14,15 @@
   
   <div class="flex">
     <div class="w-1/3 p-4">
-      <canvas id="mail" data-mail="1" data-all="{{$record['allCustomers']}}"></canvas>
+      <canvas id="mail" data-mail="1" data-all="{{$record['blogCustomersAll']}}"></canvas>
       <script src="{{ asset('js/mail-chart.js') }}" defer></script>
     </div>
     <div class="w-1/3 p-4">
-      <canvas id="LineRegister" data-line="{{$record['line']}}" data-all="{{$record['allCustomers'] - $record['line']}}"></canvas>
+      <canvas id="LineRegister" data-line="{{$record['line']}}" data-all="{{$record['blogCustomersAll'] - $record['line']}}"></canvas>
       <script src="{{ asset('js/line-chart.js') }}" defer></script>
     </div>
     <div class="w-1/3 p-4">
-      <canvas id="call" data-call="{{$record['activeCall']}}" data-all="{{$record['allCustomers'] - $record['activeCall']}}"></canvas>
+      <canvas id="call" data-call="{{$record['activeCall']}}" data-all="{{$record['blogCustomersAll'] - $record['activeCall']}}"></canvas>
       <script src="{{ asset('js/call-chart.js') }}" defer></script>
     </div>
   </div>
