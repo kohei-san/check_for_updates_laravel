@@ -13,21 +13,24 @@
     {{$activeCallCount}}
     {{$reviewCount}}
 
-  <canvas id="blog" data-blog="{{$updated}}" data-all="{{$allCustomers}}" width="400" height="100"></canvas>
-  <script src="{{ asset('js/blog-bar-chart.js') }}" defer></script>
+  <div class="h-full p-4">
+    <canvas id="blog" data-blog="{{$updated}}" data-all="{{$allCustomers}}" height="50px" class=""></canvas>
+    <script src="/Applications/MAMP/htdocs/check_for_updates_laravel/chartjs-plugin-annotation/src/annotation.js"></script>
+    <script src="{{ asset('js/blog-bar-chart.js') }}" defer></script>
+  </div>
 
   
-    <div class="flex fl">
-    <div>
-      <canvas id="mail" data-mail="1" data-all="{{$allCustomers - $lineCount}}" width="400" height="400"></canvas>
+  <div class="flex">
+    <div class="w-1/3 p-4">
+      <canvas id="mail" data-mail="1" data-all="{{$allCustomers - $lineCount}}"></canvas>
       <script src="{{ asset('js/mail-chart.js') }}" defer></script>
     </div>
-    <div>
-      <canvas id="LineRegister" data-line="{{$lineCount}}" data-all="{{$allCustomers - $lineCount}}" width="400" height="400"></canvas>
+    <div class="w-1/3 p-4">
+      <canvas id="LineRegister" data-line="{{$lineCount}}" data-all="{{$allCustomers - $lineCount}}"></canvas>
       <script src="{{ asset('js/line-chart.js') }}" defer></script>
     </div>
-    <div>
-      <canvas id="call" data-call="{{$activeCallCount}}" data-all="{{$allCustomers - $activeCallCount}}" width="400" height="400"></canvas>
+    <div class="w-1/3 p-4">
+      <canvas id="call" data-call="{{$activeCallCount}}" data-all="{{$allCustomers - $activeCallCount}}"></canvas>
       <script src="{{ asset('js/call-chart.js') }}" defer></script>
     </div>
   </div>
