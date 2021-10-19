@@ -42,7 +42,7 @@ Route::resource('user', UserController::class)
 
 // analysisページ
 Route::get('analysis',[AnalysisController::class, 'index'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'record'])
     ->name('analysis.index');
 
 // 顧客一覧表示
